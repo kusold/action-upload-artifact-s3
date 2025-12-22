@@ -61600,8 +61600,26 @@ async function run() {
         }
     }
     catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        core.setFailed(errorMessage);
+        if (error instanceof Error) {
+            core.setFailed(error.message);
+            if (error.stack) {
+                core.debug(error.stack);
+            }
+            // Log additional error properties for AWS SDK errors
+            const anyError = error;
+            if (anyError.$metadata) {
+                core.error(`AWS SDK Metadata: ${JSON.stringify(anyError.$metadata)}`);
+            }
+            if (anyError.Code) {
+                core.error(`Error Code: ${anyError.Code}`);
+            }
+            if (anyError.cause) {
+                core.error(`Cause: ${JSON.stringify(anyError.cause)}`);
+            }
+        }
+        else {
+            core.setFailed(String(error));
+        }
     }
 }
 run();
