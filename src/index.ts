@@ -120,7 +120,7 @@ async function run(): Promise<void> {
         core.debug(error.stack);
       }
       // Log additional error properties for AWS SDK errors
-      const anyError = error as Record<string, unknown>;
+      const anyError = error as unknown as Record<string, unknown>;
       if (anyError.$metadata) {
         core.error(`AWS SDK Metadata: ${JSON.stringify(anyError.$metadata)}`);
       }
