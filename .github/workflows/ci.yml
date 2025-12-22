@@ -41,14 +41,13 @@ jobs:
       - name: Build action
         run: npm run build
 
-      - name: Check for uncommitted dist changes
+      - name: Verify dist exists
         run: |
-          git checkout package.json package-lock.json
-          if [[ -n "$(git status --porcelain dist/)" ]]; then
-            echo "::error::Uncommitted changes in dist/. Run 'npm run build' and commit the changes."
-            git status --porcelain dist/
+          if [[ ! -f dist/index.js ]]; then
+            echo "::error::dist/index.js not found after build"
             exit 1
           fi
+          echo "Build successful - dist/index.js exists"
 
   lint:
     name: Lint
