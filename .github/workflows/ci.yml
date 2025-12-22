@@ -14,40 +14,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Checkout artifact-s3 library
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository_owner }}/artifact-s3
-          path: artifact-s3
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
-
-      - name: Install library dependencies
-        run: npm ci
-        working-directory: artifact-s3
-
-      - name: Build library
-        run: npm run build
-        working-directory: artifact-s3
+          node-version: "24"
 
       - name: Install action dependencies
-        run: |
-          npm pkg set dependencies.@action-artifact-s3/artifact-s3=file:./artifact-s3
-          npm install
+        run: npm ci
 
       - name: Build action
         run: npm run build
 
-      - name: Verify dist exists
+      - name: Check for uncommitted dist changes
         run: |
-          if [[ ! -f dist/index.js ]]; then
-            echo "::error::dist/index.js not found after build"
+          if [[ -n "$(git status --porcelain dist/)" ]]; then
+            echo "::error::Uncommitted changes in dist/. Run 'npm run build' and commit the changes."
+            git status --porcelain dist/
             exit 1
           fi
-          echo "Build successful - dist/index.js exists"
 
   lint:
     name: Lint
@@ -56,29 +40,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Checkout artifact-s3 library
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository_owner }}/artifact-s3
-          path: artifact-s3
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
-
-      - name: Install library dependencies
-        run: npm ci
-        working-directory: artifact-s3
-
-      - name: Build library
-        run: npm run build
-        working-directory: artifact-s3
+          node-version: "24"
 
       - name: Install action dependencies
-        run: |
-          npm pkg set dependencies.@action-artifact-s3/artifact-s3=file:./artifact-s3
-          npm install
+        run: npm ci
 
       - name: Type check
         run: npx tsc --noEmit
