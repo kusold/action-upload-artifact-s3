@@ -1,20 +1,20 @@
 "use strict";
-exports.id = 532;
-exports.ids = [532];
+exports.id = 566;
+exports.ids = [566];
 exports.modules = {
 
-/***/ 5532:
+/***/ 566:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 var __webpack_unused_export__;
 
 
-var propertyProvider = __webpack_require__(2732);
+var propertyProvider = __webpack_require__(1238);
 var url = __webpack_require__(7016);
 var buffer = __webpack_require__(181);
 var http = __webpack_require__(8611);
-var nodeConfigProvider = __webpack_require__(8410);
-var urlParser = __webpack_require__(1060);
+var nodeConfigProvider = __webpack_require__(5704);
+var urlParser = __webpack_require__(4494);
 
 function httpRequest(options) {
     return new Promise((resolve, reject) => {
@@ -385,4 +385,4 @@ __webpack_unused_export__ = providerConfigFromInit;
 
 };
 ;
-//# sourceMappingURL=532.index.js.map
+//# sourceMappingURL=566.index.js.map
