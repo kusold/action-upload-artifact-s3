@@ -74,24 +74,22 @@ jobs:
           docker exec garage /garage layout apply --version 1
 
           docker exec garage /garage bucket create test-artifacts
-          docker exec garage /garage key create test-key
-
-          KEY_INFO=$(docker exec garage /garage key info test-key)
-          echo "$KEY_INFO"
-
-          ACCESS_KEY=$(echo "$KEY_INFO" | grep "Key ID:" | awk '{print $3}')
-          SECRET_KEY=$(echo "$KEY_INFO" | grep "Secret key:" | awk '{print $3}')
-
+          
+          # Capture the key info directly from key create command
+          # This avoids GitHub's auto-redaction which would mask the secret
+          # before we can parse it
+          KEY_CREATE_OUTPUT=$(docker exec garage /garage key create test-key)
+          
+          # Parse the credentials from the create output (before GitHub registers it as a secret)
+          ACCESS_KEY=$(echo "$KEY_CREATE_OUTPUT" | grep "Key ID:" | awk '{print $3}')
+          SECRET_KEY=$(echo "$KEY_CREATE_OUTPUT" | grep "Secret key:" | awk '{print $3}')
+          
           echo "Parsed ACCESS_KEY length: ${#ACCESS_KEY}"
           echo "Parsed SECRET_KEY length: ${#SECRET_KEY}"
           
           # Verify the values are correct
           if [ ${#SECRET_KEY} -ne 64 ]; then
             echo "ERROR: SECRET_KEY is not 64 characters! Got ${#SECRET_KEY} chars"
-            echo "KEY_INFO was:"
-            echo "$KEY_INFO"
-            echo "Grep result:"
-            echo "$KEY_INFO" | grep "Secret key:"
             exit 1
           fi
 
