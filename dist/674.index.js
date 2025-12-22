@@ -1,17 +1,17 @@
 "use strict";
-exports.id = 177;
-exports.ids = [177];
+exports.id = 674;
+exports.ids = [674];
 exports.modules = {
 
-/***/ 2178:
+/***/ 2322:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.resolveHttpAuthSchemeConfig = exports.defaultSSOOIDCHttpAuthSchemeProvider = exports.defaultSSOOIDCHttpAuthSchemeParametersProvider = void 0;
-const core_1 = __webpack_require__(8234);
-const util_middleware_1 = __webpack_require__(2206);
-const defaultSSOOIDCHttpAuthSchemeParametersProvider = async (config, context, input) => {
+exports.resolveHttpAuthSchemeConfig = exports.defaultSigninHttpAuthSchemeProvider = exports.defaultSigninHttpAuthSchemeParametersProvider = void 0;
+const core_1 = __webpack_require__(8952);
+const util_middleware_1 = __webpack_require__(5884);
+const defaultSigninHttpAuthSchemeParametersProvider = async (config, context, input) => {
     return {
         operation: (0, util_middleware_1.getSmithyContext)(context).operation,
         region: (await (0, util_middleware_1.normalizeProvider)(config.region)()) ||
@@ -20,12 +20,12 @@ const defaultSSOOIDCHttpAuthSchemeParametersProvider = async (config, context, i
             })(),
     };
 };
-exports.defaultSSOOIDCHttpAuthSchemeParametersProvider = defaultSSOOIDCHttpAuthSchemeParametersProvider;
+exports.defaultSigninHttpAuthSchemeParametersProvider = defaultSigninHttpAuthSchemeParametersProvider;
 function createAwsAuthSigv4HttpAuthOption(authParameters) {
     return {
         schemeId: "aws.auth#sigv4",
         signingProperties: {
-            name: "sso-oauth",
+            name: "signin",
             region: authParameters.region,
         },
         propertiesExtractor: (config, context) => ({
@@ -41,10 +41,10 @@ function createSmithyApiNoAuthHttpAuthOption(authParameters) {
         schemeId: "smithy.api#noAuth",
     };
 }
-const defaultSSOOIDCHttpAuthSchemeProvider = (authParameters) => {
+const defaultSigninHttpAuthSchemeProvider = (authParameters) => {
     const options = [];
     switch (authParameters.operation) {
-        case "CreateToken": {
+        case "CreateOAuth2Token": {
             options.push(createSmithyApiNoAuthHttpAuthOption(authParameters));
             break;
         }
@@ -54,7 +54,7 @@ const defaultSSOOIDCHttpAuthSchemeProvider = (authParameters) => {
     }
     return options;
 };
-exports.defaultSSOOIDCHttpAuthSchemeProvider = defaultSSOOIDCHttpAuthSchemeProvider;
+exports.defaultSigninHttpAuthSchemeProvider = defaultSigninHttpAuthSchemeProvider;
 const resolveHttpAuthSchemeConfig = (config) => {
     const config_0 = (0, core_1.resolveAwsSdkSigV4Config)(config);
     return Object.assign(config_0, {
@@ -66,15 +66,15 @@ exports.resolveHttpAuthSchemeConfig = resolveHttpAuthSchemeConfig;
 
 /***/ }),
 
-/***/ 748:
+/***/ 3371:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.defaultEndpointResolver = void 0;
-const util_endpoints_1 = __webpack_require__(5202);
-const util_endpoints_2 = __webpack_require__(1352);
-const ruleset_1 = __webpack_require__(7345);
+const util_endpoints_1 = __webpack_require__(484);
+const util_endpoints_2 = __webpack_require__(786);
+const ruleset_1 = __webpack_require__(2384);
 const cache = new util_endpoints_2.EndpointCache({
     size: 50,
     params: ["Endpoint", "Region", "UseDualStack", "UseFIPS"],
@@ -91,47 +91,47 @@ util_endpoints_2.customEndpointFunctions.aws = util_endpoints_1.awsEndpointFunct
 
 /***/ }),
 
-/***/ 7345:
+/***/ 2384:
 /***/ ((__unused_webpack_module, exports) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ruleSet = void 0;
 const u = "required", v = "fn", w = "argv", x = "ref";
-const a = true, b = "isSet", c = "booleanEquals", d = "error", e = "endpoint", f = "tree", g = "PartitionResult", h = "getAttr", i = { [u]: false, "type": "string" }, j = { [u]: true, "default": false, "type": "boolean" }, k = { [x]: "Endpoint" }, l = { [v]: c, [w]: [{ [x]: "UseFIPS" }, true] }, m = { [v]: c, [w]: [{ [x]: "UseDualStack" }, true] }, n = {}, o = { [v]: h, [w]: [{ [x]: g }, "supportsFIPS"] }, p = { [x]: g }, q = { [v]: c, [w]: [true, { [v]: h, [w]: [p, "supportsDualStack"] }] }, r = [l], s = [m], t = [{ [x]: "Region" }];
-const _data = { version: "1.0", parameters: { Region: i, UseDualStack: j, UseFIPS: j, Endpoint: i }, rules: [{ conditions: [{ [v]: b, [w]: [k] }], rules: [{ conditions: r, error: "Invalid Configuration: FIPS and custom endpoint are not supported", type: d }, { conditions: s, error: "Invalid Configuration: Dualstack and custom endpoint are not supported", type: d }, { endpoint: { url: k, properties: n, headers: n }, type: e }], type: f }, { conditions: [{ [v]: b, [w]: t }], rules: [{ conditions: [{ [v]: "aws.partition", [w]: t, assign: g }], rules: [{ conditions: [l, m], rules: [{ conditions: [{ [v]: c, [w]: [a, o] }, q], rules: [{ endpoint: { url: "https://oidc-fips.{Region}.{PartitionResult#dualStackDnsSuffix}", properties: n, headers: n }, type: e }], type: f }, { error: "FIPS and DualStack are enabled, but this partition does not support one or both", type: d }], type: f }, { conditions: r, rules: [{ conditions: [{ [v]: c, [w]: [o, a] }], rules: [{ conditions: [{ [v]: "stringEquals", [w]: [{ [v]: h, [w]: [p, "name"] }, "aws-us-gov"] }], endpoint: { url: "https://oidc.{Region}.amazonaws.com", properties: n, headers: n }, type: e }, { endpoint: { url: "https://oidc-fips.{Region}.{PartitionResult#dnsSuffix}", properties: n, headers: n }, type: e }], type: f }, { error: "FIPS is enabled but this partition does not support FIPS", type: d }], type: f }, { conditions: s, rules: [{ conditions: [q], rules: [{ endpoint: { url: "https://oidc.{Region}.{PartitionResult#dualStackDnsSuffix}", properties: n, headers: n }, type: e }], type: f }, { error: "DualStack is enabled but this partition does not support DualStack", type: d }], type: f }, { endpoint: { url: "https://oidc.{Region}.{PartitionResult#dnsSuffix}", properties: n, headers: n }, type: e }], type: f }], type: f }, { error: "Invalid Configuration: Missing Region", type: d }] };
+const a = true, b = "isSet", c = "booleanEquals", d = "error", e = "endpoint", f = "tree", g = "PartitionResult", h = "stringEquals", i = { [u]: true, "default": false, "type": "boolean" }, j = { [u]: false, "type": "string" }, k = { [x]: "Endpoint" }, l = { [v]: c, [w]: [{ [x]: "UseFIPS" }, true] }, m = { [v]: c, [w]: [{ [x]: "UseDualStack" }, true] }, n = {}, o = { [v]: "getAttr", [w]: [{ [x]: g }, "name"] }, p = { [v]: c, [w]: [{ [x]: "UseFIPS" }, false] }, q = { [v]: c, [w]: [{ [x]: "UseDualStack" }, false] }, r = { [v]: "getAttr", [w]: [{ [x]: g }, "supportsFIPS"] }, s = { [v]: c, [w]: [true, { [v]: "getAttr", [w]: [{ [x]: g }, "supportsDualStack"] }] }, t = [{ [x]: "Region" }];
+const _data = { version: "1.0", parameters: { UseDualStack: i, UseFIPS: i, Endpoint: j, Region: j }, rules: [{ conditions: [{ [v]: b, [w]: [k] }], rules: [{ conditions: [l], error: "Invalid Configuration: FIPS and custom endpoint are not supported", type: d }, { rules: [{ conditions: [m], error: "Invalid Configuration: Dualstack and custom endpoint are not supported", type: d }, { endpoint: { url: k, properties: n, headers: n }, type: e }], type: f }], type: f }, { rules: [{ conditions: [{ [v]: b, [w]: t }], rules: [{ conditions: [{ [v]: "aws.partition", [w]: t, assign: g }], rules: [{ conditions: [{ [v]: h, [w]: [o, "aws"] }, p, q], endpoint: { url: "https://{Region}.signin.aws.amazon.com", properties: n, headers: n }, type: e }, { conditions: [{ [v]: h, [w]: [o, "aws-cn"] }, p, q], endpoint: { url: "https://{Region}.signin.amazonaws.cn", properties: n, headers: n }, type: e }, { conditions: [{ [v]: h, [w]: [o, "aws-us-gov"] }, p, q], endpoint: { url: "https://{Region}.signin.amazonaws-us-gov.com", properties: n, headers: n }, type: e }, { conditions: [l, m], rules: [{ conditions: [{ [v]: c, [w]: [a, r] }, s], rules: [{ endpoint: { url: "https://signin-fips.{Region}.{PartitionResult#dualStackDnsSuffix}", properties: n, headers: n }, type: e }], type: f }, { error: "FIPS and DualStack are enabled, but this partition does not support one or both", type: d }], type: f }, { conditions: [l, q], rules: [{ conditions: [{ [v]: c, [w]: [r, a] }], rules: [{ endpoint: { url: "https://signin-fips.{Region}.{PartitionResult#dnsSuffix}", properties: n, headers: n }, type: e }], type: f }, { error: "FIPS is enabled but this partition does not support FIPS", type: d }], type: f }, { conditions: [p, m], rules: [{ conditions: [s], rules: [{ endpoint: { url: "https://signin.{Region}.{PartitionResult#dualStackDnsSuffix}", properties: n, headers: n }, type: e }], type: f }, { error: "DualStack is enabled but this partition does not support DualStack", type: d }], type: f }, { endpoint: { url: "https://signin.{Region}.{PartitionResult#dnsSuffix}", properties: n, headers: n }, type: e }], type: f }], type: f }, { error: "Invalid Configuration: Missing Region", type: d }], type: f }] };
 exports.ruleSet = _data;
 
 
 /***/ }),
 
-/***/ 1177:
+/***/ 3674:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 var __webpack_unused_export__;
 
 
-var middlewareHostHeader = __webpack_require__(5632);
-var middlewareLogger = __webpack_require__(3436);
-var middlewareRecursionDetection = __webpack_require__(7570);
-var middlewareUserAgent = __webpack_require__(4169);
-var configResolver = __webpack_require__(1582);
-var core = __webpack_require__(7004);
-var schema = __webpack_require__(8420);
-var middlewareContentLength = __webpack_require__(3750);
-var middlewareEndpoint = __webpack_require__(4425);
-var middlewareRetry = __webpack_require__(8120);
-var smithyClient = __webpack_require__(1681);
-var httpAuthSchemeProvider = __webpack_require__(2178);
-var runtimeConfig = __webpack_require__(8867);
-var regionConfigResolver = __webpack_require__(6869);
-var protocolHttp = __webpack_require__(7922);
+var middlewareHostHeader = __webpack_require__(2502);
+var middlewareLogger = __webpack_require__(6434);
+var middlewareRecursionDetection = __webpack_require__(9224);
+var middlewareUserAgent = __webpack_require__(5767);
+var configResolver = __webpack_require__(7852);
+var core = __webpack_require__(8410);
+var schema = __webpack_require__(706);
+var middlewareContentLength = __webpack_require__(7332);
+var middlewareEndpoint = __webpack_require__(1115);
+var middlewareRetry = __webpack_require__(6682);
+var smithyClient = __webpack_require__(9355);
+var httpAuthSchemeProvider = __webpack_require__(2322);
+var runtimeConfig = __webpack_require__(940);
+var regionConfigResolver = __webpack_require__(9287);
+var protocolHttp = __webpack_require__(7132);
 
 const resolveClientEndpointParameters = (options) => {
     return Object.assign(options, {
         useDualstackEndpoint: options.useDualstackEndpoint ?? false,
         useFipsEndpoint: options.useFipsEndpoint ?? false,
-        defaultSigningName: "sso-oauth",
+        defaultSigningName: "signin",
     });
 };
 const commonParams = {
@@ -186,7 +186,7 @@ const resolveRuntimeExtensions = (runtimeConfig, extensions) => {
     return Object.assign(runtimeConfig, regionConfigResolver.resolveAwsRegionExtensionConfiguration(extensionConfiguration), smithyClient.resolveDefaultRuntimeConfig(extensionConfiguration), protocolHttp.resolveHttpHandlerRuntimeConfig(extensionConfiguration), resolveHttpAuthRuntimeConfig(extensionConfiguration));
 };
 
-class SSOOIDCClient extends smithyClient.Client {
+class SigninClient extends smithyClient.Client {
     config;
     constructor(...[configuration]) {
         const _config_0 = runtimeConfig.getRuntimeConfig(configuration || {});
@@ -209,7 +209,7 @@ class SSOOIDCClient extends smithyClient.Client {
         this.middlewareStack.use(middlewareLogger.getLoggerPlugin(this.config));
         this.middlewareStack.use(middlewareRecursionDetection.getRecursionDetectionPlugin(this.config));
         this.middlewareStack.use(core.getHttpAuthSchemeEndpointRuleSetPlugin(this.config, {
-            httpAuthSchemeParametersProvider: httpAuthSchemeProvider.defaultSSOOIDCHttpAuthSchemeParametersProvider,
+            httpAuthSchemeParametersProvider: httpAuthSchemeProvider.defaultSigninHttpAuthSchemeParametersProvider,
             identityProviderConfigProvider: async (config) => new core.DefaultIdentityProviderConfig({
                 "aws.auth#sigv4": config.credentials,
             }),
@@ -221,19 +221,17 @@ class SSOOIDCClient extends smithyClient.Client {
     }
 }
 
-class SSOOIDCServiceException extends smithyClient.ServiceException {
+class SigninServiceException extends smithyClient.ServiceException {
     constructor(options) {
         super(options);
-        Object.setPrototypeOf(this, SSOOIDCServiceException.prototype);
+        Object.setPrototypeOf(this, SigninServiceException.prototype);
     }
 }
 
-class AccessDeniedException extends SSOOIDCServiceException {
+class AccessDeniedException extends SigninServiceException {
     name = "AccessDeniedException";
     $fault = "client";
     error;
-    reason;
-    error_description;
     constructor(opts) {
         super({
             name: "AccessDeniedException",
@@ -242,47 +240,12 @@ class AccessDeniedException extends SSOOIDCServiceException {
         });
         Object.setPrototypeOf(this, AccessDeniedException.prototype);
         this.error = opts.error;
-        this.reason = opts.reason;
-        this.error_description = opts.error_description;
     }
 }
-class AuthorizationPendingException extends SSOOIDCServiceException {
-    name = "AuthorizationPendingException";
-    $fault = "client";
-    error;
-    error_description;
-    constructor(opts) {
-        super({
-            name: "AuthorizationPendingException",
-            $fault: "client",
-            ...opts,
-        });
-        Object.setPrototypeOf(this, AuthorizationPendingException.prototype);
-        this.error = opts.error;
-        this.error_description = opts.error_description;
-    }
-}
-class ExpiredTokenException extends SSOOIDCServiceException {
-    name = "ExpiredTokenException";
-    $fault = "client";
-    error;
-    error_description;
-    constructor(opts) {
-        super({
-            name: "ExpiredTokenException",
-            $fault: "client",
-            ...opts,
-        });
-        Object.setPrototypeOf(this, ExpiredTokenException.prototype);
-        this.error = opts.error;
-        this.error_description = opts.error_description;
-    }
-}
-class InternalServerException extends SSOOIDCServiceException {
+class InternalServerException extends SigninServiceException {
     name = "InternalServerException";
     $fault = "server";
     error;
-    error_description;
     constructor(opts) {
         super({
             name: "InternalServerException",
@@ -291,281 +254,175 @@ class InternalServerException extends SSOOIDCServiceException {
         });
         Object.setPrototypeOf(this, InternalServerException.prototype);
         this.error = opts.error;
-        this.error_description = opts.error_description;
     }
 }
-class InvalidClientException extends SSOOIDCServiceException {
-    name = "InvalidClientException";
+class TooManyRequestsError extends SigninServiceException {
+    name = "TooManyRequestsError";
     $fault = "client";
     error;
-    error_description;
     constructor(opts) {
         super({
-            name: "InvalidClientException",
+            name: "TooManyRequestsError",
             $fault: "client",
             ...opts,
         });
-        Object.setPrototypeOf(this, InvalidClientException.prototype);
+        Object.setPrototypeOf(this, TooManyRequestsError.prototype);
         this.error = opts.error;
-        this.error_description = opts.error_description;
     }
 }
-class InvalidGrantException extends SSOOIDCServiceException {
-    name = "InvalidGrantException";
+class ValidationException extends SigninServiceException {
+    name = "ValidationException";
     $fault = "client";
     error;
-    error_description;
     constructor(opts) {
         super({
-            name: "InvalidGrantException",
+            name: "ValidationException",
             $fault: "client",
             ...opts,
         });
-        Object.setPrototypeOf(this, InvalidGrantException.prototype);
+        Object.setPrototypeOf(this, ValidationException.prototype);
         this.error = opts.error;
-        this.error_description = opts.error_description;
-    }
-}
-class InvalidRequestException extends SSOOIDCServiceException {
-    name = "InvalidRequestException";
-    $fault = "client";
-    error;
-    reason;
-    error_description;
-    constructor(opts) {
-        super({
-            name: "InvalidRequestException",
-            $fault: "client",
-            ...opts,
-        });
-        Object.setPrototypeOf(this, InvalidRequestException.prototype);
-        this.error = opts.error;
-        this.reason = opts.reason;
-        this.error_description = opts.error_description;
-    }
-}
-class InvalidScopeException extends SSOOIDCServiceException {
-    name = "InvalidScopeException";
-    $fault = "client";
-    error;
-    error_description;
-    constructor(opts) {
-        super({
-            name: "InvalidScopeException",
-            $fault: "client",
-            ...opts,
-        });
-        Object.setPrototypeOf(this, InvalidScopeException.prototype);
-        this.error = opts.error;
-        this.error_description = opts.error_description;
-    }
-}
-class SlowDownException extends SSOOIDCServiceException {
-    name = "SlowDownException";
-    $fault = "client";
-    error;
-    error_description;
-    constructor(opts) {
-        super({
-            name: "SlowDownException",
-            $fault: "client",
-            ...opts,
-        });
-        Object.setPrototypeOf(this, SlowDownException.prototype);
-        this.error = opts.error;
-        this.error_description = opts.error_description;
-    }
-}
-class UnauthorizedClientException extends SSOOIDCServiceException {
-    name = "UnauthorizedClientException";
-    $fault = "client";
-    error;
-    error_description;
-    constructor(opts) {
-        super({
-            name: "UnauthorizedClientException",
-            $fault: "client",
-            ...opts,
-        });
-        Object.setPrototypeOf(this, UnauthorizedClientException.prototype);
-        this.error = opts.error;
-        this.error_description = opts.error_description;
-    }
-}
-class UnsupportedGrantTypeException extends SSOOIDCServiceException {
-    name = "UnsupportedGrantTypeException";
-    $fault = "client";
-    error;
-    error_description;
-    constructor(opts) {
-        super({
-            name: "UnsupportedGrantTypeException",
-            $fault: "client",
-            ...opts,
-        });
-        Object.setPrototypeOf(this, UnsupportedGrantTypeException.prototype);
-        this.error = opts.error;
-        this.error_description = opts.error_description;
     }
 }
 
 const _ADE = "AccessDeniedException";
-const _APE = "AuthorizationPendingException";
 const _AT = "AccessToken";
-const _CS = "ClientSecret";
-const _CT = "CreateToken";
-const _CTR = "CreateTokenRequest";
-const _CTRr = "CreateTokenResponse";
-const _CV = "CodeVerifier";
-const _ETE = "ExpiredTokenException";
-const _ICE = "InvalidClientException";
-const _IGE = "InvalidGrantException";
-const _IRE = "InvalidRequestException";
+const _COAT = "CreateOAuth2Token";
+const _COATR = "CreateOAuth2TokenRequest";
+const _COATRB = "CreateOAuth2TokenRequestBody";
+const _COATRBr = "CreateOAuth2TokenResponseBody";
+const _COATRr = "CreateOAuth2TokenResponse";
 const _ISE = "InternalServerException";
-const _ISEn = "InvalidScopeException";
-const _IT = "IdToken";
 const _RT = "RefreshToken";
-const _SDE = "SlowDownException";
-const _UCE = "UnauthorizedClientException";
-const _UGTE = "UnsupportedGrantTypeException";
+const _TMRE = "TooManyRequestsError";
+const _VE = "ValidationException";
+const _aKI = "accessKeyId";
 const _aT = "accessToken";
 const _c = "client";
 const _cI = "clientId";
-const _cS = "clientSecret";
 const _cV = "codeVerifier";
 const _co = "code";
-const _dC = "deviceCode";
 const _e = "error";
 const _eI = "expiresIn";
-const _ed = "error_description";
 const _gT = "grantType";
 const _h = "http";
 const _hE = "httpError";
 const _iT = "idToken";
-const _r = "reason";
+const _jN = "jsonName";
+const _m = "message";
 const _rT = "refreshToken";
 const _rU = "redirectUri";
-const _s = "scope";
-const _se = "server";
-const _sm = "smithy.ts.sdk.synthetic.com.amazonaws.ssooidc";
+const _s = "server";
+const _sAK = "secretAccessKey";
+const _sT = "sessionToken";
+const _sm = "smithy.ts.sdk.synthetic.com.amazonaws.signin";
+const _tI = "tokenInput";
+const _tO = "tokenOutput";
 const _tT = "tokenType";
-const n0 = "com.amazonaws.ssooidc";
-var AccessToken = [0, n0, _AT, 8, 0];
-var ClientSecret = [0, n0, _CS, 8, 0];
-var CodeVerifier = [0, n0, _CV, 8, 0];
-var IdToken = [0, n0, _IT, 8, 0];
+const n0 = "com.amazonaws.signin";
 var RefreshToken = [0, n0, _RT, 8, 0];
-var AccessDeniedException$ = [
-    -3,
-    n0,
-    _ADE,
-    { [_e]: _c, [_hE]: 400 },
-    [_e, _r, _ed],
-    [0, 0, 0],
-];
+var AccessDeniedException$ = [-3, n0, _ADE, { [_e]: _c }, [_e, _m], [0, 0]];
 schema.TypeRegistry.for(n0).registerError(AccessDeniedException$, AccessDeniedException);
-var AuthorizationPendingException$ = [
-    -3,
-    n0,
-    _APE,
-    { [_e]: _c, [_hE]: 400 },
-    [_e, _ed],
-    [0, 0],
-];
-schema.TypeRegistry.for(n0).registerError(AuthorizationPendingException$, AuthorizationPendingException);
-var CreateTokenRequest$ = [
+var AccessToken$ = [
     3,
     n0,
-    _CTR,
+    _AT,
+    8,
+    [_aKI, _sAK, _sT],
+    [
+        [0, { [_jN]: _aKI }],
+        [0, { [_jN]: _sAK }],
+        [0, { [_jN]: _sT }],
+    ],
+];
+var CreateOAuth2TokenRequest$ = [
+    3,
+    n0,
+    _COATR,
     0,
-    [_cI, _cS, _gT, _dC, _co, _rT, _s, _rU, _cV],
-    [0, [() => ClientSecret, 0], 0, 0, 0, [() => RefreshToken, 0], 64 | 0, 0, [() => CodeVerifier, 0]],
+    [_tI],
+    [[() => CreateOAuth2TokenRequestBody$, 16]],
 ];
-var CreateTokenResponse$ = [
+var CreateOAuth2TokenRequestBody$ = [
     3,
     n0,
-    _CTRr,
+    _COATRB,
+    0,
+    [_cI, _gT, _co, _rU, _cV, _rT],
+    [
+        [0, { [_jN]: _cI }],
+        [0, { [_jN]: _gT }],
+        0,
+        [0, { [_jN]: _rU }],
+        [0, { [_jN]: _cV }],
+        [() => RefreshToken, { [_jN]: _rT }],
+    ],
+];
+var CreateOAuth2TokenResponse$ = [
+    3,
+    n0,
+    _COATRr,
+    0,
+    [_tO],
+    [[() => CreateOAuth2TokenResponseBody$, 16]],
+];
+var CreateOAuth2TokenResponseBody$ = [
+    3,
+    n0,
+    _COATRBr,
     0,
     [_aT, _tT, _eI, _rT, _iT],
-    [[() => AccessToken, 0], 0, 1, [() => RefreshToken, 0], [() => IdToken, 0]],
+    [
+        [() => AccessToken$, { [_jN]: _aT }],
+        [0, { [_jN]: _tT }],
+        [1, { [_jN]: _eI }],
+        [() => RefreshToken, { [_jN]: _rT }],
+        [0, { [_jN]: _iT }],
+    ],
 ];
-var ExpiredTokenException$ = [-3, n0, _ETE, { [_e]: _c, [_hE]: 400 }, [_e, _ed], [0, 0]];
-schema.TypeRegistry.for(n0).registerError(ExpiredTokenException$, ExpiredTokenException);
-var InternalServerException$ = [-3, n0, _ISE, { [_e]: _se, [_hE]: 500 }, [_e, _ed], [0, 0]];
+var InternalServerException$ = [-3, n0, _ISE, { [_e]: _s, [_hE]: 500 }, [_e, _m], [0, 0]];
 schema.TypeRegistry.for(n0).registerError(InternalServerException$, InternalServerException);
-var InvalidClientException$ = [-3, n0, _ICE, { [_e]: _c, [_hE]: 401 }, [_e, _ed], [0, 0]];
-schema.TypeRegistry.for(n0).registerError(InvalidClientException$, InvalidClientException);
-var InvalidGrantException$ = [-3, n0, _IGE, { [_e]: _c, [_hE]: 400 }, [_e, _ed], [0, 0]];
-schema.TypeRegistry.for(n0).registerError(InvalidGrantException$, InvalidGrantException);
-var InvalidRequestException$ = [
-    -3,
-    n0,
-    _IRE,
-    { [_e]: _c, [_hE]: 400 },
-    [_e, _r, _ed],
-    [0, 0, 0],
-];
-schema.TypeRegistry.for(n0).registerError(InvalidRequestException$, InvalidRequestException);
-var InvalidScopeException$ = [-3, n0, _ISEn, { [_e]: _c, [_hE]: 400 }, [_e, _ed], [0, 0]];
-schema.TypeRegistry.for(n0).registerError(InvalidScopeException$, InvalidScopeException);
-var SlowDownException$ = [-3, n0, _SDE, { [_e]: _c, [_hE]: 400 }, [_e, _ed], [0, 0]];
-schema.TypeRegistry.for(n0).registerError(SlowDownException$, SlowDownException);
-var UnauthorizedClientException$ = [
-    -3,
-    n0,
-    _UCE,
-    { [_e]: _c, [_hE]: 400 },
-    [_e, _ed],
-    [0, 0],
-];
-schema.TypeRegistry.for(n0).registerError(UnauthorizedClientException$, UnauthorizedClientException);
-var UnsupportedGrantTypeException$ = [
-    -3,
-    n0,
-    _UGTE,
-    { [_e]: _c, [_hE]: 400 },
-    [_e, _ed],
-    [0, 0],
-];
-schema.TypeRegistry.for(n0).registerError(UnsupportedGrantTypeException$, UnsupportedGrantTypeException);
-var SSOOIDCServiceException$ = [-3, _sm, "SSOOIDCServiceException", 0, [], []];
-schema.TypeRegistry.for(_sm).registerError(SSOOIDCServiceException$, SSOOIDCServiceException);
-var CreateToken$ = [
+var TooManyRequestsError$ = [-3, n0, _TMRE, { [_e]: _c, [_hE]: 429 }, [_e, _m], [0, 0]];
+schema.TypeRegistry.for(n0).registerError(TooManyRequestsError$, TooManyRequestsError);
+var ValidationException$ = [-3, n0, _VE, { [_e]: _c, [_hE]: 400 }, [_e, _m], [0, 0]];
+schema.TypeRegistry.for(n0).registerError(ValidationException$, ValidationException);
+var SigninServiceException$ = [-3, _sm, "SigninServiceException", 0, [], []];
+schema.TypeRegistry.for(_sm).registerError(SigninServiceException$, SigninServiceException);
+var CreateOAuth2Token$ = [
     9,
     n0,
-    _CT,
-    { [_h]: ["POST", "/token", 200] },
-    () => CreateTokenRequest$,
-    () => CreateTokenResponse$,
+    _COAT,
+    { [_h]: ["POST", "/v1/token", 200] },
+    () => CreateOAuth2TokenRequest$,
+    () => CreateOAuth2TokenResponse$,
 ];
 
-class CreateTokenCommand extends smithyClient.Command
+class CreateOAuth2TokenCommand extends smithyClient.Command
     .classBuilder()
     .ep(commonParams)
     .m(function (Command, cs, config, o) {
     return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions())];
 })
-    .s("AWSSSOOIDCService", "CreateToken", {})
-    .n("SSOOIDCClient", "CreateTokenCommand")
-    .sc(CreateToken$)
+    .s("Signin", "CreateOAuth2Token", {})
+    .n("SigninClient", "CreateOAuth2TokenCommand")
+    .sc(CreateOAuth2Token$)
     .build() {
 }
 
 const commands = {
-    CreateTokenCommand,
+    CreateOAuth2TokenCommand,
 };
-class SSOOIDC extends SSOOIDCClient {
+class Signin extends SigninClient {
 }
-smithyClient.createAggregatedClient(commands, SSOOIDC);
+smithyClient.createAggregatedClient(commands, Signin);
 
-const AccessDeniedExceptionReason = {
-    KMS_ACCESS_DENIED: "KMS_AccessDeniedException",
-};
-const InvalidRequestExceptionReason = {
-    KMS_DISABLED_KEY: "KMS_DisabledException",
-    KMS_INVALID_KEY_USAGE: "KMS_InvalidKeyUsageException",
-    KMS_INVALID_STATE: "KMS_InvalidStateException",
-    KMS_KEY_NOT_FOUND: "KMS_NotFoundException",
+const OAuth2ErrorCode = {
+    AUTHCODE_EXPIRED: "AUTHCODE_EXPIRED",
+    INSUFFICIENT_PERMISSIONS: "INSUFFICIENT_PERMISSIONS",
+    INVALID_REQUEST: "INVALID_REQUEST",
+    SERVER_ERROR: "server_error",
+    TOKEN_EXPIRED: "TOKEN_EXPIRED",
+    USER_CREDENTIALS_CHANGED: "USER_CREDENTIALS_CHANGED",
 };
 
 __webpack_unused_export__ = ({
@@ -578,60 +435,48 @@ __webpack_unused_export__ = ({
 });
 __webpack_unused_export__ = AccessDeniedException;
 __webpack_unused_export__ = AccessDeniedException$;
-__webpack_unused_export__ = AccessDeniedExceptionReason;
-__webpack_unused_export__ = AuthorizationPendingException;
-__webpack_unused_export__ = AuthorizationPendingException$;
-__webpack_unused_export__ = CreateToken$;
-exports.CreateTokenCommand = CreateTokenCommand;
-__webpack_unused_export__ = CreateTokenRequest$;
-__webpack_unused_export__ = CreateTokenResponse$;
-__webpack_unused_export__ = ExpiredTokenException;
-__webpack_unused_export__ = ExpiredTokenException$;
+__webpack_unused_export__ = AccessToken$;
+__webpack_unused_export__ = CreateOAuth2Token$;
+exports.CreateOAuth2TokenCommand = CreateOAuth2TokenCommand;
+__webpack_unused_export__ = CreateOAuth2TokenRequest$;
+__webpack_unused_export__ = CreateOAuth2TokenRequestBody$;
+__webpack_unused_export__ = CreateOAuth2TokenResponse$;
+__webpack_unused_export__ = CreateOAuth2TokenResponseBody$;
 __webpack_unused_export__ = InternalServerException;
 __webpack_unused_export__ = InternalServerException$;
-__webpack_unused_export__ = InvalidClientException;
-__webpack_unused_export__ = InvalidClientException$;
-__webpack_unused_export__ = InvalidGrantException;
-__webpack_unused_export__ = InvalidGrantException$;
-__webpack_unused_export__ = InvalidRequestException;
-__webpack_unused_export__ = InvalidRequestException$;
-__webpack_unused_export__ = InvalidRequestExceptionReason;
-__webpack_unused_export__ = InvalidScopeException;
-__webpack_unused_export__ = InvalidScopeException$;
-__webpack_unused_export__ = SSOOIDC;
-exports.SSOOIDCClient = SSOOIDCClient;
-__webpack_unused_export__ = SSOOIDCServiceException;
-__webpack_unused_export__ = SSOOIDCServiceException$;
-__webpack_unused_export__ = SlowDownException;
-__webpack_unused_export__ = SlowDownException$;
-__webpack_unused_export__ = UnauthorizedClientException;
-__webpack_unused_export__ = UnauthorizedClientException$;
-__webpack_unused_export__ = UnsupportedGrantTypeException;
-__webpack_unused_export__ = UnsupportedGrantTypeException$;
+__webpack_unused_export__ = OAuth2ErrorCode;
+__webpack_unused_export__ = Signin;
+exports.SigninClient = SigninClient;
+__webpack_unused_export__ = SigninServiceException;
+__webpack_unused_export__ = SigninServiceException$;
+__webpack_unused_export__ = TooManyRequestsError;
+__webpack_unused_export__ = TooManyRequestsError$;
+__webpack_unused_export__ = ValidationException;
+__webpack_unused_export__ = ValidationException$;
 
 
 /***/ }),
 
-/***/ 8867:
+/***/ 940:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getRuntimeConfig = void 0;
-const tslib_1 = __webpack_require__(4834);
-const package_json_1 = tslib_1.__importDefault(__webpack_require__(6879));
-const core_1 = __webpack_require__(8234);
-const util_user_agent_node_1 = __webpack_require__(3262);
-const config_resolver_1 = __webpack_require__(1582);
-const hash_node_1 = __webpack_require__(7882);
-const middleware_retry_1 = __webpack_require__(8120);
-const node_config_provider_1 = __webpack_require__(8410);
-const node_http_handler_1 = __webpack_require__(5697);
-const smithy_client_1 = __webpack_require__(1681);
-const util_body_length_node_1 = __webpack_require__(5328);
-const util_defaults_mode_node_1 = __webpack_require__(3761);
-const util_retry_1 = __webpack_require__(6532);
-const runtimeConfig_shared_1 = __webpack_require__(2896);
+const tslib_1 = __webpack_require__(5548);
+const package_json_1 = tslib_1.__importDefault(__webpack_require__(4207));
+const core_1 = __webpack_require__(8952);
+const util_user_agent_node_1 = __webpack_require__(2496);
+const config_resolver_1 = __webpack_require__(7852);
+const hash_node_1 = __webpack_require__(7100);
+const middleware_retry_1 = __webpack_require__(6682);
+const node_config_provider_1 = __webpack_require__(8144);
+const node_http_handler_1 = __webpack_require__(9879);
+const smithy_client_1 = __webpack_require__(9355);
+const util_body_length_node_1 = __webpack_require__(9902);
+const util_defaults_mode_node_1 = __webpack_require__(323);
+const util_retry_1 = __webpack_require__(5926);
+const runtimeConfig_shared_1 = __webpack_require__(8029);
 const getRuntimeConfig = (config) => {
     (0, smithy_client_1.emitWarningIfUnsupportedVersion)(process.version);
     const defaultsMode = (0, util_defaults_mode_node_1.resolveDefaultsModeConfig)(config);
@@ -672,30 +517,30 @@ exports.getRuntimeConfig = getRuntimeConfig;
 
 /***/ }),
 
-/***/ 2896:
+/***/ 8029:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getRuntimeConfig = void 0;
-const core_1 = __webpack_require__(8234);
-const protocols_1 = __webpack_require__(8422);
-const core_2 = __webpack_require__(7004);
-const smithy_client_1 = __webpack_require__(1681);
-const url_parser_1 = __webpack_require__(1060);
-const util_base64_1 = __webpack_require__(5199);
-const util_utf8_1 = __webpack_require__(8940);
-const httpAuthSchemeProvider_1 = __webpack_require__(2178);
-const endpointResolver_1 = __webpack_require__(748);
+const core_1 = __webpack_require__(8952);
+const protocols_1 = __webpack_require__(7136);
+const core_2 = __webpack_require__(8410);
+const smithy_client_1 = __webpack_require__(9355);
+const url_parser_1 = __webpack_require__(8982);
+const util_base64_1 = __webpack_require__(8745);
+const util_utf8_1 = __webpack_require__(2049);
+const httpAuthSchemeProvider_1 = __webpack_require__(2322);
+const endpointResolver_1 = __webpack_require__(3371);
 const getRuntimeConfig = (config) => {
     return {
-        apiVersion: "2019-06-10",
+        apiVersion: "2023-01-01",
         base64Decoder: config?.base64Decoder ?? util_base64_1.fromBase64,
         base64Encoder: config?.base64Encoder ?? util_base64_1.toBase64,
         disableHostPrefix: config?.disableHostPrefix ?? false,
         endpointProvider: config?.endpointProvider ?? endpointResolver_1.defaultEndpointResolver,
         extensions: config?.extensions ?? [],
-        httpAuthSchemeProvider: config?.httpAuthSchemeProvider ?? httpAuthSchemeProvider_1.defaultSSOOIDCHttpAuthSchemeProvider,
+        httpAuthSchemeProvider: config?.httpAuthSchemeProvider ?? httpAuthSchemeProvider_1.defaultSigninHttpAuthSchemeProvider,
         httpAuthSchemes: config?.httpAuthSchemes ?? [
             {
                 schemeId: "aws.auth#sigv4",
@@ -711,11 +556,11 @@ const getRuntimeConfig = (config) => {
         logger: config?.logger ?? new smithy_client_1.NoOpLogger(),
         protocol: config?.protocol ?? protocols_1.AwsRestJsonProtocol,
         protocolSettings: config?.protocolSettings ?? {
-            defaultNamespace: "com.amazonaws.ssooidc",
-            version: "2019-06-10",
-            serviceTarget: "AWSSSOOIDCService",
+            defaultNamespace: "com.amazonaws.signin",
+            version: "2023-01-01",
+            serviceTarget: "Signin",
         },
-        serviceId: config?.serviceId ?? "SSO OIDC",
+        serviceId: config?.serviceId ?? "Signin",
         urlParser: config?.urlParser ?? url_parser_1.parseUrl,
         utf8Decoder: config?.utf8Decoder ?? util_utf8_1.fromUtf8,
         utf8Encoder: config?.utf8Encoder ?? util_utf8_1.toUtf8,
@@ -726,7 +571,7 @@ exports.getRuntimeConfig = getRuntimeConfig;
 
 /***/ }),
 
-/***/ 6879:
+/***/ 4207:
 /***/ ((module) => {
 
 module.exports = /*#__PURE__*/JSON.parse('{"name":"@aws-sdk/nested-clients","version":"3.956.0","description":"Nested clients for AWS SDK packages.","main":"./dist-cjs/index.js","module":"./dist-es/index.js","types":"./dist-types/index.d.ts","scripts":{"build":"yarn lint && concurrently \'yarn:build:cjs\' \'yarn:build:es\' \'yarn:build:types\'","build:cjs":"node ../../scripts/compilation/inline nested-clients","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","lint":"node ../../scripts/validation/submodules-linter.js --pkg nested-clients","test":"yarn g:vitest run","test:watch":"yarn g:vitest watch"},"engines":{"node":">=18.0.0"},"sideEffects":false,"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","dependencies":{"@aws-crypto/sha256-browser":"5.2.0","@aws-crypto/sha256-js":"5.2.0","@aws-sdk/core":"3.956.0","@aws-sdk/middleware-host-header":"3.956.0","@aws-sdk/middleware-logger":"3.956.0","@aws-sdk/middleware-recursion-detection":"3.956.0","@aws-sdk/middleware-user-agent":"3.956.0","@aws-sdk/region-config-resolver":"3.956.0","@aws-sdk/types":"3.956.0","@aws-sdk/util-endpoints":"3.956.0","@aws-sdk/util-user-agent-browser":"3.956.0","@aws-sdk/util-user-agent-node":"3.956.0","@smithy/config-resolver":"^4.4.5","@smithy/core":"^3.20.0","@smithy/fetch-http-handler":"^5.3.8","@smithy/hash-node":"^4.2.7","@smithy/invalid-dependency":"^4.2.7","@smithy/middleware-content-length":"^4.2.7","@smithy/middleware-endpoint":"^4.4.1","@smithy/middleware-retry":"^4.4.17","@smithy/middleware-serde":"^4.2.8","@smithy/middleware-stack":"^4.2.7","@smithy/node-config-provider":"^4.3.7","@smithy/node-http-handler":"^4.4.7","@smithy/protocol-http":"^5.3.7","@smithy/smithy-client":"^4.10.2","@smithy/types":"^4.11.0","@smithy/url-parser":"^4.2.7","@smithy/util-base64":"^4.3.0","@smithy/util-body-length-browser":"^4.2.0","@smithy/util-body-length-node":"^4.2.1","@smithy/util-defaults-mode-browser":"^4.3.16","@smithy/util-defaults-mode-node":"^4.2.19","@smithy/util-endpoints":"^3.2.7","@smithy/util-middleware":"^4.2.7","@smithy/util-retry":"^4.2.7","@smithy/util-utf8":"^4.2.0","tslib":"^2.6.2"},"devDependencies":{"concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typescript":"~5.8.3"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["./signin.d.ts","./signin.js","./sso-oidc.d.ts","./sso-oidc.js","./sts.d.ts","./sts.js","dist-*/**"],"browser":{"./dist-es/submodules/signin/runtimeConfig":"./dist-es/submodules/signin/runtimeConfig.browser","./dist-es/submodules/sso-oidc/runtimeConfig":"./dist-es/submodules/sso-oidc/runtimeConfig.browser","./dist-es/submodules/sts/runtimeConfig":"./dist-es/submodules/sts/runtimeConfig.browser"},"react-native":{},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/packages/nested-clients","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"packages/nested-clients"},"exports":{"./package.json":"./package.json","./sso-oidc":{"types":"./dist-types/submodules/sso-oidc/index.d.ts","module":"./dist-es/submodules/sso-oidc/index.js","node":"./dist-cjs/submodules/sso-oidc/index.js","import":"./dist-es/submodules/sso-oidc/index.js","require":"./dist-cjs/submodules/sso-oidc/index.js"},"./sts":{"types":"./dist-types/submodules/sts/index.d.ts","module":"./dist-es/submodules/sts/index.js","node":"./dist-cjs/submodules/sts/index.js","import":"./dist-es/submodules/sts/index.js","require":"./dist-cjs/submodules/sts/index.js"},"./signin":{"types":"./dist-types/submodules/signin/index.d.ts","module":"./dist-es/submodules/signin/index.js","node":"./dist-cjs/submodules/signin/index.js","import":"./dist-es/submodules/signin/index.js","require":"./dist-cjs/submodules/signin/index.js"}}}');
@@ -735,4 +580,4 @@ module.exports = /*#__PURE__*/JSON.parse('{"name":"@aws-sdk/nested-clients","ver
 
 };
 ;
-//# sourceMappingURL=177.index.js.map
+//# sourceMappingURL=674.index.js.map

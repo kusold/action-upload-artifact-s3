@@ -1,14 +1,14 @@
 "use strict";
-exports.id = 869;
-exports.ids = [869];
+exports.id = 939;
+exports.ids = [939];
 exports.modules = {
 
-/***/ 9869:
+/***/ 8939:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 
-var utilUtf8 = __webpack_require__(8940);
+var utilUtf8 = __webpack_require__(2049);
 
 class EventStreamSerde {
     marshaller;
@@ -263,4 +263,4 @@ exports.EventStreamSerde = EventStreamSerde;
 
 };
 ;
-//# sourceMappingURL=869.index.js.map
+//# sourceMappingURL=939.index.js.map

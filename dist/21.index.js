@@ -1,15 +1,15 @@
 "use strict";
-exports.id = 767;
-exports.ids = [767];
+exports.id = 21;
+exports.ids = [21];
 exports.modules = {
 
-/***/ 7667:
+/***/ 2381:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.checkUrl = void 0;
-const property_provider_1 = __webpack_require__(2732);
+const property_provider_1 = __webpack_require__(2430);
 const LOOPBACK_CIDR_IPv4 = "127.0.0.0/8";
 const LOOPBACK_CIDR_IPv6 = "::1/128";
 const ECS_CONTAINER_HOST = "169.254.170.2";
@@ -56,20 +56,20 @@ exports.checkUrl = checkUrl;
 
 /***/ }),
 
-/***/ 8314:
+/***/ 3664:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.fromHttp = void 0;
-const tslib_1 = __webpack_require__(4834);
-const client_1 = __webpack_require__(8266);
-const node_http_handler_1 = __webpack_require__(5697);
-const property_provider_1 = __webpack_require__(2732);
+const tslib_1 = __webpack_require__(5548);
+const client_1 = __webpack_require__(3320);
+const node_http_handler_1 = __webpack_require__(9879);
+const property_provider_1 = __webpack_require__(2430);
 const promises_1 = tslib_1.__importDefault(__webpack_require__(1943));
-const checkUrl_1 = __webpack_require__(7667);
-const requestHelpers_1 = __webpack_require__(6416);
-const retry_wrapper_1 = __webpack_require__(1152);
+const checkUrl_1 = __webpack_require__(2381);
+const requestHelpers_1 = __webpack_require__(5610);
+const retry_wrapper_1 = __webpack_require__(5962);
 const AWS_CONTAINER_CREDENTIALS_RELATIVE_URI = "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI";
 const DEFAULT_LINK_LOCAL_HOST = "http://169.254.170.2";
 const AWS_CONTAINER_CREDENTIALS_FULL_URI = "AWS_CONTAINER_CREDENTIALS_FULL_URI";
@@ -133,17 +133,17 @@ exports.fromHttp = fromHttp;
 
 /***/ }),
 
-/***/ 6416:
+/***/ 5610:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createGetRequest = createGetRequest;
 exports.getCredentials = getCredentials;
-const property_provider_1 = __webpack_require__(2732);
-const protocol_http_1 = __webpack_require__(7922);
-const smithy_client_1 = __webpack_require__(1681);
-const util_stream_1 = __webpack_require__(5678);
+const property_provider_1 = __webpack_require__(2430);
+const protocol_http_1 = __webpack_require__(7132);
+const smithy_client_1 = __webpack_require__(9355);
+const util_stream_1 = __webpack_require__(3796);
 function createGetRequest(url) {
     return new protocol_http_1.HttpRequest({
         protocol: url.protocol,
@@ -193,7 +193,7 @@ async function getCredentials(response, logger) {
 
 /***/ }),
 
-/***/ 1152:
+/***/ 5962:
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -217,14 +217,14 @@ exports.retryWrapper = retryWrapper;
 
 /***/ }),
 
-/***/ 6767:
+/***/ 4021:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 var __webpack_unused_export__;
 
 __webpack_unused_export__ = ({ value: true });
 exports.fromHttp = void 0;
-var fromHttp_1 = __webpack_require__(8314);
+var fromHttp_1 = __webpack_require__(3664);
 Object.defineProperty(exports, "fromHttp", ({ enumerable: true, get: function () { return fromHttp_1.fromHttp; } }));
 
 
@@ -232,4 +232,4 @@ Object.defineProperty(exports, "fromHttp", ({ enumerable: true, get: function ()
 
 };
 ;
-//# sourceMappingURL=767.index.js.map
+//# sourceMappingURL=21.index.js.map
