@@ -30,6 +30,8 @@ jobs:
           if [[ -n "$(git status --porcelain dist/)" ]]; then
             echo "::error::Uncommitted changes in dist/. Run 'npm run build' and commit the changes."
             git status --porcelain dist/
+            echo "Showing diff:"
+            git diff dist/ | head -100
             exit 1
           fi
 
