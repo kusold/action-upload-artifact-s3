@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout artifact-s3 library
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/artifact-s3
+          path: artifact-s3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install library dependencies
+        run: npm ci
+        working-directory: artifact-s3
+
+      - name: Build library
+        run: npm run build
+        working-directory: artifact-s3
+
+      - name: Install action dependencies
+        run: npm ci
+
+      - name: Build action
+        run: npm run build
+
+      - name: Check for uncommitted dist changes
+        run: |
+          if [[ -n "$(git status --porcelain dist/)" ]]; then
+            echo "::error::Uncommitted changes in dist/. Run 'npm run build' and commit the changes."
+            git status --porcelain dist/
+            exit 1
+          fi
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout artifact-s3 library
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/artifact-s3
+          path: artifact-s3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install library dependencies
+        run: npm ci
+        working-directory: artifact-s3
+
+      - name: Build library
+        run: npm run build
+        working-directory: artifact-s3
+
+      - name: Install action dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit

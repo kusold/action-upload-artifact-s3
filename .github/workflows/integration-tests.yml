@@ -1,0 +1,228 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test-garage:
+    name: Test with Garage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout artifact-s3 library
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/artifact-s3
+          path: artifact-s3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install library dependencies
+        run: npm ci
+        working-directory: artifact-s3
+
+      - name: Build library
+        run: npm run build
+        working-directory: artifact-s3
+
+      - name: Install action dependencies
+        run: npm ci
+
+      - name: Build action
+        run: npm run build
+
+      - name: Start Garage server
+        run: |
+          mkdir -p /tmp/garage/meta /tmp/garage/data
+          
+          cat > /tmp/garage/garage.toml <<EOF
+          metadata_dir = "/var/lib/garage/meta"
+          data_dir = "/var/lib/garage/data"
+          db_engine = "sqlite"
+          
+          replication_factor = 1
+          
+          rpc_bind_addr = "[::]:3901"
+          rpc_public_addr = "127.0.0.1:3901"
+          rpc_secret = "$(openssl rand -hex 32)"
+          
+          [s3_api]
+          s3_region = "garage"
+          api_bind_addr = "[::]:3900"
+          root_domain = ".s3.garage.localhost"
+          
+          [s3_web]
+          bind_addr = "[::]:3902"
+          root_domain = ".web.garage.localhost"
+          index = "index.html"
+          
+          [admin]
+          api_bind_addr = "[::]:3903"
+          admin_token = "admin123"
+          metrics_token = "metrics123"
+          EOF
+          
+          docker run -d \
+            --name garage \
+            -p 3900:3900 -p 3901:3901 -p 3902:3902 -p 3903:3903 \
+            -v /tmp/garage/garage.toml:/etc/garage.toml \
+            -v /tmp/garage/meta:/var/lib/garage/meta \
+            -v /tmp/garage/data:/var/lib/garage/data \
+            dxflrs/garage:v2.1.0
+          
+          sleep 5
+          
+          NODE_ID=$(docker exec garage /garage status 2>/dev/null | grep -oP '^[a-f0-9]+' | head -1)
+          echo "Node ID: $NODE_ID"
+          
+          docker exec garage /garage layout assign -z dc1 -c 1G "$NODE_ID"
+          docker exec garage /garage layout apply --version 1
+          
+          docker exec garage /garage bucket create test-artifacts
+          docker exec garage /garage key create test-key
+          
+          KEY_INFO=$(docker exec garage /garage key info test-key)
+          echo "$KEY_INFO"
+          
+          ACCESS_KEY=$(echo "$KEY_INFO" | grep "Key ID:" | awk '{print $3}')
+          SECRET_KEY=$(echo "$KEY_INFO" | grep "Secret key:" | awk '{print $3}')
+          
+          echo "ACCESS_KEY=$ACCESS_KEY" >> $GITHUB_ENV
+          echo "SECRET_KEY=$SECRET_KEY" >> $GITHUB_ENV
+          
+          docker exec garage /garage bucket allow \
+            --read \
+            --write \
+            --owner \
+            test-artifacts \
+            --key test-key
+          
+          echo "Garage setup complete!"
+
+      - name: Create test files
+        run: |
+          mkdir -p test-upload
+          echo "Hello, World!" > test-upload/hello.txt
+          echo "Test file 2" > test-upload/test.txt
+          mkdir -p test-upload/subdir
+          echo "Nested file" > test-upload/subdir/nested.txt
+
+      - name: Test Upload Action
+        uses: ./
+        with:
+          name: test-artifact
+          path: test-upload/
+          s3-bucket: test-artifacts
+          s3-endpoint: http://localhost:3900
+          s3-region: garage
+          s3-force-path-style: 'true'
+          compression-level: '6'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ env.ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ env.SECRET_KEY }}
+
+      - name: Verify upload in Garage
+        run: |
+          docker exec garage /garage bucket info test-artifacts
+
+      - name: Test overwrite functionality
+        uses: ./
+        with:
+          name: test-artifact
+          path: test-upload/
+          s3-bucket: test-artifacts
+          s3-endpoint: http://localhost:3900
+          s3-region: garage
+          s3-force-path-style: 'true'
+          overwrite: 'true'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ env.ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ env.SECRET_KEY }}
+
+      - name: Test no compression
+        run: |
+          mkdir -p test-upload-nocompress
+          echo "Uncompressed content" > test-upload-nocompress/file.txt
+
+      - name: Upload without compression
+        uses: ./
+        with:
+          name: uncompressed-artifact
+          path: test-upload-nocompress/
+          s3-bucket: test-artifacts
+          s3-endpoint: http://localhost:3900
+          s3-region: garage
+          s3-force-path-style: 'true'
+          compression-level: '0'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ env.ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ env.SECRET_KEY }}
+
+      - name: Cleanup
+        if: always()
+        run: |
+          docker stop garage || true
+          docker rm garage || true
+
+  test-aws-s3:
+    name: Test with AWS S3
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment: aws-test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout artifact-s3 library
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/artifact-s3
+          path: artifact-s3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install library dependencies
+        run: npm ci
+        working-directory: artifact-s3
+
+      - name: Build library
+        run: npm run build
+        working-directory: artifact-s3
+
+      - name: Install action dependencies
+        run: npm ci
+
+      - name: Build action
+        run: npm run build
+
+      - name: Create test files
+        run: |
+          mkdir -p test-upload
+          echo "Hello from AWS S3 test!" > test-upload/hello.txt
+          dd if=/dev/urandom of=test-upload/large-file.bin bs=1M count=10
+
+      - name: Test Upload to AWS S3
+        uses: ./
+        with:
+          name: upload-test-${{ github.run_id }}
+          path: test-upload/
+          s3-bucket: ${{ secrets.AWS_S3_BUCKET }}
+          s3-region: ${{ secrets.AWS_REGION }}
+          s3-prefix: ci-tests
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

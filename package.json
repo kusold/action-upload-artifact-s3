@@ -1,0 +1,32 @@
+{
+  "name": "action-upload-artifact-s3",
+  "version": "1.0.0",
+  "description": "GitHub Action to upload artifacts to S3",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "ncc build src/index.ts -o dist --source-map --license licenses.txt",
+    "clean": "rm -rf dist",
+    "lint": "eslint src/**/*.ts",
+    "test": "vitest"
+  },
+  "keywords": [
+    "github",
+    "actions",
+    "artifact",
+    "upload",
+    "s3"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@action-artifact-s3/artifact-s3": "file:../artifact-s3",
+    "@actions/core": "^1.11.1",
+    "@actions/glob": "^0.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@vercel/ncc": "^0.38.3",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
