@@ -65,6 +65,12 @@ async function run(): Promise<void> {
       core.info(`S3 endpoint: ${s3Endpoint}`);
     }
 
+    // Debug: Log credential availability (not the actual values)
+    core.debug(`AWS_ACCESS_KEY_ID present: ${!!process.env.AWS_ACCESS_KEY_ID}`);
+    core.debug(`AWS_SECRET_ACCESS_KEY present: ${!!process.env.AWS_SECRET_ACCESS_KEY}`);
+    core.debug(`AWS_ACCESS_KEY_ID length: ${process.env.AWS_ACCESS_KEY_ID?.length ?? 0}`);
+    core.debug(`AWS_SECRET_ACCESS_KEY length: ${process.env.AWS_SECRET_ACCESS_KEY?.length ?? 0}`);
+
     try {
       const result = await uploadArtifact(s3Config, context, {
         name,

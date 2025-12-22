@@ -102,6 +102,15 @@ jobs:
           mkdir -p test-upload/subdir
           echo "Nested file" > test-upload/subdir/nested.txt
 
+      - name: Debug - Test S3 connectivity with curl
+        run: |
+          echo "Testing S3 endpoint connectivity..."
+          echo "ACCESS_KEY length: ${#ACCESS_KEY}"
+          echo "SECRET_KEY length: ${#SECRET_KEY}"
+          
+          # Simple test to see if Garage is responding
+          curl -v http://localhost:3900/ 2>&1 | head -30 || true
+
       - name: Test Upload Action
         uses: ./
         with:
