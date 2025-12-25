@@ -4995,13 +4995,13 @@ const util_middleware_1 = __nccwpck_require__(6324);
 const endpointResolver_1 = __nccwpck_require__(7526);
 const createEndpointRuleSetHttpAuthSchemeParametersProvider = (defaultHttpAuthSchemeParametersProvider) => async (config, context, input) => {
     if (!input) {
-        throw new Error(`Could not find \`input\` for \`defaultEndpointRuleSetHttpAuthSchemeParametersProvider\``);
+        throw new Error("Could not find `input` for `defaultEndpointRuleSetHttpAuthSchemeParametersProvider`");
     }
     const defaultParameters = await defaultHttpAuthSchemeParametersProvider(config, context, input);
     const instructionsFn = (0, util_middleware_1.getSmithyContext)(context)?.commandInstance?.constructor
         ?.getEndpointParameterInstructions;
     if (!instructionsFn) {
-        throw new Error(`getEndpointParameterInstructions() is not defined on \`${context.commandName}\``);
+        throw new Error(`getEndpointParameterInstructions() is not defined on '${context.commandName}'`);
     }
     const endpointParameters = await (0, middleware_endpoint_1.resolveParams)(input, { getEndpointParameterInstructions: instructionsFn }, config);
     return Object.assign(defaultParameters, endpointParameters);
@@ -5009,10 +5009,9 @@ const createEndpointRuleSetHttpAuthSchemeParametersProvider = (defaultHttpAuthSc
 const _defaultS3HttpAuthSchemeParametersProvider = async (config, context, input) => {
     return {
         operation: (0, util_middleware_1.getSmithyContext)(context).operation,
-        region: (await (0, util_middleware_1.normalizeProvider)(config.region)()) ||
-            (() => {
-                throw new Error("expected `region` to be configured for `aws.auth#sigv4`");
-            })(),
+        region: await (0, util_middleware_1.normalizeProvider)(config.region)() || (() => {
+            throw new Error("expected `region` to be configured for `aws.auth#sigv4`");
+        })(),
     };
 };
 exports.defaultS3HttpAuthSchemeParametersProvider = createEndpointRuleSetHttpAuthSchemeParametersProvider(_defaultS3HttpAuthSchemeParametersProvider);
@@ -5058,7 +5057,7 @@ const createEndpointRuleSetHttpAuthSchemeProvider = (defaultEndpointResolver, de
             const { name: resolvedName, properties = {}, ...rest } = scheme;
             const name = resolvedName.toLowerCase();
             if (resolvedName !== name) {
-                console.warn(`HttpAuthScheme has been normalized with lowercasing: \`${resolvedName}\` to \`${name}\``);
+                console.warn(`HttpAuthScheme has been normalized with lowercasing: '${resolvedName}' to '${name}'`);
             }
             let schemeId;
             if (name === "sigv4a") {
@@ -5075,11 +5074,11 @@ const createEndpointRuleSetHttpAuthSchemeProvider = (defaultEndpointResolver, de
                 schemeId = "aws.auth#sigv4";
             }
             else {
-                throw new Error(`Unknown HttpAuthScheme found in \`@smithy.rules#endpointRuleSet\`: \`${name}\``);
+                throw new Error(`Unknown HttpAuthScheme found in '@smithy.rules#endpointRuleSet': '${name}'`);
             }
             const createOption = createHttpAuthOptionFunctions[schemeId];
             if (!createOption) {
-                throw new Error(`Could not find HttpAuthOption create function for \`${schemeId}\``);
+                throw new Error(`Could not find HttpAuthOption create function for '${schemeId}'`);
             }
             const option = createOption(authParameters);
             option.schemeId = schemeId;
@@ -5166,7 +5165,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ruleSet = void 0;
 const cs = "required", ct = "type", cu = "rules", cv = "conditions", cw = "fn", cx = "argv", cy = "ref", cz = "assign", cA = "url", cB = "properties", cC = "backend", cD = "authSchemes", cE = "disableDoubleEncoding", cF = "signingName", cG = "signingRegion", cH = "headers", cI = "signingRegionSet";
 const a = 6, b = false, c = true, d = "isSet", e = "booleanEquals", f = "error", g = "aws.partition", h = "stringEquals", i = "getAttr", j = "name", k = "substring", l = "bucketSuffix", m = "parseURL", n = "endpoint", o = "tree", p = "aws.isVirtualHostableS3Bucket", q = "{url#scheme}://{Bucket}.{url#authority}{url#path}", r = "not", s = "accessPointSuffix", t = "{url#scheme}://{url#authority}{url#path}", u = "hardwareType", v = "regionPrefix", w = "bucketAliasSuffix", x = "outpostId", y = "isValidHostLabel", z = "sigv4a", A = "s3-outposts", B = "s3", C = "{url#scheme}://{url#authority}{url#normalizedPath}{Bucket}", D = "https://{Bucket}.s3-accelerate.{partitionResult#dnsSuffix}", E = "https://{Bucket}.s3.{partitionResult#dnsSuffix}", F = "aws.parseArn", G = "bucketArn", H = "arnType", I = "", J = "s3-object-lambda", K = "accesspoint", L = "accessPointName", M = "{url#scheme}://{accessPointName}-{bucketArn#accountId}.{url#authority}{url#path}", N = "mrapPartition", O = "outpostType", P = "arnPrefix", Q = "{url#scheme}://{url#authority}{url#normalizedPath}{uri_encoded_bucket}", R = "https://s3.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", S = "https://s3.{partitionResult#dnsSuffix}", T = { [cs]: false, [ct]: "string" }, U = { [cs]: true, "default": false, [ct]: "boolean" }, V = { [cs]: false, [ct]: "boolean" }, W = { [cw]: e, [cx]: [{ [cy]: "Accelerate" }, true] }, X = { [cw]: e, [cx]: [{ [cy]: "UseFIPS" }, true] }, Y = { [cw]: e, [cx]: [{ [cy]: "UseDualStack" }, true] }, Z = { [cw]: d, [cx]: [{ [cy]: "Endpoint" }] }, aa = { [cw]: g, [cx]: [{ [cy]: "Region" }], [cz]: "partitionResult" }, ab = { [cw]: h, [cx]: [{ [cw]: i, [cx]: [{ [cy]: "partitionResult" }, j] }, "aws-cn"] }, ac = { [cw]: d, [cx]: [{ [cy]: "Bucket" }] }, ad = { [cy]: "Bucket" }, ae = { [cv]: [W], [f]: "S3Express does not support S3 Accelerate.", [ct]: f }, af = { [cv]: [Z, { [cw]: m, [cx]: [{ [cy]: "Endpoint" }], [cz]: "url" }], [cu]: [{ [cv]: [{ [cw]: d, [cx]: [{ [cy]: "DisableS3ExpressSessionAuth" }] }, { [cw]: e, [cx]: [{ [cy]: "DisableS3ExpressSessionAuth" }, true] }], [cu]: [{ [cv]: [{ [cw]: e, [cx]: [{ [cw]: i, [cx]: [{ [cy]: "url" }, "isIp"] }, true] }], [cu]: [{ [cv]: [{ [cw]: "uriEncode", [cx]: [ad], [cz]: "uri_encoded_bucket" }], [cu]: [{ [n]: { [cA]: "{url#scheme}://{url#authority}/{uri_encoded_bucket}{url#path}", [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }], [ct]: o }], [ct]: o }, { [cv]: [{ [cw]: p, [cx]: [ad, false] }], [cu]: [{ [n]: { [cA]: q, [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }], [ct]: o }, { [f]: "S3Express bucket name is not a valid virtual hostable name.", [ct]: f }], [ct]: o }, { [cv]: [{ [cw]: e, [cx]: [{ [cw]: i, [cx]: [{ [cy]: "url" }, "isIp"] }, true] }], [cu]: [{ [cv]: [{ [cw]: "uriEncode", [cx]: [ad], [cz]: "uri_encoded_bucket" }], [cu]: [{ [n]: { [cA]: "{url#scheme}://{url#authority}/{uri_encoded_bucket}{url#path}", [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4-s3express", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }], [ct]: o }], [ct]: o }, { [cv]: [{ [cw]: p, [cx]: [ad, false] }], [cu]: [{ [n]: { [cA]: q, [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4-s3express", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }], [ct]: o }, { [f]: "S3Express bucket name is not a valid virtual hostable name.", [ct]: f }], [ct]: o }, ag = { [cw]: m, [cx]: [{ [cy]: "Endpoint" }], [cz]: "url" }, ah = { [cw]: e, [cx]: [{ [cw]: i, [cx]: [{ [cy]: "url" }, "isIp"] }, true] }, ai = { [cy]: "url" }, aj = { [cw]: "uriEncode", [cx]: [ad], [cz]: "uri_encoded_bucket" }, ak = { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: "s3express", [cG]: "{Region}" }] }, al = {}, am = { [cw]: p, [cx]: [ad, false] }, an = { [f]: "S3Express bucket name is not a valid virtual hostable name.", [ct]: f }, ao = { [cw]: d, [cx]: [{ [cy]: "UseS3ExpressControlEndpoint" }] }, ap = { [cw]: e, [cx]: [{ [cy]: "UseS3ExpressControlEndpoint" }, true] }, aq = { [cw]: r, [cx]: [Z] }, ar = { [cw]: e, [cx]: [{ [cy]: "UseDualStack" }, false] }, as = { [cw]: e, [cx]: [{ [cy]: "UseFIPS" }, false] }, at = { [f]: "Unrecognized S3Express bucket name format.", [ct]: f }, au = { [cw]: r, [cx]: [ac] }, av = { [cy]: u }, aw = { [cv]: [aq], [f]: "Expected a endpoint to be specified but no endpoint was found", [ct]: f }, ax = { [cD]: [{ [cE]: true, [j]: z, [cF]: A, [cI]: ["*"] }, { [cE]: true, [j]: "sigv4", [cF]: A, [cG]: "{Region}" }] }, ay = { [cw]: e, [cx]: [{ [cy]: "ForcePathStyle" }, false] }, az = { [cy]: "ForcePathStyle" }, aA = { [cw]: e, [cx]: [{ [cy]: "Accelerate" }, false] }, aB = { [cw]: h, [cx]: [{ [cy]: "Region" }, "aws-global"] }, aC = { [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: B, [cG]: "us-east-1" }] }, aD = { [cw]: r, [cx]: [aB] }, aE = { [cw]: e, [cx]: [{ [cy]: "UseGlobalEndpoint" }, true] }, aF = { [cA]: "https://{Bucket}.s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: { [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: B, [cG]: "{Region}" }] }, [cH]: {} }, aG = { [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: B, [cG]: "{Region}" }] }, aH = { [cw]: e, [cx]: [{ [cy]: "UseGlobalEndpoint" }, false] }, aI = { [cA]: "https://{Bucket}.s3-fips.{Region}.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, aJ = { [cA]: "https://{Bucket}.s3-accelerate.dualstack.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, aK = { [cA]: "https://{Bucket}.s3.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, aL = { [cw]: e, [cx]: [{ [cw]: i, [cx]: [ai, "isIp"] }, false] }, aM = { [cA]: C, [cB]: aG, [cH]: {} }, aN = { [cA]: q, [cB]: aG, [cH]: {} }, aO = { [n]: aN, [ct]: n }, aP = { [cA]: D, [cB]: aG, [cH]: {} }, aQ = { [cA]: "https://{Bucket}.s3.{Region}.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, aR = { [f]: "Invalid region: region was not a valid DNS name.", [ct]: f }, aS = { [cy]: G }, aT = { [cy]: H }, aU = { [cw]: i, [cx]: [aS, "service"] }, aV = { [cy]: L }, aW = { [cv]: [Y], [f]: "S3 Object Lambda does not support Dual-stack", [ct]: f }, aX = { [cv]: [W], [f]: "S3 Object Lambda does not support S3 Accelerate", [ct]: f }, aY = { [cv]: [{ [cw]: d, [cx]: [{ [cy]: "DisableAccessPoints" }] }, { [cw]: e, [cx]: [{ [cy]: "DisableAccessPoints" }, true] }], [f]: "Access points are not supported for this operation", [ct]: f }, aZ = { [cv]: [{ [cw]: d, [cx]: [{ [cy]: "UseArnRegion" }] }, { [cw]: e, [cx]: [{ [cy]: "UseArnRegion" }, false] }, { [cw]: r, [cx]: [{ [cw]: h, [cx]: [{ [cw]: i, [cx]: [aS, "region"] }, "{Region}"] }] }], [f]: "Invalid configuration: region from ARN `{bucketArn#region}` does not match client region `{Region}` and UseArnRegion is `false`", [ct]: f }, ba = { [cw]: i, [cx]: [{ [cy]: "bucketPartition" }, j] }, bb = { [cw]: i, [cx]: [aS, "accountId"] }, bc = { [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: J, [cG]: "{bucketArn#region}" }] }, bd = { [f]: "Invalid ARN: The access point name may only contain a-z, A-Z, 0-9 and `-`. Found: `{accessPointName}`", [ct]: f }, be = { [f]: "Invalid ARN: The account id may only contain a-z, A-Z, 0-9 and `-`. Found: `{bucketArn#accountId}`", [ct]: f }, bf = { [f]: "Invalid region in ARN: `{bucketArn#region}` (invalid DNS name)", [ct]: f }, bg = { [f]: "Client was configured for partition `{partitionResult#name}` but ARN (`{Bucket}`) has `{bucketPartition#name}`", [ct]: f }, bh = { [f]: "Invalid ARN: The ARN may only contain a single resource component after `accesspoint`.", [ct]: f }, bi = { [f]: "Invalid ARN: Expected a resource of the format `accesspoint:<accesspoint name>` but no name was provided", [ct]: f }, bj = { [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: B, [cG]: "{bucketArn#region}" }] }, bk = { [cD]: [{ [cE]: true, [j]: z, [cF]: A, [cI]: ["*"] }, { [cE]: true, [j]: "sigv4", [cF]: A, [cG]: "{bucketArn#region}" }] }, bl = { [cw]: F, [cx]: [ad] }, bm = { [cA]: "https://s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aG, [cH]: {} }, bn = { [cA]: "https://s3-fips.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aG, [cH]: {} }, bo = { [cA]: "https://s3.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aG, [cH]: {} }, bp = { [cA]: Q, [cB]: aG, [cH]: {} }, bq = { [cA]: "https://s3.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aG, [cH]: {} }, br = { [cy]: "UseObjectLambdaEndpoint" }, bs = { [cD]: [{ [cE]: true, [j]: "sigv4", [cF]: J, [cG]: "{Region}" }] }, bt = { [cA]: "https://s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, bu = { [cA]: "https://s3-fips.{Region}.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, bv = { [cA]: "https://s3.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, bw = { [cA]: t, [cB]: aG, [cH]: {} }, bx = { [cA]: "https://s3.{Region}.{partitionResult#dnsSuffix}", [cB]: aG, [cH]: {} }, by = [{ [cy]: "Region" }], bz = [{ [cy]: "Endpoint" }], bA = [ad], bB = [W], bC = [Z, ag], bD = [{ [cw]: d, [cx]: [{ [cy]: "DisableS3ExpressSessionAuth" }] }, { [cw]: e, [cx]: [{ [cy]: "DisableS3ExpressSessionAuth" }, true] }], bE = [aj], bF = [am], bG = [aa], bH = [X, Y], bI = [X, ar], bJ = [as, Y], bK = [as, ar], bL = [{ [cw]: k, [cx]: [ad, 6, 14, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 14, 16, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bM = [{ [cv]: [X, Y], [n]: { [cA]: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: {} }, [ct]: n }, { [cv]: bI, [n]: { [cA]: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: {} }, [ct]: n }, { [cv]: bJ, [n]: { [cA]: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: {} }, [ct]: n }, { [cv]: bK, [n]: { [cA]: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: {} }, [ct]: n }], bN = [{ [cw]: k, [cx]: [ad, 6, 15, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 15, 17, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bO = [{ [cw]: k, [cx]: [ad, 6, 19, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 19, 21, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bP = [{ [cw]: k, [cx]: [ad, 6, 20, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 20, 22, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bQ = [{ [cw]: k, [cx]: [ad, 6, 26, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 26, 28, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bR = [{ [cv]: [X, Y], [n]: { [cA]: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4-s3express", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }, { [cv]: bI, [n]: { [cA]: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}", [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4-s3express", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }, { [cv]: bJ, [n]: { [cA]: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4-s3express", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }, { [cv]: bK, [n]: { [cA]: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}", [cB]: { [cC]: "S3Express", [cD]: [{ [cE]: true, [j]: "sigv4-s3express", [cF]: "s3express", [cG]: "{Region}" }] }, [cH]: {} }, [ct]: n }], bS = [ad, 0, 7, true], bT = [{ [cw]: k, [cx]: [ad, 7, 15, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 15, 17, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bU = [{ [cw]: k, [cx]: [ad, 7, 16, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 16, 18, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bV = [{ [cw]: k, [cx]: [ad, 7, 20, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 20, 22, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bW = [{ [cw]: k, [cx]: [ad, 7, 21, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 21, 23, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bX = [{ [cw]: k, [cx]: [ad, 7, 27, true], [cz]: "s3expressAvailabilityZoneId" }, { [cw]: k, [cx]: [ad, 27, 29, true], [cz]: "s3expressAvailabilityZoneDelim" }, { [cw]: h, [cx]: [{ [cy]: "s3expressAvailabilityZoneDelim" }, "--"] }], bY = [ac], bZ = [{ [cw]: y, [cx]: [{ [cy]: x }, false] }], ca = [{ [cw]: h, [cx]: [{ [cy]: v }, "beta"] }], cb = ["*"], cc = [{ [cw]: y, [cx]: [{ [cy]: "Region" }, false] }], cd = [{ [cw]: h, [cx]: [{ [cy]: "Region" }, "us-east-1"] }], ce = [{ [cw]: h, [cx]: [aT, K] }], cf = [{ [cw]: i, [cx]: [aS, "resourceId[1]"], [cz]: L }, { [cw]: r, [cx]: [{ [cw]: h, [cx]: [aV, I] }] }], cg = [aS, "resourceId[1]"], ch = [Y], ci = [{ [cw]: r, [cx]: [{ [cw]: h, [cx]: [{ [cw]: i, [cx]: [aS, "region"] }, I] }] }], cj = [{ [cw]: r, [cx]: [{ [cw]: d, [cx]: [{ [cw]: i, [cx]: [aS, "resourceId[2]"] }] }] }], ck = [aS, "resourceId[2]"], cl = [{ [cw]: g, [cx]: [{ [cw]: i, [cx]: [aS, "region"] }], [cz]: "bucketPartition" }], cm = [{ [cw]: h, [cx]: [ba, { [cw]: i, [cx]: [{ [cy]: "partitionResult" }, j] }] }], cn = [{ [cw]: y, [cx]: [{ [cw]: i, [cx]: [aS, "region"] }, true] }], co = [{ [cw]: y, [cx]: [bb, false] }], cp = [{ [cw]: y, [cx]: [aV, false] }], cq = [X], cr = [{ [cw]: y, [cx]: [{ [cy]: "Region" }, true] }];
-const _data = { version: "1.0", parameters: { Bucket: T, Region: T, UseFIPS: U, UseDualStack: U, Endpoint: T, ForcePathStyle: U, Accelerate: U, UseGlobalEndpoint: U, UseObjectLambdaEndpoint: V, Key: T, Prefix: T, CopySource: T, DisableAccessPoints: V, DisableMultiRegionAccessPoints: U, UseArnRegion: V, UseS3ExpressControlEndpoint: V, DisableS3ExpressSessionAuth: V }, [cu]: [{ [cv]: [{ [cw]: d, [cx]: by }], [cu]: [{ [cv]: [W, X], error: "Accelerate cannot be used with FIPS", [ct]: f }, { [cv]: [Y, Z], error: "Cannot set dual-stack in combination with a custom endpoint.", [ct]: f }, { [cv]: [Z, X], error: "A custom endpoint cannot be combined with FIPS", [ct]: f }, { [cv]: [Z, W], error: "A custom endpoint cannot be combined with S3 Accelerate", [ct]: f }, { [cv]: [X, aa, ab], error: "Partition does not support FIPS", [ct]: f }, { [cv]: [ac, { [cw]: k, [cx]: [ad, 0, a, c], [cz]: l }, { [cw]: h, [cx]: [{ [cy]: l }, "--x-s3"] }], [cu]: [ae, af, { [cv]: [ao, ap], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: [aj, aq], [cu]: [{ [cv]: bH, endpoint: { [cA]: "https://s3express-control-fips.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bI, endpoint: { [cA]: "https://s3express-control-fips.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bJ, endpoint: { [cA]: "https://s3express-control.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bK, endpoint: { [cA]: "https://s3express-control.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }], [ct]: o }], [ct]: o }], [ct]: o }, { [cv]: bF, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: bD, [cu]: [{ [cv]: bL, [cu]: bM, [ct]: o }, { [cv]: bN, [cu]: bM, [ct]: o }, { [cv]: bO, [cu]: bM, [ct]: o }, { [cv]: bP, [cu]: bM, [ct]: o }, { [cv]: bQ, [cu]: bM, [ct]: o }, at], [ct]: o }, { [cv]: bL, [cu]: bR, [ct]: o }, { [cv]: bN, [cu]: bR, [ct]: o }, { [cv]: bO, [cu]: bR, [ct]: o }, { [cv]: bP, [cu]: bR, [ct]: o }, { [cv]: bQ, [cu]: bR, [ct]: o }, at], [ct]: o }], [ct]: o }, an], [ct]: o }, { [cv]: [ac, { [cw]: k, [cx]: bS, [cz]: s }, { [cw]: h, [cx]: [{ [cy]: s }, "--xa-s3"] }], [cu]: [ae, af, { [cv]: bF, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: bD, [cu]: [{ [cv]: bT, [cu]: bM, [ct]: o }, { [cv]: bU, [cu]: bM, [ct]: o }, { [cv]: bV, [cu]: bM, [ct]: o }, { [cv]: bW, [cu]: bM, [ct]: o }, { [cv]: bX, [cu]: bM, [ct]: o }, at], [ct]: o }, { [cv]: bT, [cu]: bR, [ct]: o }, { [cv]: bU, [cu]: bR, [ct]: o }, { [cv]: bV, [cu]: bR, [ct]: o }, { [cv]: bW, [cu]: bR, [ct]: o }, { [cv]: bX, [cu]: bR, [ct]: o }, at], [ct]: o }], [ct]: o }, an], [ct]: o }, { [cv]: [au, ao, ap], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: bC, endpoint: { [cA]: t, [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bH, endpoint: { [cA]: "https://s3express-control-fips.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bI, endpoint: { [cA]: "https://s3express-control-fips.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bJ, endpoint: { [cA]: "https://s3express-control.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bK, endpoint: { [cA]: "https://s3express-control.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }], [ct]: o }], [ct]: o }, { [cv]: [ac, { [cw]: k, [cx]: [ad, 49, 50, c], [cz]: u }, { [cw]: k, [cx]: [ad, 8, 12, c], [cz]: v }, { [cw]: k, [cx]: bS, [cz]: w }, { [cw]: k, [cx]: [ad, 32, 49, c], [cz]: x }, { [cw]: g, [cx]: by, [cz]: "regionPartition" }, { [cw]: h, [cx]: [{ [cy]: w }, "--op-s3"] }], [cu]: [{ [cv]: bZ, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [av, "e"] }], [cu]: [{ [cv]: ca, [cu]: [aw, { [cv]: bC, endpoint: { [cA]: "https://{Bucket}.ec2.{url#authority}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { endpoint: { [cA]: "https://{Bucket}.ec2.s3-outposts.{Region}.{regionPartition#dnsSuffix}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { [cv]: [{ [cw]: h, [cx]: [av, "o"] }], [cu]: [{ [cv]: ca, [cu]: [aw, { [cv]: bC, endpoint: { [cA]: "https://{Bucket}.op-{outpostId}.{url#authority}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { endpoint: { [cA]: "https://{Bucket}.op-{outpostId}.s3-outposts.{Region}.{regionPartition#dnsSuffix}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { error: "Unrecognized hardware type: \"Expected hardware type o or e but got {hardwareType}\"", [ct]: f }], [ct]: o }, { error: "Invalid ARN: The outpost Id must only contain a-z, A-Z, 0-9 and `-`.", [ct]: f }], [ct]: o }, { [cv]: bY, [cu]: [{ [cv]: [Z, { [cw]: r, [cx]: [{ [cw]: d, [cx]: [{ [cw]: m, [cx]: bz }] }] }], error: "Custom endpoint `{Endpoint}` was not a valid URI", [ct]: f }, { [cv]: [ay, am], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cc, [cu]: [{ [cv]: [W, ab], error: "S3 Accelerate cannot be used in this region", [ct]: f }, { [cv]: [Y, X, aA, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, X, aA, aq, aD, aE], [cu]: [{ endpoint: aF, [ct]: n }], [ct]: o }, { [cv]: [Y, X, aA, aq, aD, aH], endpoint: aF, [ct]: n }, { [cv]: [ar, X, aA, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3-fips.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, X, aA, aq, aD, aE], [cu]: [{ endpoint: aI, [ct]: n }], [ct]: o }, { [cv]: [ar, X, aA, aq, aD, aH], endpoint: aI, [ct]: n }, { [cv]: [Y, as, W, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3-accelerate.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, as, W, aq, aD, aE], [cu]: [{ endpoint: aJ, [ct]: n }], [ct]: o }, { [cv]: [Y, as, W, aq, aD, aH], endpoint: aJ, [ct]: n }, { [cv]: [Y, as, aA, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, as, aA, aq, aD, aE], [cu]: [{ endpoint: aK, [ct]: n }], [ct]: o }, { [cv]: [Y, as, aA, aq, aD, aH], endpoint: aK, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, ah, aB], endpoint: { [cA]: C, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, aL, aB], endpoint: { [cA]: q, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, ah, aD, aE], [cu]: [{ [cv]: cd, endpoint: aM, [ct]: n }, { endpoint: aM, [ct]: n }], [ct]: o }, { [cv]: [ar, as, aA, Z, ag, aL, aD, aE], [cu]: [{ [cv]: cd, endpoint: aN, [ct]: n }, aO], [ct]: o }, { [cv]: [ar, as, aA, Z, ag, ah, aD, aH], endpoint: aM, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, aL, aD, aH], endpoint: aN, [ct]: n }, { [cv]: [ar, as, W, aq, aB], endpoint: { [cA]: D, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, W, aq, aD, aE], [cu]: [{ [cv]: cd, endpoint: aP, [ct]: n }, { endpoint: aP, [ct]: n }], [ct]: o }, { [cv]: [ar, as, W, aq, aD, aH], endpoint: aP, [ct]: n }, { [cv]: [ar, as, aA, aq, aB], endpoint: { [cA]: E, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, aA, aq, aD, aE], [cu]: [{ [cv]: cd, endpoint: { [cA]: E, [cB]: aG, [cH]: al }, [ct]: n }, { endpoint: aQ, [ct]: n }], [ct]: o }, { [cv]: [ar, as, aA, aq, aD, aH], endpoint: aQ, [ct]: n }], [ct]: o }, aR], [ct]: o }], [ct]: o }, { [cv]: [Z, ag, { [cw]: h, [cx]: [{ [cw]: i, [cx]: [ai, "scheme"] }, "http"] }, { [cw]: p, [cx]: [ad, c] }, ay, as, ar, aA], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cc, [cu]: [aO], [ct]: o }, aR], [ct]: o }], [ct]: o }, { [cv]: [ay, { [cw]: F, [cx]: bA, [cz]: G }], [cu]: [{ [cv]: [{ [cw]: i, [cx]: [aS, "resourceId[0]"], [cz]: H }, { [cw]: r, [cx]: [{ [cw]: h, [cx]: [aT, I] }] }], [cu]: [{ [cv]: [{ [cw]: h, [cx]: [aU, J] }], [cu]: [{ [cv]: ce, [cu]: [{ [cv]: cf, [cu]: [aW, aX, { [cv]: ci, [cu]: [aY, { [cv]: cj, [cu]: [aZ, { [cv]: cl, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cm, [cu]: [{ [cv]: cn, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [bb, I] }], error: "Invalid ARN: Missing account id", [ct]: f }, { [cv]: co, [cu]: [{ [cv]: cp, [cu]: [{ [cv]: bC, endpoint: { [cA]: M, [cB]: bc, [cH]: al }, [ct]: n }, { [cv]: cq, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-object-lambda-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bc, [cH]: al }, [ct]: n }, { endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-object-lambda.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bc, [cH]: al }, [ct]: n }], [ct]: o }, bd], [ct]: o }, be], [ct]: o }, bf], [ct]: o }, bg], [ct]: o }], [ct]: o }], [ct]: o }, bh], [ct]: o }, { error: "Invalid ARN: bucket ARN is missing a region", [ct]: f }], [ct]: o }, bi], [ct]: o }, { error: "Invalid ARN: Object Lambda ARNs only support `accesspoint` arn types, but found: `{arnType}`", [ct]: f }], [ct]: o }, { [cv]: ce, [cu]: [{ [cv]: cf, [cu]: [{ [cv]: ci, [cu]: [{ [cv]: ce, [cu]: [{ [cv]: ci, [cu]: [aY, { [cv]: cj, [cu]: [aZ, { [cv]: cl, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [ba, "{partitionResult#name}"] }], [cu]: [{ [cv]: cn, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [aU, B] }], [cu]: [{ [cv]: co, [cu]: [{ [cv]: cp, [cu]: [{ [cv]: bB, error: "Access Points do not support S3 Accelerate", [ct]: f }, { [cv]: bH, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint-fips.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: bI, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: bJ, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: [as, ar, Z, ag], endpoint: { [cA]: M, [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: bK, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }], [ct]: o }, bd], [ct]: o }, be], [ct]: o }, { error: "Invalid ARN: The ARN was not for the S3 service, found: {bucketArn#service}", [ct]: f }], [ct]: o }, bf], [ct]: o }, bg], [ct]: o }], [ct]: o }], [ct]: o }, bh], [ct]: o }], [ct]: o }], [ct]: o }, { [cv]: [{ [cw]: y, [cx]: [aV, c] }], [cu]: [{ [cv]: ch, error: "S3 MRAP does not support dual-stack", [ct]: f }, { [cv]: cq, error: "S3 MRAP does not support FIPS", [ct]: f }, { [cv]: bB, error: "S3 MRAP does not support S3 Accelerate", [ct]: f }, { [cv]: [{ [cw]: e, [cx]: [{ [cy]: "DisableMultiRegionAccessPoints" }, c] }], error: "Invalid configuration: Multi-Region Access Point ARNs are disabled.", [ct]: f }, { [cv]: [{ [cw]: g, [cx]: by, [cz]: N }], [cu]: [{ [cv]: [{ [cw]: h, [cx]: [{ [cw]: i, [cx]: [{ [cy]: N }, j] }, { [cw]: i, [cx]: [aS, "partition"] }] }], [cu]: [{ endpoint: { [cA]: "https://{accessPointName}.accesspoint.s3-global.{mrapPartition#dnsSuffix}", [cB]: { [cD]: [{ [cE]: c, name: z, [cF]: B, [cI]: cb }] }, [cH]: al }, [ct]: n }], [ct]: o }, { error: "Client was configured for partition `{mrapPartition#name}` but bucket referred to partition `{bucketArn#partition}`", [ct]: f }], [ct]: o }], [ct]: o }, { error: "Invalid Access Point Name", [ct]: f }], [ct]: o }, bi], [ct]: o }, { [cv]: [{ [cw]: h, [cx]: [aU, A] }], [cu]: [{ [cv]: ch, error: "S3 Outposts does not support Dual-stack", [ct]: f }, { [cv]: cq, error: "S3 Outposts does not support FIPS", [ct]: f }, { [cv]: bB, error: "S3 Outposts does not support S3 Accelerate", [ct]: f }, { [cv]: [{ [cw]: d, [cx]: [{ [cw]: i, [cx]: [aS, "resourceId[4]"] }] }], error: "Invalid Arn: Outpost Access Point ARN contains sub resources", [ct]: f }, { [cv]: [{ [cw]: i, [cx]: cg, [cz]: x }], [cu]: [{ [cv]: bZ, [cu]: [aZ, { [cv]: cl, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cm, [cu]: [{ [cv]: cn, [cu]: [{ [cv]: co, [cu]: [{ [cv]: [{ [cw]: i, [cx]: ck, [cz]: O }], [cu]: [{ [cv]: [{ [cw]: i, [cx]: [aS, "resourceId[3]"], [cz]: L }], [cu]: [{ [cv]: [{ [cw]: h, [cx]: [{ [cy]: O }, K] }], [cu]: [{ [cv]: bC, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.{outpostId}.{url#authority}", [cB]: bk, [cH]: al }, [ct]: n }, { endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.{outpostId}.s3-outposts.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bk, [cH]: al }, [ct]: n }], [ct]: o }, { error: "Expected an outpost type `accesspoint`, found {outpostType}", [ct]: f }], [ct]: o }, { error: "Invalid ARN: expected an access point name", [ct]: f }], [ct]: o }, { error: "Invalid ARN: Expected a 4-component resource", [ct]: f }], [ct]: o }, be], [ct]: o }, bf], [ct]: o }, bg], [ct]: o }], [ct]: o }], [ct]: o }, { error: "Invalid ARN: The outpost Id may only contain a-z, A-Z, 0-9 and `-`. Found: `{outpostId}`", [ct]: f }], [ct]: o }, { error: "Invalid ARN: The Outpost Id was not set", [ct]: f }], [ct]: o }, { error: "Invalid ARN: Unrecognized format: {Bucket} (type: {arnType})", [ct]: f }], [ct]: o }, { error: "Invalid ARN: No ARN type specified", [ct]: f }], [ct]: o }, { [cv]: [{ [cw]: k, [cx]: [ad, 0, 4, b], [cz]: P }, { [cw]: h, [cx]: [{ [cy]: P }, "arn:"] }, { [cw]: r, [cx]: [{ [cw]: d, [cx]: [bl] }] }], error: "Invalid ARN: `{Bucket}` was not a valid ARN", [ct]: f }, { [cv]: [{ [cw]: e, [cx]: [az, c] }, bl], error: "Path-style addressing cannot be used with ARN buckets", [ct]: f }, { [cv]: bE, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: [aA], [cu]: [{ [cv]: [Y, aq, X, aB], endpoint: { [cA]: "https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, aq, X, aD, aE], [cu]: [{ endpoint: bm, [ct]: n }], [ct]: o }, { [cv]: [Y, aq, X, aD, aH], endpoint: bm, [ct]: n }, { [cv]: [ar, aq, X, aB], endpoint: { [cA]: "https://s3-fips.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, aq, X, aD, aE], [cu]: [{ endpoint: bn, [ct]: n }], [ct]: o }, { [cv]: [ar, aq, X, aD, aH], endpoint: bn, [ct]: n }, { [cv]: [Y, aq, as, aB], endpoint: { [cA]: "https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, aq, as, aD, aE], [cu]: [{ endpoint: bo, [ct]: n }], [ct]: o }, { [cv]: [Y, aq, as, aD, aH], endpoint: bo, [ct]: n }, { [cv]: [ar, Z, ag, as, aB], endpoint: { [cA]: Q, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, Z, ag, as, aD, aE], [cu]: [{ [cv]: cd, endpoint: bp, [ct]: n }, { endpoint: bp, [ct]: n }], [ct]: o }, { [cv]: [ar, Z, ag, as, aD, aH], endpoint: bp, [ct]: n }, { [cv]: [ar, aq, as, aB], endpoint: { [cA]: R, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, aq, as, aD, aE], [cu]: [{ [cv]: cd, endpoint: { [cA]: R, [cB]: aG, [cH]: al }, [ct]: n }, { endpoint: bq, [ct]: n }], [ct]: o }, { [cv]: [ar, aq, as, aD, aH], endpoint: bq, [ct]: n }], [ct]: o }, { error: "Path-style addressing cannot be used with S3 Accelerate", [ct]: f }], [ct]: o }], [ct]: o }], [ct]: o }, { [cv]: [{ [cw]: d, [cx]: [br] }, { [cw]: e, [cx]: [br, c] }], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cr, [cu]: [aW, aX, { [cv]: bC, endpoint: { [cA]: t, [cB]: bs, [cH]: al }, [ct]: n }, { [cv]: cq, endpoint: { [cA]: "https://s3-object-lambda-fips.{Region}.{partitionResult#dnsSuffix}", [cB]: bs, [cH]: al }, [ct]: n }, { endpoint: { [cA]: "https://s3-object-lambda.{Region}.{partitionResult#dnsSuffix}", [cB]: bs, [cH]: al }, [ct]: n }], [ct]: o }, aR], [ct]: o }], [ct]: o }, { [cv]: [au], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cr, [cu]: [{ [cv]: [X, Y, aq, aB], endpoint: { [cA]: "https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [X, Y, aq, aD, aE], [cu]: [{ endpoint: bt, [ct]: n }], [ct]: o }, { [cv]: [X, Y, aq, aD, aH], endpoint: bt, [ct]: n }, { [cv]: [X, ar, aq, aB], endpoint: { [cA]: "https://s3-fips.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [X, ar, aq, aD, aE], [cu]: [{ endpoint: bu, [ct]: n }], [ct]: o }, { [cv]: [X, ar, aq, aD, aH], endpoint: bu, [ct]: n }, { [cv]: [as, Y, aq, aB], endpoint: { [cA]: "https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [as, Y, aq, aD, aE], [cu]: [{ endpoint: bv, [ct]: n }], [ct]: o }, { [cv]: [as, Y, aq, aD, aH], endpoint: bv, [ct]: n }, { [cv]: [as, ar, Z, ag, aB], endpoint: { [cA]: t, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [as, ar, Z, ag, aD, aE], [cu]: [{ [cv]: cd, endpoint: bw, [ct]: n }, { endpoint: bw, [ct]: n }], [ct]: o }, { [cv]: [as, ar, Z, ag, aD, aH], endpoint: bw, [ct]: n }, { [cv]: [as, ar, aq, aB], endpoint: { [cA]: S, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [as, ar, aq, aD, aE], [cu]: [{ [cv]: cd, endpoint: { [cA]: S, [cB]: aG, [cH]: al }, [ct]: n }, { endpoint: bx, [ct]: n }], [ct]: o }, { [cv]: [as, ar, aq, aD, aH], endpoint: bx, [ct]: n }], [ct]: o }, aR], [ct]: o }], [ct]: o }], [ct]: o }, { error: "A region must be set when sending requests to S3.", [ct]: f }] };
+const _data = { version: "1.0", parameters: { Bucket: T, Region: T, UseFIPS: U, UseDualStack: U, Endpoint: T, ForcePathStyle: U, Accelerate: U, UseGlobalEndpoint: U, UseObjectLambdaEndpoint: V, Key: T, Prefix: T, CopySource: T, DisableAccessPoints: V, DisableMultiRegionAccessPoints: U, UseArnRegion: V, UseS3ExpressControlEndpoint: V, DisableS3ExpressSessionAuth: V }, [cu]: [{ [cv]: [{ [cw]: d, [cx]: by }], [cu]: [{ [cv]: [W, X], error: "Accelerate cannot be used with FIPS", [ct]: f }, { [cv]: [Y, Z], error: "Cannot set dual-stack in combination with a custom endpoint.", [ct]: f }, { [cv]: [Z, X], error: "A custom endpoint cannot be combined with FIPS", [ct]: f }, { [cv]: [Z, W], error: "A custom endpoint cannot be combined with S3 Accelerate", [ct]: f }, { [cv]: [X, aa, ab], error: "Partition does not support FIPS", [ct]: f }, { [cv]: [ac, { [cw]: k, [cx]: [ad, 0, a, c], [cz]: l }, { [cw]: h, [cx]: [{ [cy]: l }, "--x-s3"] }], [cu]: [ae, af, { [cv]: [ao, ap], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: [aj, aq], [cu]: [{ [cv]: bH, endpoint: { [cA]: "https://s3express-control-fips.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bI, endpoint: { [cA]: "https://s3express-control-fips.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bJ, endpoint: { [cA]: "https://s3express-control.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bK, endpoint: { [cA]: "https://s3express-control.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: ak, [cH]: al }, [ct]: n }], [ct]: o }], [ct]: o }], [ct]: o }, { [cv]: bF, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: bD, [cu]: [{ [cv]: bL, [cu]: bM, [ct]: o }, { [cv]: bN, [cu]: bM, [ct]: o }, { [cv]: bO, [cu]: bM, [ct]: o }, { [cv]: bP, [cu]: bM, [ct]: o }, { [cv]: bQ, [cu]: bM, [ct]: o }, at], [ct]: o }, { [cv]: bL, [cu]: bR, [ct]: o }, { [cv]: bN, [cu]: bR, [ct]: o }, { [cv]: bO, [cu]: bR, [ct]: o }, { [cv]: bP, [cu]: bR, [ct]: o }, { [cv]: bQ, [cu]: bR, [ct]: o }, at], [ct]: o }], [ct]: o }, an], [ct]: o }, { [cv]: [ac, { [cw]: k, [cx]: bS, [cz]: s }, { [cw]: h, [cx]: [{ [cy]: s }, "--xa-s3"] }], [cu]: [ae, af, { [cv]: bF, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: bD, [cu]: [{ [cv]: bT, [cu]: bM, [ct]: o }, { [cv]: bU, [cu]: bM, [ct]: o }, { [cv]: bV, [cu]: bM, [ct]: o }, { [cv]: bW, [cu]: bM, [ct]: o }, { [cv]: bX, [cu]: bM, [ct]: o }, at], [ct]: o }, { [cv]: bT, [cu]: bR, [ct]: o }, { [cv]: bU, [cu]: bR, [ct]: o }, { [cv]: bV, [cu]: bR, [ct]: o }, { [cv]: bW, [cu]: bR, [ct]: o }, { [cv]: bX, [cu]: bR, [ct]: o }, at], [ct]: o }], [ct]: o }, an], [ct]: o }, { [cv]: [au, ao, ap], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: bC, endpoint: { [cA]: t, [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bH, endpoint: { [cA]: "https://s3express-control-fips.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bI, endpoint: { [cA]: "https://s3express-control-fips.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bJ, endpoint: { [cA]: "https://s3express-control.dualstack.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }, { [cv]: bK, endpoint: { [cA]: "https://s3express-control.{Region}.{partitionResult#dnsSuffix}", [cB]: ak, [cH]: al }, [ct]: n }], [ct]: o }], [ct]: o }, { [cv]: [ac, { [cw]: k, [cx]: [ad, 49, 50, c], [cz]: u }, { [cw]: k, [cx]: [ad, 8, 12, c], [cz]: v }, { [cw]: k, [cx]: bS, [cz]: w }, { [cw]: k, [cx]: [ad, 32, 49, c], [cz]: x }, { [cw]: g, [cx]: by, [cz]: "regionPartition" }, { [cw]: h, [cx]: [{ [cy]: w }, "--op-s3"] }], [cu]: [{ [cv]: bZ, [cu]: [{ [cv]: bF, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [av, "e"] }], [cu]: [{ [cv]: ca, [cu]: [aw, { [cv]: bC, endpoint: { [cA]: "https://{Bucket}.ec2.{url#authority}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { endpoint: { [cA]: "https://{Bucket}.ec2.s3-outposts.{Region}.{regionPartition#dnsSuffix}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { [cv]: [{ [cw]: h, [cx]: [av, "o"] }], [cu]: [{ [cv]: ca, [cu]: [aw, { [cv]: bC, endpoint: { [cA]: "https://{Bucket}.op-{outpostId}.{url#authority}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { endpoint: { [cA]: "https://{Bucket}.op-{outpostId}.s3-outposts.{Region}.{regionPartition#dnsSuffix}", [cB]: ax, [cH]: al }, [ct]: n }], [ct]: o }, { error: "Unrecognized hardware type: \"Expected hardware type o or e but got {hardwareType}\"", [ct]: f }], [ct]: o }, { error: "Invalid Outposts Bucket alias - it must be a valid bucket name.", [ct]: f }], [ct]: o }, { error: "Invalid ARN: The outpost Id must only contain a-z, A-Z, 0-9 and `-`.", [ct]: f }], [ct]: o }, { [cv]: bY, [cu]: [{ [cv]: [Z, { [cw]: r, [cx]: [{ [cw]: d, [cx]: [{ [cw]: m, [cx]: bz }] }] }], error: "Custom endpoint `{Endpoint}` was not a valid URI", [ct]: f }, { [cv]: [ay, am], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cc, [cu]: [{ [cv]: [W, ab], error: "S3 Accelerate cannot be used in this region", [ct]: f }, { [cv]: [Y, X, aA, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, X, aA, aq, aD, aE], [cu]: [{ endpoint: aF, [ct]: n }], [ct]: o }, { [cv]: [Y, X, aA, aq, aD, aH], endpoint: aF, [ct]: n }, { [cv]: [ar, X, aA, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3-fips.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, X, aA, aq, aD, aE], [cu]: [{ endpoint: aI, [ct]: n }], [ct]: o }, { [cv]: [ar, X, aA, aq, aD, aH], endpoint: aI, [ct]: n }, { [cv]: [Y, as, W, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3-accelerate.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, as, W, aq, aD, aE], [cu]: [{ endpoint: aJ, [ct]: n }], [ct]: o }, { [cv]: [Y, as, W, aq, aD, aH], endpoint: aJ, [ct]: n }, { [cv]: [Y, as, aA, aq, aB], endpoint: { [cA]: "https://{Bucket}.s3.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, as, aA, aq, aD, aE], [cu]: [{ endpoint: aK, [ct]: n }], [ct]: o }, { [cv]: [Y, as, aA, aq, aD, aH], endpoint: aK, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, ah, aB], endpoint: { [cA]: C, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, aL, aB], endpoint: { [cA]: q, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, ah, aD, aE], [cu]: [{ [cv]: cd, endpoint: aM, [ct]: n }, { endpoint: aM, [ct]: n }], [ct]: o }, { [cv]: [ar, as, aA, Z, ag, aL, aD, aE], [cu]: [{ [cv]: cd, endpoint: aN, [ct]: n }, aO], [ct]: o }, { [cv]: [ar, as, aA, Z, ag, ah, aD, aH], endpoint: aM, [ct]: n }, { [cv]: [ar, as, aA, Z, ag, aL, aD, aH], endpoint: aN, [ct]: n }, { [cv]: [ar, as, W, aq, aB], endpoint: { [cA]: D, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, W, aq, aD, aE], [cu]: [{ [cv]: cd, endpoint: aP, [ct]: n }, { endpoint: aP, [ct]: n }], [ct]: o }, { [cv]: [ar, as, W, aq, aD, aH], endpoint: aP, [ct]: n }, { [cv]: [ar, as, aA, aq, aB], endpoint: { [cA]: E, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, as, aA, aq, aD, aE], [cu]: [{ [cv]: cd, endpoint: { [cA]: E, [cB]: aG, [cH]: al }, [ct]: n }, { endpoint: aQ, [ct]: n }], [ct]: o }, { [cv]: [ar, as, aA, aq, aD, aH], endpoint: aQ, [ct]: n }], [ct]: o }, aR], [ct]: o }], [ct]: o }, { [cv]: [Z, ag, { [cw]: h, [cx]: [{ [cw]: i, [cx]: [ai, "scheme"] }, "http"] }, { [cw]: p, [cx]: [ad, c] }, ay, as, ar, aA], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cc, [cu]: [aO], [ct]: o }, aR], [ct]: o }], [ct]: o }, { [cv]: [ay, { [cw]: F, [cx]: bA, [cz]: G }], [cu]: [{ [cv]: [{ [cw]: i, [cx]: [aS, "resourceId[0]"], [cz]: H }, { [cw]: r, [cx]: [{ [cw]: h, [cx]: [aT, I] }] }], [cu]: [{ [cv]: [{ [cw]: h, [cx]: [aU, J] }], [cu]: [{ [cv]: ce, [cu]: [{ [cv]: cf, [cu]: [aW, aX, { [cv]: ci, [cu]: [aY, { [cv]: cj, [cu]: [aZ, { [cv]: cl, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cm, [cu]: [{ [cv]: cn, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [bb, I] }], error: "Invalid ARN: Missing account id", [ct]: f }, { [cv]: co, [cu]: [{ [cv]: cp, [cu]: [{ [cv]: bC, endpoint: { [cA]: M, [cB]: bc, [cH]: al }, [ct]: n }, { [cv]: cq, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-object-lambda-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bc, [cH]: al }, [ct]: n }, { endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-object-lambda.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bc, [cH]: al }, [ct]: n }], [ct]: o }, bd], [ct]: o }, be], [ct]: o }, bf], [ct]: o }, bg], [ct]: o }], [ct]: o }], [ct]: o }, bh], [ct]: o }, { error: "Invalid ARN: bucket ARN is missing a region", [ct]: f }], [ct]: o }, bi], [ct]: o }, { error: "Invalid ARN: Object Lambda ARNs only support `accesspoint` arn types, but found: `{arnType}`", [ct]: f }], [ct]: o }, { [cv]: ce, [cu]: [{ [cv]: cf, [cu]: [{ [cv]: ci, [cu]: [{ [cv]: ce, [cu]: [{ [cv]: ci, [cu]: [aY, { [cv]: cj, [cu]: [aZ, { [cv]: cl, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [ba, "{partitionResult#name}"] }], [cu]: [{ [cv]: cn, [cu]: [{ [cv]: [{ [cw]: h, [cx]: [aU, B] }], [cu]: [{ [cv]: co, [cu]: [{ [cv]: cp, [cu]: [{ [cv]: bB, error: "Access Points do not support S3 Accelerate", [ct]: f }, { [cv]: bH, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint-fips.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: bI, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: bJ, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: [as, ar, Z, ag], endpoint: { [cA]: M, [cB]: bj, [cH]: al }, [ct]: n }, { [cv]: bK, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bj, [cH]: al }, [ct]: n }], [ct]: o }, bd], [ct]: o }, be], [ct]: o }, { error: "Invalid ARN: The ARN was not for the S3 service, found: {bucketArn#service}", [ct]: f }], [ct]: o }, bf], [ct]: o }, bg], [ct]: o }], [ct]: o }], [ct]: o }, bh], [ct]: o }], [ct]: o }], [ct]: o }, { [cv]: [{ [cw]: y, [cx]: [aV, c] }], [cu]: [{ [cv]: ch, error: "S3 MRAP does not support dual-stack", [ct]: f }, { [cv]: cq, error: "S3 MRAP does not support FIPS", [ct]: f }, { [cv]: bB, error: "S3 MRAP does not support S3 Accelerate", [ct]: f }, { [cv]: [{ [cw]: e, [cx]: [{ [cy]: "DisableMultiRegionAccessPoints" }, c] }], error: "Invalid configuration: Multi-Region Access Point ARNs are disabled.", [ct]: f }, { [cv]: [{ [cw]: g, [cx]: by, [cz]: N }], [cu]: [{ [cv]: [{ [cw]: h, [cx]: [{ [cw]: i, [cx]: [{ [cy]: N }, j] }, { [cw]: i, [cx]: [aS, "partition"] }] }], [cu]: [{ endpoint: { [cA]: "https://{accessPointName}.accesspoint.s3-global.{mrapPartition#dnsSuffix}", [cB]: { [cD]: [{ [cE]: c, name: z, [cF]: B, [cI]: cb }] }, [cH]: al }, [ct]: n }], [ct]: o }, { error: "Client was configured for partition `{mrapPartition#name}` but bucket referred to partition `{bucketArn#partition}`", [ct]: f }], [ct]: o }], [ct]: o }, { error: "Invalid Access Point Name", [ct]: f }], [ct]: o }, bi], [ct]: o }, { [cv]: [{ [cw]: h, [cx]: [aU, A] }], [cu]: [{ [cv]: ch, error: "S3 Outposts does not support Dual-stack", [ct]: f }, { [cv]: cq, error: "S3 Outposts does not support FIPS", [ct]: f }, { [cv]: bB, error: "S3 Outposts does not support S3 Accelerate", [ct]: f }, { [cv]: [{ [cw]: d, [cx]: [{ [cw]: i, [cx]: [aS, "resourceId[4]"] }] }], error: "Invalid Arn: Outpost Access Point ARN contains sub resources", [ct]: f }, { [cv]: [{ [cw]: i, [cx]: cg, [cz]: x }], [cu]: [{ [cv]: bZ, [cu]: [aZ, { [cv]: cl, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cm, [cu]: [{ [cv]: cn, [cu]: [{ [cv]: co, [cu]: [{ [cv]: [{ [cw]: i, [cx]: ck, [cz]: O }], [cu]: [{ [cv]: [{ [cw]: i, [cx]: [aS, "resourceId[3]"], [cz]: L }], [cu]: [{ [cv]: [{ [cw]: h, [cx]: [{ [cy]: O }, K] }], [cu]: [{ [cv]: bC, endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.{outpostId}.{url#authority}", [cB]: bk, [cH]: al }, [ct]: n }, { endpoint: { [cA]: "https://{accessPointName}-{bucketArn#accountId}.{outpostId}.s3-outposts.{bucketArn#region}.{bucketPartition#dnsSuffix}", [cB]: bk, [cH]: al }, [ct]: n }], [ct]: o }, { error: "Expected an outpost type `accesspoint`, found {outpostType}", [ct]: f }], [ct]: o }, { error: "Invalid ARN: expected an access point name", [ct]: f }], [ct]: o }, { error: "Invalid ARN: Expected a 4-component resource", [ct]: f }], [ct]: o }, be], [ct]: o }, bf], [ct]: o }, bg], [ct]: o }], [ct]: o }], [ct]: o }, { error: "Invalid ARN: The outpost Id may only contain a-z, A-Z, 0-9 and `-`. Found: `{outpostId}`", [ct]: f }], [ct]: o }, { error: "Invalid ARN: The Outpost Id was not set", [ct]: f }], [ct]: o }, { error: "Invalid ARN: Unrecognized format: {Bucket} (type: {arnType})", [ct]: f }], [ct]: o }, { error: "Invalid ARN: No ARN type specified", [ct]: f }], [ct]: o }, { [cv]: [{ [cw]: k, [cx]: [ad, 0, 4, b], [cz]: P }, { [cw]: h, [cx]: [{ [cy]: P }, "arn:"] }, { [cw]: r, [cx]: [{ [cw]: d, [cx]: [bl] }] }], error: "Invalid ARN: `{Bucket}` was not a valid ARN", [ct]: f }, { [cv]: [{ [cw]: e, [cx]: [az, c] }, bl], error: "Path-style addressing cannot be used with ARN buckets", [ct]: f }, { [cv]: bE, [cu]: [{ [cv]: bG, [cu]: [{ [cv]: [aA], [cu]: [{ [cv]: [Y, aq, X, aB], endpoint: { [cA]: "https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, aq, X, aD, aE], [cu]: [{ endpoint: bm, [ct]: n }], [ct]: o }, { [cv]: [Y, aq, X, aD, aH], endpoint: bm, [ct]: n }, { [cv]: [ar, aq, X, aB], endpoint: { [cA]: "https://s3-fips.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, aq, X, aD, aE], [cu]: [{ endpoint: bn, [ct]: n }], [ct]: o }, { [cv]: [ar, aq, X, aD, aH], endpoint: bn, [ct]: n }, { [cv]: [Y, aq, as, aB], endpoint: { [cA]: "https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [Y, aq, as, aD, aE], [cu]: [{ endpoint: bo, [ct]: n }], [ct]: o }, { [cv]: [Y, aq, as, aD, aH], endpoint: bo, [ct]: n }, { [cv]: [ar, Z, ag, as, aB], endpoint: { [cA]: Q, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, Z, ag, as, aD, aE], [cu]: [{ [cv]: cd, endpoint: bp, [ct]: n }, { endpoint: bp, [ct]: n }], [ct]: o }, { [cv]: [ar, Z, ag, as, aD, aH], endpoint: bp, [ct]: n }, { [cv]: [ar, aq, as, aB], endpoint: { [cA]: R, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [ar, aq, as, aD, aE], [cu]: [{ [cv]: cd, endpoint: { [cA]: R, [cB]: aG, [cH]: al }, [ct]: n }, { endpoint: bq, [ct]: n }], [ct]: o }, { [cv]: [ar, aq, as, aD, aH], endpoint: bq, [ct]: n }], [ct]: o }, { error: "Path-style addressing cannot be used with S3 Accelerate", [ct]: f }], [ct]: o }], [ct]: o }], [ct]: o }, { [cv]: [{ [cw]: d, [cx]: [br] }, { [cw]: e, [cx]: [br, c] }], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cr, [cu]: [aW, aX, { [cv]: bC, endpoint: { [cA]: t, [cB]: bs, [cH]: al }, [ct]: n }, { [cv]: cq, endpoint: { [cA]: "https://s3-object-lambda-fips.{Region}.{partitionResult#dnsSuffix}", [cB]: bs, [cH]: al }, [ct]: n }, { endpoint: { [cA]: "https://s3-object-lambda.{Region}.{partitionResult#dnsSuffix}", [cB]: bs, [cH]: al }, [ct]: n }], [ct]: o }, aR], [ct]: o }], [ct]: o }, { [cv]: [au], [cu]: [{ [cv]: bG, [cu]: [{ [cv]: cr, [cu]: [{ [cv]: [X, Y, aq, aB], endpoint: { [cA]: "https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [X, Y, aq, aD, aE], [cu]: [{ endpoint: bt, [ct]: n }], [ct]: o }, { [cv]: [X, Y, aq, aD, aH], endpoint: bt, [ct]: n }, { [cv]: [X, ar, aq, aB], endpoint: { [cA]: "https://s3-fips.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [X, ar, aq, aD, aE], [cu]: [{ endpoint: bu, [ct]: n }], [ct]: o }, { [cv]: [X, ar, aq, aD, aH], endpoint: bu, [ct]: n }, { [cv]: [as, Y, aq, aB], endpoint: { [cA]: "https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}", [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [as, Y, aq, aD, aE], [cu]: [{ endpoint: bv, [ct]: n }], [ct]: o }, { [cv]: [as, Y, aq, aD, aH], endpoint: bv, [ct]: n }, { [cv]: [as, ar, Z, ag, aB], endpoint: { [cA]: t, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [as, ar, Z, ag, aD, aE], [cu]: [{ [cv]: cd, endpoint: bw, [ct]: n }, { endpoint: bw, [ct]: n }], [ct]: o }, { [cv]: [as, ar, Z, ag, aD, aH], endpoint: bw, [ct]: n }, { [cv]: [as, ar, aq, aB], endpoint: { [cA]: S, [cB]: aC, [cH]: al }, [ct]: n }, { [cv]: [as, ar, aq, aD, aE], [cu]: [{ [cv]: cd, endpoint: { [cA]: S, [cB]: aG, [cH]: al }, [ct]: n }, { endpoint: bx, [ct]: n }], [ct]: o }, { [cv]: [as, ar, aq, aD, aH], endpoint: bx, [ct]: n }], [ct]: o }, aR], [ct]: o }], [ct]: o }], [ct]: o }, { error: "A region must be set when sending requests to S3.", [ct]: f }] };
 exports.ruleSet = _data;
 
 
@@ -6418,4406 +6417,2181 @@ var SSECustomerKey = [0, n0, _SSECK, 8, 0];
 var SSEKMSEncryptionContext = [0, n0, _SSEKMSEC, 8, 0];
 var SSEKMSKeyId = [0, n0, _SSEKMSKI, 8, 0];
 var StreamingBlob = [0, n0, _SB, { [_s]: 1 }, 42];
-var AbacStatus$ = [3, n0, _AS, 0, [_S], [0]];
-var AbortIncompleteMultipartUpload$ = [3, n0, _AIMU, 0, [_DAI], [1]];
-var AbortMultipartUploadOutput$ = [3, n0, _AMUO, 0, [_RC], [[0, { [_hH]: _xarc }]]];
-var AbortMultipartUploadRequest$ = [
-    3,
-    n0,
-    _AMUR,
+var AbacStatus$ = [3, n0, _AS,
     0,
-    [_B, _K, _UI, _RP, _EBO, _IMIT],
-    [
-        [0, 1],
-        [0, 1],
-        [0, { [_hQ]: _uI }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xaebo }],
-        [6, { [_hH]: _xaimit }],
-    ],
+    [_S],
+    [0]
 ];
-var AccelerateConfiguration$ = [3, n0, _AC, 0, [_S], [0]];
-var AccessControlPolicy$ = [
-    3,
-    n0,
-    _ACP,
+var AbortIncompleteMultipartUpload$ = [3, n0, _AIMU,
     0,
-    [_G, _O],
-    [[() => Grants, { [_xN]: _ACL }], () => Owner$],
+    [_DAI],
+    [1]
 ];
-var AccessControlTranslation$ = [3, n0, _ACT, 0, [_O], [0]];
-var AnalyticsAndOperator$ = [
-    3,
-    n0,
-    _AAO,
-    0,
-    [_P, _T],
-    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }]],
-];
-var AnalyticsConfiguration$ = [
-    3,
-    n0,
-    _ACn,
-    0,
-    [_I, _F, _SCA],
-    [0, [() => AnalyticsFilter$, 0], () => StorageClassAnalysis$],
-];
-var AnalyticsExportDestination$ = [
-    3,
-    n0,
-    _AED,
-    0,
-    [_SBD],
-    [() => AnalyticsS3BucketDestination$],
-];
-var AnalyticsS3BucketDestination$ = [3, n0, _ASBD, 0, [_Fo, _BAI, _B, _P], [0, 0, 0, 0]];
-var BlockedEncryptionTypes$ = [
-    3,
-    n0,
-    _BET,
-    0,
-    [_ET],
-    [[() => EncryptionTypeList, { [_xF]: 1 }]],
-];
-var Bucket$ = [3, n0, _B, 0, [_N, _CD, _BR, _BA], [0, 4, 0, 0]];
-var BucketAlreadyExists$ = [-3, n0, _BAE, { [_e]: _c, [_hE]: 409 }, [], []];
-schema.TypeRegistry.for(n0).registerError(BucketAlreadyExists$, BucketAlreadyExists);
-var BucketAlreadyOwnedByYou$ = [-3, n0, _BAOBY, { [_e]: _c, [_hE]: 409 }, [], []];
-schema.TypeRegistry.for(n0).registerError(BucketAlreadyOwnedByYou$, BucketAlreadyOwnedByYou);
-var BucketInfo$ = [3, n0, _BI, 0, [_DR, _Ty], [0, 0]];
-var BucketLifecycleConfiguration$ = [
-    3,
-    n0,
-    _BLC,
-    0,
-    [_R],
-    [[() => LifecycleRules, { [_xF]: 1, [_xN]: _Ru }]],
-];
-var BucketLoggingStatus$ = [3, n0, _BLS, 0, [_LE], [[() => LoggingEnabled$, 0]]];
-var Checksum$ = [
-    3,
-    n0,
-    _C,
-    0,
-    [_CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _CT],
-    [0, 0, 0, 0, 0, 0],
-];
-var CommonPrefix$ = [3, n0, _CP, 0, [_P], [0]];
-var CompletedMultipartUpload$ = [
-    3,
-    n0,
-    _CMU,
-    0,
-    [_Pa],
-    [[() => CompletedPartList, { [_xF]: 1, [_xN]: _Par }]],
-];
-var CompletedPart$ = [
-    3,
-    n0,
-    _CPo,
-    0,
-    [_ETa, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _PN],
-    [0, 0, 0, 0, 0, 0, 1],
-];
-var CompleteMultipartUploadOutput$ = [
-    3,
-    n0,
-    _CMUO,
-    { [_xN]: _CMUR },
-    [_L, _B, _K, _E, _ETa, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _CT, _SSE, _VI, _SSEKMSKI, _BKE, _RC],
-    [
-        0,
-        0,
-        0,
-        [0, { [_hH]: _xae }],
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        [0, { [_hH]: _xasse }],
-        [0, { [_hH]: _xavi }],
-        [() => SSEKMSKeyId, { [_hH]: _xasseakki }],
-        [2, { [_hH]: _xassebke }],
-        [0, { [_hH]: _xarc }],
-    ],
-];
-var CompleteMultipartUploadRequest$ = [
-    3,
-    n0,
-    _CMURo,
-    0,
-    [
-        _B,
-        _K,
-        _MU,
-        _UI,
-        _CCRC,
-        _CCRCC,
-        _CCRCNVME,
-        _CSHA,
-        _CSHAh,
-        _CT,
-        _MOS,
-        _RP,
-        _EBO,
-        _IM,
-        _INM,
-        _SSECA,
-        _SSECK,
-        _SSECKMD,
-    ],
-    [
-        [0, 1],
-        [0, 1],
-        [() => CompletedMultipartUpload$, { [_hP]: 1, [_xN]: _CMUo }],
-        [0, { [_hQ]: _uI }],
-        [0, { [_hH]: _xacc }],
-        [0, { [_hH]: _xacc_ }],
-        [0, { [_hH]: _xacc__ }],
-        [0, { [_hH]: _xacs }],
-        [0, { [_hH]: _xacs_ }],
-        [0, { [_hH]: _xact }],
-        [1, { [_hH]: _xamos }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _IM_ }],
-        [0, { [_hH]: _INM_ }],
-        [0, { [_hH]: _xasseca }],
-        [() => SSECustomerKey, { [_hH]: _xasseck }],
-        [0, { [_hH]: _xasseckM }],
-    ],
-];
-var Condition$ = [3, n0, _Co, 0, [_HECRE, _KPE], [0, 0]];
-var ContinuationEvent$ = [3, n0, _CE, 0, [], []];
-var CopyObjectOutput$ = [
-    3,
-    n0,
-    _COO,
-    0,
-    [_COR, _E, _CSVI, _VI, _SSE, _SSECA, _SSECKMD, _SSEKMSKI, _SSEKMSEC, _BKE, _RC],
-    [
-        [() => CopyObjectResult$, 16],
-        [0, { [_hH]: _xae }],
-        [0, { [_hH]: _xacsvi }],
-        [0, { [_hH]: _xavi }],
-        [0, { [_hH]: _xasse }],
-        [0, { [_hH]: _xasseca }],
-        [0, { [_hH]: _xasseckM }],
-        [() => SSEKMSKeyId, { [_hH]: _xasseakki }],
-        [() => SSEKMSEncryptionContext, { [_hH]: _xassec }],
-        [2, { [_hH]: _xassebke }],
-        [0, { [_hH]: _xarc }],
-    ],
-];
-var CopyObjectRequest$ = [
-    3,
-    n0,
-    _CORo,
-    0,
-    [
-        _ACL_,
-        _B,
-        _CC,
-        _CA,
-        _CDo,
-        _CEo,
-        _CL,
-        _CTo,
-        _CS,
-        _CSIM,
-        _CSIMS,
-        _CSINM,
-        _CSIUS,
-        _Ex,
-        _GFC,
-        _GR,
-        _GRACP,
-        _GWACP,
-        _IM,
-        _INM,
-        _K,
-        _M,
-        _MD,
-        _TD,
-        _SSE,
-        _SC,
-        _WRL,
-        _SSECA,
-        _SSECK,
-        _SSECKMD,
-        _SSEKMSKI,
-        _SSEKMSEC,
-        _BKE,
-        _CSSSECA,
-        _CSSSECK,
-        _CSSSECKMD,
-        _RP,
-        _Tag,
-        _OLM,
-        _OLRUD,
-        _OLLHS,
-        _EBO,
-        _ESBO,
-    ],
-    [
-        [0, { [_hH]: _xaa }],
-        [0, 1],
-        [0, { [_hH]: _CC_ }],
-        [0, { [_hH]: _xaca }],
-        [0, { [_hH]: _CD_ }],
-        [0, { [_hH]: _CE_ }],
-        [0, { [_hH]: _CL_ }],
-        [0, { [_hH]: _CT_ }],
-        [0, { [_hH]: _xacs__ }],
-        [0, { [_hH]: _xacsim }],
-        [4, { [_hH]: _xacsims }],
-        [0, { [_hH]: _xacsinm }],
-        [4, { [_hH]: _xacsius }],
-        [4, { [_hH]: _Ex }],
-        [0, { [_hH]: _xagfc }],
-        [0, { [_hH]: _xagr }],
-        [0, { [_hH]: _xagra }],
-        [0, { [_hH]: _xagwa }],
-        [0, { [_hH]: _IM_ }],
-        [0, { [_hH]: _INM_ }],
-        [0, 1],
-        [128 | 0, { [_hPH]: _xam }],
-        [0, { [_hH]: _xamd }],
-        [0, { [_hH]: _xatd }],
-        [0, { [_hH]: _xasse }],
-        [0, { [_hH]: _xasc }],
-        [0, { [_hH]: _xawrl }],
-        [0, { [_hH]: _xasseca }],
-        [() => SSECustomerKey, { [_hH]: _xasseck }],
-        [0, { [_hH]: _xasseckM }],
-        [() => SSEKMSKeyId, { [_hH]: _xasseakki }],
-        [() => SSEKMSEncryptionContext, { [_hH]: _xassec }],
-        [2, { [_hH]: _xassebke }],
-        [0, { [_hH]: _xacssseca }],
-        [() => CopySourceSSECustomerKey, { [_hH]: _xacssseck }],
-        [0, { [_hH]: _xacssseckM }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xat }],
-        [0, { [_hH]: _xaolm }],
-        [5, { [_hH]: _xaolrud }],
-        [0, { [_hH]: _xaollh }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _xasebo }],
-    ],
-];
-var CopyObjectResult$ = [
-    3,
-    n0,
-    _COR,
-    0,
-    [_ETa, _LM, _CT, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh],
-    [0, 4, 0, 0, 0, 0, 0, 0],
-];
-var CopyPartResult$ = [
-    3,
-    n0,
-    _CPR,
-    0,
-    [_ETa, _LM, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh],
-    [0, 4, 0, 0, 0, 0, 0],
-];
-var CORSConfiguration$ = [
-    3,
-    n0,
-    _CORSC,
-    0,
-    [_CORSR],
-    [[() => CORSRules, { [_xF]: 1, [_xN]: _CORSRu }]],
-];
-var CORSRule$ = [
-    3,
-    n0,
-    _CORSRu,
-    0,
-    [_ID, _AH, _AM, _AO, _EH, _MAS],
-    [
-        0,
-        [64 | 0, { [_xF]: 1, [_xN]: _AHl }],
-        [64 | 0, { [_xF]: 1, [_xN]: _AMl }],
-        [64 | 0, { [_xF]: 1, [_xN]: _AOl }],
-        [64 | 0, { [_xF]: 1, [_xN]: _EHx }],
-        1,
-    ],
-];
-var CreateBucketConfiguration$ = [
-    3,
-    n0,
-    _CBC,
-    0,
-    [_LC, _L, _B, _T],
-    [0, () => LocationInfo$, () => BucketInfo$, [() => TagSet, 0]],
-];
-var CreateBucketMetadataConfigurationRequest$ = [
-    3,
-    n0,
-    _CBMCR,
-    0,
-    [_B, _CMD, _CA, _MC, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [() => MetadataConfiguration$, { [_hP]: 1, [_xN]: _MC }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var CreateBucketMetadataTableConfigurationRequest$ = [
-    3,
-    n0,
-    _CBMTCR,
-    0,
-    [_B, _CMD, _CA, _MTC, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [() => MetadataTableConfiguration$, { [_hP]: 1, [_xN]: _MTC }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var CreateBucketOutput$ = [
-    3,
-    n0,
-    _CBO,
-    0,
-    [_L, _BA],
-    [
-        [0, { [_hH]: _L }],
-        [0, { [_hH]: _xaba }],
-    ],
-];
-var CreateBucketRequest$ = [
-    3,
-    n0,
-    _CBR,
-    0,
-    [_ACL_, _B, _CBC, _GFC, _GR, _GRACP, _GW, _GWACP, _OLEFB, _OO],
-    [
-        [0, { [_hH]: _xaa }],
-        [0, 1],
-        [() => CreateBucketConfiguration$, { [_hP]: 1, [_xN]: _CBC }],
-        [0, { [_hH]: _xagfc }],
-        [0, { [_hH]: _xagr }],
-        [0, { [_hH]: _xagra }],
-        [0, { [_hH]: _xagw }],
-        [0, { [_hH]: _xagwa }],
-        [2, { [_hH]: _xabole }],
-        [0, { [_hH]: _xaoo }],
-    ],
-];
-var CreateMultipartUploadOutput$ = [
-    3,
-    n0,
-    _CMUOr,
-    { [_xN]: _IMUR },
-    [_AD, _ARI, _B, _K, _UI, _SSE, _SSECA, _SSECKMD, _SSEKMSKI, _SSEKMSEC, _BKE, _RC, _CA, _CT],
-    [
-        [4, { [_hH]: _xaad }],
-        [0, { [_hH]: _xaari }],
-        [0, { [_xN]: _B }],
-        0,
-        0,
-        [0, { [_hH]: _xasse }],
-        [0, { [_hH]: _xasseca }],
-        [0, { [_hH]: _xasseckM }],
-        [() => SSEKMSKeyId, { [_hH]: _xasseakki }],
-        [() => SSEKMSEncryptionContext, { [_hH]: _xassec }],
-        [2, { [_hH]: _xassebke }],
-        [0, { [_hH]: _xarc }],
-        [0, { [_hH]: _xaca }],
-        [0, { [_hH]: _xact }],
-    ],
-];
-var CreateMultipartUploadRequest$ = [
-    3,
-    n0,
-    _CMURr,
-    0,
-    [
-        _ACL_,
-        _B,
-        _CC,
-        _CDo,
-        _CEo,
-        _CL,
-        _CTo,
-        _Ex,
-        _GFC,
-        _GR,
-        _GRACP,
-        _GWACP,
-        _K,
-        _M,
-        _SSE,
-        _SC,
-        _WRL,
-        _SSECA,
-        _SSECK,
-        _SSECKMD,
-        _SSEKMSKI,
-        _SSEKMSEC,
-        _BKE,
-        _RP,
-        _Tag,
-        _OLM,
-        _OLRUD,
-        _OLLHS,
-        _EBO,
-        _CA,
-        _CT,
-    ],
-    [
-        [0, { [_hH]: _xaa }],
-        [0, 1],
-        [0, { [_hH]: _CC_ }],
-        [0, { [_hH]: _CD_ }],
-        [0, { [_hH]: _CE_ }],
-        [0, { [_hH]: _CL_ }],
-        [0, { [_hH]: _CT_ }],
-        [4, { [_hH]: _Ex }],
-        [0, { [_hH]: _xagfc }],
-        [0, { [_hH]: _xagr }],
-        [0, { [_hH]: _xagra }],
-        [0, { [_hH]: _xagwa }],
-        [0, 1],
-        [128 | 0, { [_hPH]: _xam }],
-        [0, { [_hH]: _xasse }],
-        [0, { [_hH]: _xasc }],
-        [0, { [_hH]: _xawrl }],
-        [0, { [_hH]: _xasseca }],
-        [() => SSECustomerKey, { [_hH]: _xasseck }],
-        [0, { [_hH]: _xasseckM }],
-        [() => SSEKMSKeyId, { [_hH]: _xasseakki }],
-        [() => SSEKMSEncryptionContext, { [_hH]: _xassec }],
-        [2, { [_hH]: _xassebke }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xat }],
-        [0, { [_hH]: _xaolm }],
-        [5, { [_hH]: _xaolrud }],
-        [0, { [_hH]: _xaollh }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _xaca }],
-        [0, { [_hH]: _xact }],
-    ],
-];
-var CreateSessionOutput$ = [
-    3,
-    n0,
-    _CSO,
-    { [_xN]: _CSR },
-    [_SSE, _SSEKMSKI, _SSEKMSEC, _BKE, _Cr],
-    [
-        [0, { [_hH]: _xasse }],
-        [() => SSEKMSKeyId, { [_hH]: _xasseakki }],
-        [() => SSEKMSEncryptionContext, { [_hH]: _xassec }],
-        [2, { [_hH]: _xassebke }],
-        [() => SessionCredentials$, { [_xN]: _Cr }],
-    ],
-];
-var CreateSessionRequest$ = [
-    3,
-    n0,
-    _CSRr,
-    0,
-    [_SM, _B, _SSE, _SSEKMSKI, _SSEKMSEC, _BKE],
-    [
-        [0, { [_hH]: _xacsm }],
-        [0, 1],
-        [0, { [_hH]: _xasse }],
-        [() => SSEKMSKeyId, { [_hH]: _xasseakki }],
-        [() => SSEKMSEncryptionContext, { [_hH]: _xassec }],
-        [2, { [_hH]: _xassebke }],
-    ],
-];
-var CSVInput$ = [
-    3,
-    n0,
-    _CSVIn,
-    0,
-    [_FHI, _Com, _QEC, _RD, _FD, _QC, _AQRD],
-    [0, 0, 0, 0, 0, 0, 2],
-];
-var CSVOutput$ = [3, n0, _CSVO, 0, [_QF, _QEC, _RD, _FD, _QC], [0, 0, 0, 0, 0]];
-var DefaultRetention$ = [3, n0, _DRe, 0, [_Mo, _D, _Y], [0, 1, 1]];
-var Delete$ = [
-    3,
-    n0,
-    _De,
-    0,
-    [_Ob, _Q],
-    [[() => ObjectIdentifierList, { [_xF]: 1, [_xN]: _Obj }], 2],
-];
-var DeleteBucketAnalyticsConfigurationRequest$ = [
-    3,
-    n0,
-    _DBACR,
-    0,
-    [_B, _I, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _i }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeleteBucketCorsRequest$ = [
-    3,
-    n0,
-    _DBCR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeleteBucketEncryptionRequest$ = [
-    3,
-    n0,
-    _DBER,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeleteBucketIntelligentTieringConfigurationRequest$ = [
-    3,
-    n0,
-    _DBITCR,
-    0,
-    [_B, _I, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _i }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeleteBucketInventoryConfigurationRequest$ = [
-    3,
-    n0,
-    _DBICR,
-    0,
-    [_B, _I, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _i }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeleteBucketLifecycleRequest$ = [
-    3,
-    n0,
-    _DBLR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeleteBucketMetadataConfigurationRequest$ = [
-    3,
-    n0,
-    _DBMCR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeleteBucketMetadataTableConfigurationRequest$ = [
-    3,
-    n0,
-    _DBMTCR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeleteBucketMetricsConfigurationRequest$ = [
-    3,
-    n0,
-    _DBMCRe,
-    0,
-    [_B, _I, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _i }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeleteBucketOwnershipControlsRequest$ = [
-    3,
-    n0,
-    _DBOCR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeleteBucketPolicyRequest$ = [
-    3,
-    n0,
-    _DBPR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeleteBucketReplicationRequest$ = [
-    3,
-    n0,
-    _DBRR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeleteBucketRequest$ = [
-    3,
-    n0,
-    _DBR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeleteBucketTaggingRequest$ = [
-    3,
-    n0,
-    _DBTR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeleteBucketWebsiteRequest$ = [
-    3,
-    n0,
-    _DBWR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeletedObject$ = [3, n0, _DO, 0, [_K, _VI, _DM, _DMVI], [0, 0, 2, 0]];
-var DeleteMarkerEntry$ = [
-    3,
-    n0,
-    _DME,
-    0,
-    [_O, _K, _VI, _IL, _LM],
-    [() => Owner$, 0, 0, 2, 4],
-];
-var DeleteMarkerReplication$ = [3, n0, _DMR, 0, [_S], [0]];
-var DeleteObjectOutput$ = [
-    3,
-    n0,
-    _DOO,
-    0,
-    [_DM, _VI, _RC],
-    [
-        [2, { [_hH]: _xadm }],
-        [0, { [_hH]: _xavi }],
-        [0, { [_hH]: _xarc }],
-    ],
-];
-var DeleteObjectRequest$ = [
-    3,
-    n0,
-    _DOR,
-    0,
-    [_B, _K, _MFA, _VI, _RP, _BGR, _EBO, _IM, _IMLMT, _IMS],
-    [
-        [0, 1],
-        [0, 1],
-        [0, { [_hH]: _xam_ }],
-        [0, { [_hQ]: _vI }],
-        [0, { [_hH]: _xarp }],
-        [2, { [_hH]: _xabgr }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _IM_ }],
-        [6, { [_hH]: _xaimlmt }],
-        [1, { [_hH]: _xaims }],
-    ],
-];
-var DeleteObjectsOutput$ = [
-    3,
-    n0,
-    _DOOe,
-    { [_xN]: _DRel },
-    [_Del, _RC, _Er],
-    [
-        [() => DeletedObjects, { [_xF]: 1 }],
-        [0, { [_hH]: _xarc }],
-        [() => Errors, { [_xF]: 1, [_xN]: _Err }],
-    ],
-];
-var DeleteObjectsRequest$ = [
-    3,
-    n0,
-    _DORe,
-    0,
-    [_B, _De, _MFA, _RP, _BGR, _EBO, _CA],
-    [
-        [0, 1],
-        [() => Delete$, { [_hP]: 1, [_xN]: _De }],
-        [0, { [_hH]: _xam_ }],
-        [0, { [_hH]: _xarp }],
-        [2, { [_hH]: _xabgr }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _xasca }],
-    ],
-];
-var DeleteObjectTaggingOutput$ = [3, n0, _DOTO, 0, [_VI], [[0, { [_hH]: _xavi }]]];
-var DeleteObjectTaggingRequest$ = [
-    3,
-    n0,
-    _DOTR,
-    0,
-    [_B, _K, _VI, _EBO],
-    [
-        [0, 1],
-        [0, 1],
-        [0, { [_hQ]: _vI }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var DeletePublicAccessBlockRequest$ = [
-    3,
-    n0,
-    _DPABR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var Destination$ = [
-    3,
-    n0,
-    _Des,
-    0,
-    [_B, _A, _SC, _ACT, _EC, _RT, _Me],
-    [0, 0, 0, () => AccessControlTranslation$, () => EncryptionConfiguration$, () => ReplicationTime$, () => Metrics$],
-];
-var DestinationResult$ = [3, n0, _DRes, 0, [_TBT, _TBA, _TN], [0, 0, 0]];
-var Encryption$ = [3, n0, _En, 0, [_ET, _KMSKI, _KMSC], [0, [() => SSEKMSKeyId, 0], 0]];
-var EncryptionConfiguration$ = [3, n0, _EC, 0, [_RKKID], [0]];
-var EncryptionTypeMismatch$ = [-3, n0, _ETM, { [_e]: _c, [_hE]: 400 }, [], []];
-schema.TypeRegistry.for(n0).registerError(EncryptionTypeMismatch$, EncryptionTypeMismatch);
-var EndEvent$ = [3, n0, _EE, 0, [], []];
-var _Error$ = [3, n0, _Err, 0, [_K, _VI, _Cod, _Mes], [0, 0, 0, 0]];
-var ErrorDetails$ = [3, n0, _ED, 0, [_ECr, _EM], [0, 0]];
-var ErrorDocument$ = [3, n0, _EDr, 0, [_K], [0]];
-var EventBridgeConfiguration$ = [3, n0, _EBC, 0, [], []];
-var ExistingObjectReplication$ = [3, n0, _EOR, 0, [_S], [0]];
-var FilterRule$ = [3, n0, _FR, 0, [_N, _V], [0, 0]];
-var GetBucketAbacOutput$ = [3, n0, _GBAO, 0, [_AS], [[() => AbacStatus$, 16]]];
-var GetBucketAbacRequest$ = [
-    3,
-    n0,
-    _GBAR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketAccelerateConfigurationOutput$ = [
-    3,
-    n0,
-    _GBACO,
-    { [_xN]: _AC },
-    [_S, _RC],
-    [0, [0, { [_hH]: _xarc }]],
-];
-var GetBucketAccelerateConfigurationRequest$ = [
-    3,
-    n0,
-    _GBACR,
-    0,
-    [_B, _EBO, _RP],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _xarp }],
-    ],
-];
-var GetBucketAclOutput$ = [
-    3,
-    n0,
-    _GBAOe,
-    { [_xN]: _ACP },
-    [_O, _G],
-    [() => Owner$, [() => Grants, { [_xN]: _ACL }]],
-];
-var GetBucketAclRequest$ = [
-    3,
-    n0,
-    _GBARe,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketAnalyticsConfigurationOutput$ = [
-    3,
-    n0,
-    _GBACOe,
-    0,
-    [_ACn],
-    [[() => AnalyticsConfiguration$, 16]],
-];
-var GetBucketAnalyticsConfigurationRequest$ = [
-    3,
-    n0,
-    _GBACRe,
-    0,
-    [_B, _I, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _i }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketCorsOutput$ = [
-    3,
-    n0,
-    _GBCO,
-    { [_xN]: _CORSC },
-    [_CORSR],
-    [[() => CORSRules, { [_xF]: 1, [_xN]: _CORSRu }]],
-];
-var GetBucketCorsRequest$ = [
-    3,
-    n0,
-    _GBCR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketEncryptionOutput$ = [
-    3,
-    n0,
-    _GBEO,
-    0,
-    [_SSEC],
-    [[() => ServerSideEncryptionConfiguration$, 16]],
-];
-var GetBucketEncryptionRequest$ = [
-    3,
-    n0,
-    _GBER,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketIntelligentTieringConfigurationOutput$ = [
-    3,
-    n0,
-    _GBITCO,
-    0,
-    [_ITC],
-    [[() => IntelligentTieringConfiguration$, 16]],
-];
-var GetBucketIntelligentTieringConfigurationRequest$ = [
-    3,
-    n0,
-    _GBITCR,
-    0,
-    [_B, _I, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _i }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketInventoryConfigurationOutput$ = [
-    3,
-    n0,
-    _GBICO,
-    0,
-    [_IC],
-    [[() => InventoryConfiguration$, 16]],
-];
-var GetBucketInventoryConfigurationRequest$ = [
-    3,
-    n0,
-    _GBICR,
-    0,
-    [_B, _I, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _i }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketLifecycleConfigurationOutput$ = [
-    3,
-    n0,
-    _GBLCO,
-    { [_xN]: _LCi },
-    [_R, _TDMOS],
-    [
-        [() => LifecycleRules, { [_xF]: 1, [_xN]: _Ru }],
-        [0, { [_hH]: _xatdmos }],
-    ],
-];
-var GetBucketLifecycleConfigurationRequest$ = [
-    3,
-    n0,
-    _GBLCR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketLocationOutput$ = [3, n0, _GBLO, { [_xN]: _LC }, [_LC], [0]];
-var GetBucketLocationRequest$ = [
-    3,
-    n0,
-    _GBLR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketLoggingOutput$ = [
-    3,
-    n0,
-    _GBLOe,
-    { [_xN]: _BLS },
-    [_LE],
-    [[() => LoggingEnabled$, 0]],
-];
-var GetBucketLoggingRequest$ = [
-    3,
-    n0,
-    _GBLRe,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketMetadataConfigurationOutput$ = [
-    3,
-    n0,
-    _GBMCO,
-    0,
-    [_GBMCR],
-    [[() => GetBucketMetadataConfigurationResult$, 16]],
-];
-var GetBucketMetadataConfigurationRequest$ = [
-    3,
-    n0,
-    _GBMCRe,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketMetadataConfigurationResult$ = [
-    3,
-    n0,
-    _GBMCR,
-    0,
-    [_MCR],
-    [() => MetadataConfigurationResult$],
-];
-var GetBucketMetadataTableConfigurationOutput$ = [
-    3,
-    n0,
-    _GBMTCO,
-    0,
-    [_GBMTCR],
-    [[() => GetBucketMetadataTableConfigurationResult$, 16]],
-];
-var GetBucketMetadataTableConfigurationRequest$ = [
-    3,
-    n0,
-    _GBMTCRe,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketMetadataTableConfigurationResult$ = [
-    3,
-    n0,
-    _GBMTCR,
-    0,
-    [_MTCR, _S, _Err],
-    [() => MetadataTableConfigurationResult$, 0, () => ErrorDetails$],
-];
-var GetBucketMetricsConfigurationOutput$ = [
-    3,
-    n0,
-    _GBMCOe,
-    0,
-    [_MCe],
-    [[() => MetricsConfiguration$, 16]],
-];
-var GetBucketMetricsConfigurationRequest$ = [
-    3,
-    n0,
-    _GBMCRet,
-    0,
-    [_B, _I, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _i }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketNotificationConfigurationRequest$ = [
-    3,
-    n0,
-    _GBNCR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketOwnershipControlsOutput$ = [
-    3,
-    n0,
-    _GBOCO,
-    0,
-    [_OC],
-    [[() => OwnershipControls$, 16]],
-];
-var GetBucketOwnershipControlsRequest$ = [
-    3,
-    n0,
-    _GBOCR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketPolicyOutput$ = [3, n0, _GBPO, 0, [_Po], [[0, 16]]];
-var GetBucketPolicyRequest$ = [
-    3,
-    n0,
-    _GBPR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketPolicyStatusOutput$ = [3, n0, _GBPSO, 0, [_PS], [[() => PolicyStatus$, 16]]];
-var GetBucketPolicyStatusRequest$ = [
-    3,
-    n0,
-    _GBPSR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketReplicationOutput$ = [
-    3,
-    n0,
-    _GBRO,
-    0,
-    [_RCe],
-    [[() => ReplicationConfiguration$, 16]],
-];
-var GetBucketReplicationRequest$ = [
-    3,
-    n0,
-    _GBRR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketRequestPaymentOutput$ = [3, n0, _GBRPO, { [_xN]: _RPC }, [_Pay], [0]];
-var GetBucketRequestPaymentRequest$ = [
-    3,
-    n0,
-    _GBRPR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketTaggingOutput$ = [3, n0, _GBTO, { [_xN]: _Tag }, [_TS], [[() => TagSet, 0]]];
-var GetBucketTaggingRequest$ = [
-    3,
-    n0,
-    _GBTR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketVersioningOutput$ = [
-    3,
-    n0,
-    _GBVO,
-    { [_xN]: _VC },
-    [_S, _MFAD],
-    [0, [0, { [_xN]: _MDf }]],
-];
-var GetBucketVersioningRequest$ = [
-    3,
-    n0,
-    _GBVR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetBucketWebsiteOutput$ = [
-    3,
-    n0,
-    _GBWO,
-    { [_xN]: _WC },
-    [_RART, _IDn, _EDr, _RR],
-    [() => RedirectAllRequestsTo$, () => IndexDocument$, () => ErrorDocument$, [() => RoutingRules, 0]],
-];
-var GetBucketWebsiteRequest$ = [
-    3,
-    n0,
-    _GBWR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetObjectAclOutput$ = [
-    3,
-    n0,
-    _GOAO,
-    { [_xN]: _ACP },
-    [_O, _G, _RC],
-    [() => Owner$, [() => Grants, { [_xN]: _ACL }], [0, { [_hH]: _xarc }]],
-];
-var GetObjectAclRequest$ = [
-    3,
-    n0,
-    _GOAR,
-    0,
-    [_B, _K, _VI, _RP, _EBO],
-    [
-        [0, 1],
-        [0, 1],
-        [0, { [_hQ]: _vI }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetObjectAttributesOutput$ = [
-    3,
-    n0,
-    _GOAOe,
-    { [_xN]: _GOARe },
-    [_DM, _LM, _VI, _RC, _ETa, _C, _OP, _SC, _OS],
-    [
-        [2, { [_hH]: _xadm }],
-        [4, { [_hH]: _LM_ }],
-        [0, { [_hH]: _xavi }],
-        [0, { [_hH]: _xarc }],
-        0,
-        () => Checksum$,
-        [() => GetObjectAttributesParts$, 0],
-        0,
-        1,
-    ],
-];
-var GetObjectAttributesParts$ = [
-    3,
-    n0,
-    _GOAP,
-    0,
-    [_TPC, _PNM, _NPNM, _MP, _IT, _Pa],
-    [[1, { [_xN]: _PC }], 0, 0, 1, 2, [() => PartsList, { [_xF]: 1, [_xN]: _Par }]],
-];
-var GetObjectAttributesRequest$ = [
-    3,
-    n0,
-    _GOARet,
-    0,
-    [_B, _K, _VI, _MP, _PNM, _SSECA, _SSECK, _SSECKMD, _RP, _EBO, _OA],
-    [
-        [0, 1],
-        [0, 1],
-        [0, { [_hQ]: _vI }],
-        [1, { [_hH]: _xamp }],
-        [0, { [_hH]: _xapnm }],
-        [0, { [_hH]: _xasseca }],
-        [() => SSECustomerKey, { [_hH]: _xasseck }],
-        [0, { [_hH]: _xasseckM }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xaebo }],
-        [64 | 0, { [_hH]: _xaoa }],
-    ],
-];
-var GetObjectLegalHoldOutput$ = [
-    3,
-    n0,
-    _GOLHO,
-    0,
-    [_LH],
-    [[() => ObjectLockLegalHold$, { [_hP]: 1, [_xN]: _LH }]],
-];
-var GetObjectLegalHoldRequest$ = [
-    3,
-    n0,
-    _GOLHR,
-    0,
-    [_B, _K, _VI, _RP, _EBO],
-    [
-        [0, 1],
-        [0, 1],
-        [0, { [_hQ]: _vI }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetObjectLockConfigurationOutput$ = [
-    3,
-    n0,
-    _GOLCO,
-    0,
-    [_OLC],
-    [[() => ObjectLockConfiguration$, 16]],
-];
-var GetObjectLockConfigurationRequest$ = [
-    3,
-    n0,
-    _GOLCR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetObjectOutput$ = [
-    3,
-    n0,
-    _GOO,
-    0,
-    [
-        _Bo,
-        _DM,
-        _AR,
-        _E,
-        _Re,
-        _LM,
-        _CLo,
-        _ETa,
-        _CCRC,
-        _CCRCC,
-        _CCRCNVME,
-        _CSHA,
-        _CSHAh,
-        _CT,
-        _MM,
-        _VI,
-        _CC,
-        _CDo,
-        _CEo,
-        _CL,
-        _CR,
-        _CTo,
-        _Ex,
-        _ES,
-        _WRL,
-        _SSE,
-        _M,
-        _SSECA,
-        _SSECKMD,
-        _SSEKMSKI,
-        _BKE,
-        _SC,
-        _RC,
-        _RS,
-        _PC,
-        _TC,
-        _OLM,
-        _OLRUD,
-        _OLLHS,
-    ],
-    [
-        [() => StreamingBlob, 16],
-        [2, { [_hH]: _xadm }],
-        [0, { [_hH]: _ar }],
-        [0, { [_hH]: _xae }],
-        [0, { [_hH]: _xar }],
-        [4, { [_hH]: _LM_ }],
-        [1, { [_hH]: _CL__ }],
-        [0, { [_hH]: _ETa }],
-        [0, { [_hH]: _xacc }],
-        [0, { [_hH]: _xacc_ }],
-        [0, { [_hH]: _xacc__ }],
-        [0, { [_hH]: _xacs }],
-        [0, { [_hH]: _xacs_ }],
-        [0, { [_hH]: _xact }],
-        [1, { [_hH]: _xamm }],
-        [0, { [_hH]: _xavi }],
-        [0, { [_hH]: _CC_ }],
-        [0, { [_hH]: _CD_ }],
-        [0, { [_hH]: _CE_ }],
-        [0, { [_hH]: _CL_ }],
-        [0, { [_hH]: _CR_ }],
-        [0, { [_hH]: _CT_ }],
-        [4, { [_hH]: _Ex }],
-        [0, { [_hH]: _ES }],
-        [0, { [_hH]: _xawrl }],
-        [0, { [_hH]: _xasse }],
-        [128 | 0, { [_hPH]: _xam }],
-        [0, { [_hH]: _xasseca }],
-        [0, { [_hH]: _xasseckM }],
-        [() => SSEKMSKeyId, { [_hH]: _xasseakki }],
-        [2, { [_hH]: _xassebke }],
-        [0, { [_hH]: _xasc }],
-        [0, { [_hH]: _xarc }],
-        [0, { [_hH]: _xars }],
-        [1, { [_hH]: _xampc }],
-        [1, { [_hH]: _xatc }],
-        [0, { [_hH]: _xaolm }],
-        [5, { [_hH]: _xaolrud }],
-        [0, { [_hH]: _xaollh }],
-    ],
-];
-var GetObjectRequest$ = [
-    3,
-    n0,
-    _GOR,
-    0,
-    [
-        _B,
-        _IM,
-        _IMSf,
-        _INM,
-        _IUS,
-        _K,
-        _Ra,
-        _RCC,
-        _RCD,
-        _RCE,
-        _RCL,
-        _RCT,
-        _RE,
-        _VI,
-        _SSECA,
-        _SSECK,
-        _SSECKMD,
-        _RP,
-        _PN,
-        _EBO,
-        _CMh,
-    ],
-    [
-        [0, 1],
-        [0, { [_hH]: _IM_ }],
-        [4, { [_hH]: _IMS_ }],
-        [0, { [_hH]: _INM_ }],
-        [4, { [_hH]: _IUS_ }],
-        [0, 1],
-        [0, { [_hH]: _Ra }],
-        [0, { [_hQ]: _rcc }],
-        [0, { [_hQ]: _rcd }],
-        [0, { [_hQ]: _rce }],
-        [0, { [_hQ]: _rcl }],
-        [0, { [_hQ]: _rct }],
-        [6, { [_hQ]: _re }],
-        [0, { [_hQ]: _vI }],
-        [0, { [_hH]: _xasseca }],
-        [() => SSECustomerKey, { [_hH]: _xasseck }],
-        [0, { [_hH]: _xasseckM }],
-        [0, { [_hH]: _xarp }],
-        [1, { [_hQ]: _pN }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _xacm }],
-    ],
-];
-var GetObjectRetentionOutput$ = [
-    3,
-    n0,
-    _GORO,
-    0,
-    [_Ret],
-    [[() => ObjectLockRetention$, { [_hP]: 1, [_xN]: _Ret }]],
-];
-var GetObjectRetentionRequest$ = [
-    3,
-    n0,
-    _GORR,
-    0,
-    [_B, _K, _VI, _RP, _EBO],
-    [
-        [0, 1],
-        [0, 1],
-        [0, { [_hQ]: _vI }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetObjectTaggingOutput$ = [
-    3,
-    n0,
-    _GOTO,
-    { [_xN]: _Tag },
-    [_VI, _TS],
-    [
-        [0, { [_hH]: _xavi }],
-        [() => TagSet, 0],
-    ],
-];
-var GetObjectTaggingRequest$ = [
-    3,
-    n0,
-    _GOTR,
-    0,
-    [_B, _K, _VI, _EBO, _RP],
-    [
-        [0, 1],
-        [0, 1],
-        [0, { [_hQ]: _vI }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _xarp }],
-    ],
-];
-var GetObjectTorrentOutput$ = [
-    3,
-    n0,
-    _GOTOe,
-    0,
-    [_Bo, _RC],
-    [
-        [() => StreamingBlob, 16],
-        [0, { [_hH]: _xarc }],
-    ],
-];
-var GetObjectTorrentRequest$ = [
-    3,
-    n0,
-    _GOTRe,
-    0,
-    [_B, _K, _RP, _EBO],
-    [
-        [0, 1],
-        [0, 1],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GetPublicAccessBlockOutput$ = [
-    3,
-    n0,
-    _GPABO,
-    0,
-    [_PABC],
-    [[() => PublicAccessBlockConfiguration$, 16]],
-];
-var GetPublicAccessBlockRequest$ = [
-    3,
-    n0,
-    _GPABR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var GlacierJobParameters$ = [3, n0, _GJP, 0, [_Ti], [0]];
-var Grant$ = [3, n0, _Gr, 0, [_Gra, _Pe], [[() => Grantee$, { [_xNm]: [_x, _hi] }], 0]];
-var Grantee$ = [
-    3,
-    n0,
-    _Gra,
-    0,
-    [_DN, _EA, _ID, _URI, _Ty],
-    [0, 0, 0, 0, [0, { [_xA]: 1, [_xN]: _xs }]],
-];
-var HeadBucketOutput$ = [
-    3,
-    n0,
-    _HBO,
-    0,
-    [_BA, _BLT, _BLN, _BR, _APA],
-    [
-        [0, { [_hH]: _xaba }],
-        [0, { [_hH]: _xablt }],
-        [0, { [_hH]: _xabln }],
-        [0, { [_hH]: _xabr }],
-        [2, { [_hH]: _xaapa }],
-    ],
-];
-var HeadBucketRequest$ = [
-    3,
-    n0,
-    _HBR,
-    0,
-    [_B, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var HeadObjectOutput$ = [
-    3,
-    n0,
-    _HOO,
-    0,
-    [
-        _DM,
-        _AR,
-        _E,
-        _Re,
-        _ASr,
-        _LM,
-        _CLo,
-        _CCRC,
-        _CCRCC,
-        _CCRCNVME,
-        _CSHA,
-        _CSHAh,
-        _CT,
-        _ETa,
-        _MM,
-        _VI,
-        _CC,
-        _CDo,
-        _CEo,
-        _CL,
-        _CTo,
-        _CR,
-        _Ex,
-        _ES,
-        _WRL,
-        _SSE,
-        _M,
-        _SSECA,
-        _SSECKMD,
-        _SSEKMSKI,
-        _BKE,
-        _SC,
-        _RC,
-        _RS,
-        _PC,
-        _TC,
-        _OLM,
-        _OLRUD,
-        _OLLHS,
-    ],
-    [
-        [2, { [_hH]: _xadm }],
-        [0, { [_hH]: _ar }],
-        [0, { [_hH]: _xae }],
-        [0, { [_hH]: _xar }],
-        [0, { [_hH]: _xaas }],
-        [4, { [_hH]: _LM_ }],
-        [1, { [_hH]: _CL__ }],
-        [0, { [_hH]: _xacc }],
-        [0, { [_hH]: _xacc_ }],
-        [0, { [_hH]: _xacc__ }],
-        [0, { [_hH]: _xacs }],
-        [0, { [_hH]: _xacs_ }],
-        [0, { [_hH]: _xact }],
-        [0, { [_hH]: _ETa }],
-        [1, { [_hH]: _xamm }],
-        [0, { [_hH]: _xavi }],
-        [0, { [_hH]: _CC_ }],
-        [0, { [_hH]: _CD_ }],
-        [0, { [_hH]: _CE_ }],
-        [0, { [_hH]: _CL_ }],
-        [0, { [_hH]: _CT_ }],
-        [0, { [_hH]: _CR_ }],
-        [4, { [_hH]: _Ex }],
-        [0, { [_hH]: _ES }],
-        [0, { [_hH]: _xawrl }],
-        [0, { [_hH]: _xasse }],
-        [128 | 0, { [_hPH]: _xam }],
-        [0, { [_hH]: _xasseca }],
-        [0, { [_hH]: _xasseckM }],
-        [() => SSEKMSKeyId, { [_hH]: _xasseakki }],
-        [2, { [_hH]: _xassebke }],
-        [0, { [_hH]: _xasc }],
-        [0, { [_hH]: _xarc }],
-        [0, { [_hH]: _xars }],
-        [1, { [_hH]: _xampc }],
-        [1, { [_hH]: _xatc }],
-        [0, { [_hH]: _xaolm }],
-        [5, { [_hH]: _xaolrud }],
-        [0, { [_hH]: _xaollh }],
-    ],
-];
-var HeadObjectRequest$ = [
-    3,
-    n0,
-    _HOR,
-    0,
-    [
-        _B,
-        _IM,
-        _IMSf,
-        _INM,
-        _IUS,
-        _K,
-        _Ra,
-        _RCC,
-        _RCD,
-        _RCE,
-        _RCL,
-        _RCT,
-        _RE,
-        _VI,
-        _SSECA,
-        _SSECK,
-        _SSECKMD,
-        _RP,
-        _PN,
-        _EBO,
-        _CMh,
-    ],
-    [
-        [0, 1],
-        [0, { [_hH]: _IM_ }],
-        [4, { [_hH]: _IMS_ }],
-        [0, { [_hH]: _INM_ }],
-        [4, { [_hH]: _IUS_ }],
-        [0, 1],
-        [0, { [_hH]: _Ra }],
-        [0, { [_hQ]: _rcc }],
-        [0, { [_hQ]: _rcd }],
-        [0, { [_hQ]: _rce }],
-        [0, { [_hQ]: _rcl }],
-        [0, { [_hQ]: _rct }],
-        [6, { [_hQ]: _re }],
-        [0, { [_hQ]: _vI }],
-        [0, { [_hH]: _xasseca }],
-        [() => SSECustomerKey, { [_hH]: _xasseck }],
-        [0, { [_hH]: _xasseckM }],
-        [0, { [_hH]: _xarp }],
-        [1, { [_hQ]: _pN }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _xacm }],
-    ],
-];
-var IdempotencyParameterMismatch$ = [-3, n0, _IPM, { [_e]: _c, [_hE]: 400 }, [], []];
-schema.TypeRegistry.for(n0).registerError(IdempotencyParameterMismatch$, IdempotencyParameterMismatch);
-var IndexDocument$ = [3, n0, _IDn, 0, [_Su], [0]];
-var Initiator$ = [3, n0, _In, 0, [_ID, _DN], [0, 0]];
-var InputSerialization$ = [
-    3,
-    n0,
-    _IS,
-    0,
-    [_CSV, _CTom, _JSON, _Parq],
-    [() => CSVInput$, 0, () => JSONInput$, () => ParquetInput$],
-];
-var IntelligentTieringAndOperator$ = [
-    3,
-    n0,
-    _ITAO,
-    0,
-    [_P, _T],
-    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }]],
-];
-var IntelligentTieringConfiguration$ = [
-    3,
-    n0,
-    _ITC,
-    0,
-    [_I, _F, _S, _Tie],
-    [0, [() => IntelligentTieringFilter$, 0], 0, [() => TieringList, { [_xF]: 1, [_xN]: _Tier }]],
-];
-var IntelligentTieringFilter$ = [
-    3,
-    n0,
-    _ITF,
-    0,
-    [_P, _Ta, _An],
-    [0, () => Tag$, [() => IntelligentTieringAndOperator$, 0]],
-];
-var InvalidObjectState$ = [-3, n0, _IOS, { [_e]: _c, [_hE]: 403 }, [_SC, _AT], [0, 0]];
-schema.TypeRegistry.for(n0).registerError(InvalidObjectState$, InvalidObjectState);
-var InvalidRequest$ = [-3, n0, _IR, { [_e]: _c, [_hE]: 400 }, [], []];
-schema.TypeRegistry.for(n0).registerError(InvalidRequest$, InvalidRequest);
-var InvalidWriteOffset$ = [-3, n0, _IWO, { [_e]: _c, [_hE]: 400 }, [], []];
-schema.TypeRegistry.for(n0).registerError(InvalidWriteOffset$, InvalidWriteOffset);
-var InventoryConfiguration$ = [
-    3,
-    n0,
-    _IC,
-    0,
-    [_Des, _IE, _F, _I, _IOV, _OF, _Sc],
-    [
-        [() => InventoryDestination$, 0],
-        2,
-        () => InventoryFilter$,
-        0,
-        0,
-        [() => InventoryOptionalFields, 0],
-        () => InventorySchedule$,
-    ],
-];
-var InventoryDestination$ = [
-    3,
-    n0,
-    _IDnv,
-    0,
-    [_SBD],
-    [[() => InventoryS3BucketDestination$, 0]],
-];
-var InventoryEncryption$ = [
-    3,
-    n0,
-    _IEn,
-    0,
-    [_SSES, _SSEKMS],
-    [
-        [() => SSES3$, { [_xN]: _SS }],
-        [() => SSEKMS$, { [_xN]: _SK }],
-    ],
-];
-var InventoryFilter$ = [3, n0, _IF, 0, [_P], [0]];
-var InventoryS3BucketDestination$ = [
-    3,
-    n0,
-    _ISBD,
-    0,
-    [_AI, _B, _Fo, _P, _En],
-    [0, 0, 0, 0, [() => InventoryEncryption$, 0]],
-];
-var InventorySchedule$ = [3, n0, _ISn, 0, [_Fr], [0]];
-var InventoryTableConfiguration$ = [
-    3,
-    n0,
-    _ITCn,
-    0,
-    [_CSo, _EC],
-    [0, () => MetadataTableEncryptionConfiguration$],
-];
-var InventoryTableConfigurationResult$ = [
-    3,
-    n0,
-    _ITCR,
-    0,
-    [_CSo, _TSa, _Err, _TNa, _TA],
-    [0, 0, () => ErrorDetails$, 0, 0],
-];
-var InventoryTableConfigurationUpdates$ = [
-    3,
-    n0,
-    _ITCU,
-    0,
-    [_CSo, _EC],
-    [0, () => MetadataTableEncryptionConfiguration$],
-];
-var JournalTableConfiguration$ = [
-    3,
-    n0,
-    _JTC,
-    0,
-    [_REe, _EC],
-    [() => RecordExpiration$, () => MetadataTableEncryptionConfiguration$],
-];
-var JournalTableConfigurationResult$ = [
-    3,
-    n0,
-    _JTCR,
-    0,
-    [_TSa, _Err, _TNa, _TA, _REe],
-    [0, () => ErrorDetails$, 0, 0, () => RecordExpiration$],
-];
-var JournalTableConfigurationUpdates$ = [
-    3,
-    n0,
-    _JTCU,
-    0,
-    [_REe],
-    [() => RecordExpiration$],
-];
-var JSONInput$ = [3, n0, _JSONI, 0, [_Ty], [0]];
-var JSONOutput$ = [3, n0, _JSONO, 0, [_RD], [0]];
-var LambdaFunctionConfiguration$ = [
-    3,
-    n0,
-    _LFC,
-    0,
-    [_I, _LFA, _Ev, _F],
-    [0, [0, { [_xN]: _CF }], [64 | 0, { [_xF]: 1, [_xN]: _Eve }], [() => NotificationConfigurationFilter$, 0]],
-];
-var LifecycleExpiration$ = [3, n0, _LEi, 0, [_Da, _D, _EODM], [5, 1, 2]];
-var LifecycleRule$ = [
-    3,
-    n0,
-    _LR,
-    0,
-    [_E, _ID, _P, _F, _S, _Tr, _NVT, _NVE, _AIMU],
-    [
-        () => LifecycleExpiration$,
-        0,
-        0,
-        [() => LifecycleRuleFilter$, 0],
-        0,
-        [() => TransitionList, { [_xF]: 1, [_xN]: _Tra }],
-        [() => NoncurrentVersionTransitionList, { [_xF]: 1, [_xN]: _NVTo }],
-        () => NoncurrentVersionExpiration$,
-        () => AbortIncompleteMultipartUpload$,
-    ],
-];
-var LifecycleRuleAndOperator$ = [
-    3,
-    n0,
-    _LRAO,
-    0,
-    [_P, _T, _OSGT, _OSLT],
-    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }], 1, 1],
-];
-var LifecycleRuleFilter$ = [
-    3,
-    n0,
-    _LRF,
-    0,
-    [_P, _Ta, _OSGT, _OSLT, _An],
-    [0, () => Tag$, 1, 1, [() => LifecycleRuleAndOperator$, 0]],
-];
-var ListBucketAnalyticsConfigurationsOutput$ = [
-    3,
-    n0,
-    _LBACO,
-    { [_xN]: _LBACR },
-    [_IT, _CTon, _NCT, _ACLn],
-    [2, 0, 0, [() => AnalyticsConfigurationList, { [_xF]: 1, [_xN]: _ACn }]],
-];
-var ListBucketAnalyticsConfigurationsRequest$ = [
-    3,
-    n0,
-    _LBACRi,
-    0,
-    [_B, _CTon, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _ct }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var ListBucketIntelligentTieringConfigurationsOutput$ = [
-    3,
-    n0,
-    _LBITCO,
-    0,
-    [_IT, _CTon, _NCT, _ITCL],
-    [2, 0, 0, [() => IntelligentTieringConfigurationList, { [_xF]: 1, [_xN]: _ITC }]],
-];
-var ListBucketIntelligentTieringConfigurationsRequest$ = [
-    3,
-    n0,
-    _LBITCR,
-    0,
-    [_B, _CTon, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _ct }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var ListBucketInventoryConfigurationsOutput$ = [
-    3,
-    n0,
-    _LBICO,
-    { [_xN]: _LICR },
-    [_CTon, _ICL, _IT, _NCT],
-    [0, [() => InventoryConfigurationList, { [_xF]: 1, [_xN]: _IC }], 2, 0],
-];
-var ListBucketInventoryConfigurationsRequest$ = [
-    3,
-    n0,
-    _LBICR,
-    0,
-    [_B, _CTon, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _ct }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var ListBucketMetricsConfigurationsOutput$ = [
-    3,
-    n0,
-    _LBMCO,
-    { [_xN]: _LMCR },
-    [_IT, _CTon, _NCT, _MCL],
-    [2, 0, 0, [() => MetricsConfigurationList, { [_xF]: 1, [_xN]: _MCe }]],
-];
-var ListBucketMetricsConfigurationsRequest$ = [
-    3,
-    n0,
-    _LBMCR,
-    0,
-    [_B, _CTon, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _ct }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var ListBucketsOutput$ = [
-    3,
-    n0,
-    _LBO,
-    { [_xN]: _LAMBR },
-    [_Bu, _O, _CTon, _P],
-    [[() => Buckets, 0], () => Owner$, 0, 0],
-];
-var ListBucketsRequest$ = [
-    3,
-    n0,
-    _LBR,
-    0,
-    [_MB, _CTon, _P, _BR],
-    [
-        [1, { [_hQ]: _mb }],
-        [0, { [_hQ]: _ct }],
-        [0, { [_hQ]: _p }],
-        [0, { [_hQ]: _br }],
-    ],
-];
-var ListDirectoryBucketsOutput$ = [
-    3,
-    n0,
-    _LDBO,
-    { [_xN]: _LAMDBR },
-    [_Bu, _CTon],
-    [[() => Buckets, 0], 0],
-];
-var ListDirectoryBucketsRequest$ = [
-    3,
-    n0,
-    _LDBR,
-    0,
-    [_CTon, _MDB],
-    [
-        [0, { [_hQ]: _ct }],
-        [1, { [_hQ]: _mdb }],
-    ],
-];
-var ListMultipartUploadsOutput$ = [
-    3,
-    n0,
-    _LMUO,
-    { [_xN]: _LMUR },
-    [_B, _KM, _UIM, _NKM, _P, _Deli, _NUIM, _MUa, _IT, _U, _CPom, _ETn, _RC],
-    [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        2,
-        [() => MultipartUploadList, { [_xF]: 1, [_xN]: _Up }],
-        [() => CommonPrefixList, { [_xF]: 1 }],
-        0,
-        [0, { [_hH]: _xarc }],
-    ],
-];
-var ListMultipartUploadsRequest$ = [
-    3,
-    n0,
-    _LMURi,
-    0,
-    [_B, _Deli, _ETn, _KM, _MUa, _P, _UIM, _EBO, _RP],
-    [
-        [0, 1],
-        [0, { [_hQ]: _d }],
-        [0, { [_hQ]: _et }],
-        [0, { [_hQ]: _km }],
-        [1, { [_hQ]: _mu }],
-        [0, { [_hQ]: _p }],
-        [0, { [_hQ]: _uim }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _xarp }],
-    ],
-];
-var ListObjectsOutput$ = [
-    3,
-    n0,
-    _LOO,
-    { [_xN]: _LBRi },
-    [_IT, _Ma, _NM, _Con, _N, _P, _Deli, _MK, _CPom, _ETn, _RC],
-    [
-        2,
-        0,
-        0,
-        [() => ObjectList, { [_xF]: 1 }],
-        0,
-        0,
-        0,
-        1,
-        [() => CommonPrefixList, { [_xF]: 1 }],
-        0,
-        [0, { [_hH]: _xarc }],
-    ],
-];
-var ListObjectsRequest$ = [
-    3,
-    n0,
-    _LOR,
-    0,
-    [_B, _Deli, _ETn, _Ma, _MK, _P, _RP, _EBO, _OOA],
-    [
-        [0, 1],
-        [0, { [_hQ]: _d }],
-        [0, { [_hQ]: _et }],
-        [0, { [_hQ]: _m }],
-        [1, { [_hQ]: _mk }],
-        [0, { [_hQ]: _p }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xaebo }],
-        [64 | 0, { [_hH]: _xaooa }],
-    ],
-];
-var ListObjectsV2Output$ = [
-    3,
-    n0,
-    _LOVO,
-    { [_xN]: _LBRi },
-    [_IT, _Con, _N, _P, _Deli, _MK, _CPom, _ETn, _KC, _CTon, _NCT, _SA, _RC],
-    [
-        2,
-        [() => ObjectList, { [_xF]: 1 }],
-        0,
-        0,
-        0,
-        1,
-        [() => CommonPrefixList, { [_xF]: 1 }],
-        0,
-        1,
-        0,
-        0,
-        0,
-        [0, { [_hH]: _xarc }],
-    ],
-];
-var ListObjectsV2Request$ = [
-    3,
-    n0,
-    _LOVR,
-    0,
-    [_B, _Deli, _ETn, _MK, _P, _CTon, _FO, _SA, _RP, _EBO, _OOA],
-    [
-        [0, 1],
-        [0, { [_hQ]: _d }],
-        [0, { [_hQ]: _et }],
-        [1, { [_hQ]: _mk }],
-        [0, { [_hQ]: _p }],
-        [0, { [_hQ]: _ct }],
-        [2, { [_hQ]: _fo }],
-        [0, { [_hQ]: _sa }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xaebo }],
-        [64 | 0, { [_hH]: _xaooa }],
-    ],
-];
-var ListObjectVersionsOutput$ = [
-    3,
-    n0,
-    _LOVOi,
-    { [_xN]: _LVR },
-    [_IT, _KM, _VIM, _NKM, _NVIM, _Ve, _DMe, _N, _P, _Deli, _MK, _CPom, _ETn, _RC],
-    [
-        2,
-        0,
-        0,
-        0,
-        0,
-        [() => ObjectVersionList, { [_xF]: 1, [_xN]: _Ver }],
-        [() => DeleteMarkers, { [_xF]: 1, [_xN]: _DM }],
-        0,
-        0,
-        0,
-        1,
-        [() => CommonPrefixList, { [_xF]: 1 }],
-        0,
-        [0, { [_hH]: _xarc }],
-    ],
-];
-var ListObjectVersionsRequest$ = [
-    3,
-    n0,
-    _LOVRi,
-    0,
-    [_B, _Deli, _ETn, _KM, _MK, _P, _VIM, _EBO, _RP, _OOA],
-    [
-        [0, 1],
-        [0, { [_hQ]: _d }],
-        [0, { [_hQ]: _et }],
-        [0, { [_hQ]: _km }],
-        [1, { [_hQ]: _mk }],
-        [0, { [_hQ]: _p }],
-        [0, { [_hQ]: _vim }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _xarp }],
-        [64 | 0, { [_hH]: _xaooa }],
-    ],
-];
-var ListPartsOutput$ = [
-    3,
-    n0,
-    _LPO,
-    { [_xN]: _LPR },
-    [_AD, _ARI, _B, _K, _UI, _PNM, _NPNM, _MP, _IT, _Pa, _In, _O, _SC, _RC, _CA, _CT],
-    [
-        [4, { [_hH]: _xaad }],
-        [0, { [_hH]: _xaari }],
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        2,
-        [() => Parts, { [_xF]: 1, [_xN]: _Par }],
-        () => Initiator$,
-        () => Owner$,
-        0,
-        [0, { [_hH]: _xarc }],
-        0,
-        0,
-    ],
-];
-var ListPartsRequest$ = [
-    3,
-    n0,
-    _LPRi,
-    0,
-    [_B, _K, _MP, _PNM, _UI, _RP, _EBO, _SSECA, _SSECK, _SSECKMD],
-    [
-        [0, 1],
-        [0, 1],
-        [1, { [_hQ]: _mp }],
-        [0, { [_hQ]: _pnm }],
-        [0, { [_hQ]: _uI }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _xasseca }],
-        [() => SSECustomerKey, { [_hH]: _xasseck }],
-        [0, { [_hH]: _xasseckM }],
-    ],
-];
-var LocationInfo$ = [3, n0, _LI, 0, [_Ty, _N], [0, 0]];
-var LoggingEnabled$ = [
-    3,
-    n0,
-    _LE,
-    0,
-    [_TB, _TG, _TP, _TOKF],
-    [0, [() => TargetGrants, 0], 0, [() => TargetObjectKeyFormat$, 0]],
-];
-var MetadataConfiguration$ = [
-    3,
-    n0,
-    _MC,
-    0,
-    [_JTC, _ITCn],
-    [() => JournalTableConfiguration$, () => InventoryTableConfiguration$],
-];
-var MetadataConfigurationResult$ = [
-    3,
-    n0,
-    _MCR,
-    0,
-    [_DRes, _JTCR, _ITCR],
-    [() => DestinationResult$, () => JournalTableConfigurationResult$, () => InventoryTableConfigurationResult$],
-];
-var MetadataEntry$ = [3, n0, _ME, 0, [_N, _V], [0, 0]];
-var MetadataTableConfiguration$ = [3, n0, _MTC, 0, [_STD], [() => S3TablesDestination$]];
-var MetadataTableConfigurationResult$ = [
-    3,
-    n0,
-    _MTCR,
-    0,
-    [_STDR],
-    [() => S3TablesDestinationResult$],
-];
-var MetadataTableEncryptionConfiguration$ = [3, n0, _MTEC, 0, [_SAs, _KKA], [0, 0]];
-var Metrics$ = [3, n0, _Me, 0, [_S, _ETv], [0, () => ReplicationTimeValue$]];
-var MetricsAndOperator$ = [
-    3,
-    n0,
-    _MAO,
-    0,
-    [_P, _T, _APAc],
-    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }], 0],
-];
-var MetricsConfiguration$ = [3, n0, _MCe, 0, [_I, _F], [0, [() => MetricsFilter$, 0]]];
-var MultipartUpload$ = [
-    3,
-    n0,
-    _MU,
-    0,
-    [_UI, _K, _Ini, _SC, _O, _In, _CA, _CT],
-    [0, 0, 4, 0, () => Owner$, () => Initiator$, 0, 0],
-];
-var NoncurrentVersionExpiration$ = [3, n0, _NVE, 0, [_ND, _NNV], [1, 1]];
-var NoncurrentVersionTransition$ = [3, n0, _NVTo, 0, [_ND, _SC, _NNV], [1, 0, 1]];
-var NoSuchBucket$ = [-3, n0, _NSB, { [_e]: _c, [_hE]: 404 }, [], []];
-schema.TypeRegistry.for(n0).registerError(NoSuchBucket$, NoSuchBucket);
-var NoSuchKey$ = [-3, n0, _NSK, { [_e]: _c, [_hE]: 404 }, [], []];
-schema.TypeRegistry.for(n0).registerError(NoSuchKey$, NoSuchKey);
-var NoSuchUpload$ = [-3, n0, _NSU, { [_e]: _c, [_hE]: 404 }, [], []];
-schema.TypeRegistry.for(n0).registerError(NoSuchUpload$, NoSuchUpload);
-var NotFound$ = [-3, n0, _NF, { [_e]: _c }, [], []];
-schema.TypeRegistry.for(n0).registerError(NotFound$, NotFound);
-var NotificationConfiguration$ = [
-    3,
-    n0,
-    _NC,
-    0,
-    [_TCo, _QCu, _LFCa, _EBC],
-    [
-        [() => TopicConfigurationList, { [_xF]: 1, [_xN]: _TCop }],
-        [() => QueueConfigurationList, { [_xF]: 1, [_xN]: _QCue }],
-        [() => LambdaFunctionConfigurationList, { [_xF]: 1, [_xN]: _CFC }],
-        () => EventBridgeConfiguration$,
-    ],
-];
-var NotificationConfigurationFilter$ = [
-    3,
-    n0,
-    _NCF,
-    0,
-    [_K],
-    [[() => S3KeyFilter$, { [_xN]: _SKe }]],
-];
-var _Object$ = [
-    3,
-    n0,
-    _Obj,
-    0,
-    [_K, _LM, _ETa, _CA, _CT, _Si, _SC, _O, _RSe],
-    [0, 4, 0, [64 | 0, { [_xF]: 1 }], 0, 1, 0, () => Owner$, () => RestoreStatus$],
-];
-var ObjectAlreadyInActiveTierError$ = [-3, n0, _OAIATE, { [_e]: _c, [_hE]: 403 }, [], []];
-schema.TypeRegistry.for(n0).registerError(ObjectAlreadyInActiveTierError$, ObjectAlreadyInActiveTierError);
-var ObjectIdentifier$ = [3, n0, _OI, 0, [_K, _VI, _ETa, _LMT, _Si], [0, 0, 0, 6, 1]];
-var ObjectLockConfiguration$ = [3, n0, _OLC, 0, [_OLE, _Ru], [0, () => ObjectLockRule$]];
-var ObjectLockLegalHold$ = [3, n0, _OLLH, 0, [_S], [0]];
-var ObjectLockRetention$ = [3, n0, _OLR, 0, [_Mo, _RUD], [0, 5]];
-var ObjectLockRule$ = [3, n0, _OLRb, 0, [_DRe], [() => DefaultRetention$]];
-var ObjectNotInActiveTierError$ = [-3, n0, _ONIATE, { [_e]: _c, [_hE]: 403 }, [], []];
-schema.TypeRegistry.for(n0).registerError(ObjectNotInActiveTierError$, ObjectNotInActiveTierError);
-var ObjectPart$ = [
-    3,
-    n0,
-    _OPb,
-    0,
-    [_PN, _Si, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh],
-    [1, 1, 0, 0, 0, 0, 0],
-];
-var ObjectVersion$ = [
-    3,
-    n0,
-    _OV,
-    0,
-    [_ETa, _CA, _CT, _Si, _SC, _K, _VI, _IL, _LM, _O, _RSe],
-    [0, [64 | 0, { [_xF]: 1 }], 0, 1, 0, 0, 0, 2, 4, () => Owner$, () => RestoreStatus$],
-];
-var OutputLocation$ = [3, n0, _OL, 0, [_S_], [[() => S3Location$, 0]]];
-var OutputSerialization$ = [
-    3,
-    n0,
-    _OSu,
-    0,
-    [_CSV, _JSON],
-    [() => CSVOutput$, () => JSONOutput$],
-];
-var Owner$ = [3, n0, _O, 0, [_DN, _ID], [0, 0]];
-var OwnershipControls$ = [
-    3,
-    n0,
-    _OC,
-    0,
-    [_R],
-    [[() => OwnershipControlsRules, { [_xF]: 1, [_xN]: _Ru }]],
-];
-var OwnershipControlsRule$ = [3, n0, _OCR, 0, [_OO], [0]];
-var ParquetInput$ = [3, n0, _PI, 0, [], []];
-var Part$ = [
-    3,
-    n0,
-    _Par,
-    0,
-    [_PN, _LM, _ETa, _Si, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh],
-    [1, 4, 0, 1, 0, 0, 0, 0, 0],
-];
-var PartitionedPrefix$ = [3, n0, _PP, { [_xN]: _PP }, [_PDS], [0]];
-var PolicyStatus$ = [3, n0, _PS, 0, [_IP], [[2, { [_xN]: _IP }]]];
-var Progress$ = [3, n0, _Pr, 0, [_BS, _BP, _BRy], [1, 1, 1]];
-var ProgressEvent$ = [3, n0, _PE, 0, [_Det], [[() => Progress$, { [_eP]: 1 }]]];
-var PublicAccessBlockConfiguration$ = [
-    3,
-    n0,
-    _PABC,
-    0,
-    [_BPA, _IPA, _BPP, _RPB],
-    [
-        [2, { [_xN]: _BPA }],
-        [2, { [_xN]: _IPA }],
-        [2, { [_xN]: _BPP }],
-        [2, { [_xN]: _RPB }],
-    ],
-];
-var PutBucketAbacRequest$ = [
-    3,
-    n0,
-    _PBAR,
-    0,
-    [_B, _CMD, _CA, _EBO, _AS],
-    [
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [0, { [_hH]: _xaebo }],
-        [() => AbacStatus$, { [_hP]: 1, [_xN]: _AS }],
-    ],
-];
-var PutBucketAccelerateConfigurationRequest$ = [
-    3,
-    n0,
-    _PBACR,
-    0,
-    [_B, _AC, _EBO, _CA],
-    [
-        [0, 1],
-        [() => AccelerateConfiguration$, { [_hP]: 1, [_xN]: _AC }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _xasca }],
-    ],
-];
-var PutBucketAclRequest$ = [
-    3,
-    n0,
-    _PBARu,
-    0,
-    [_ACL_, _ACP, _B, _CMD, _CA, _GFC, _GR, _GRACP, _GW, _GWACP, _EBO],
-    [
-        [0, { [_hH]: _xaa }],
-        [() => AccessControlPolicy$, { [_hP]: 1, [_xN]: _ACP }],
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [0, { [_hH]: _xagfc }],
-        [0, { [_hH]: _xagr }],
-        [0, { [_hH]: _xagra }],
-        [0, { [_hH]: _xagw }],
-        [0, { [_hH]: _xagwa }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutBucketAnalyticsConfigurationRequest$ = [
-    3,
-    n0,
-    _PBACRu,
-    0,
-    [_B, _I, _ACn, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _i }],
-        [() => AnalyticsConfiguration$, { [_hP]: 1, [_xN]: _ACn }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutBucketCorsRequest$ = [
-    3,
-    n0,
-    _PBCR,
-    0,
-    [_B, _CORSC, _CMD, _CA, _EBO],
-    [
-        [0, 1],
-        [() => CORSConfiguration$, { [_hP]: 1, [_xN]: _CORSC }],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutBucketEncryptionRequest$ = [
-    3,
-    n0,
-    _PBER,
-    0,
-    [_B, _CMD, _CA, _SSEC, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [() => ServerSideEncryptionConfiguration$, { [_hP]: 1, [_xN]: _SSEC }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutBucketIntelligentTieringConfigurationRequest$ = [
-    3,
-    n0,
-    _PBITCR,
-    0,
-    [_B, _I, _EBO, _ITC],
-    [
-        [0, 1],
-        [0, { [_hQ]: _i }],
-        [0, { [_hH]: _xaebo }],
-        [() => IntelligentTieringConfiguration$, { [_hP]: 1, [_xN]: _ITC }],
-    ],
-];
-var PutBucketInventoryConfigurationRequest$ = [
-    3,
-    n0,
-    _PBICR,
-    0,
-    [_B, _I, _IC, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _i }],
-        [() => InventoryConfiguration$, { [_hP]: 1, [_xN]: _IC }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutBucketLifecycleConfigurationOutput$ = [
-    3,
-    n0,
-    _PBLCO,
-    0,
-    [_TDMOS],
-    [[0, { [_hH]: _xatdmos }]],
-];
-var PutBucketLifecycleConfigurationRequest$ = [
-    3,
-    n0,
-    _PBLCR,
-    0,
-    [_B, _CA, _LCi, _EBO, _TDMOS],
-    [
-        [0, 1],
-        [0, { [_hH]: _xasca }],
-        [() => BucketLifecycleConfiguration$, { [_hP]: 1, [_xN]: _LCi }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _xatdmos }],
-    ],
-];
-var PutBucketLoggingRequest$ = [
-    3,
-    n0,
-    _PBLR,
-    0,
-    [_B, _BLS, _CMD, _CA, _EBO],
-    [
-        [0, 1],
-        [() => BucketLoggingStatus$, { [_hP]: 1, [_xN]: _BLS }],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutBucketMetricsConfigurationRequest$ = [
-    3,
-    n0,
-    _PBMCR,
-    0,
-    [_B, _I, _MCe, _EBO],
-    [
-        [0, 1],
-        [0, { [_hQ]: _i }],
-        [() => MetricsConfiguration$, { [_hP]: 1, [_xN]: _MCe }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutBucketNotificationConfigurationRequest$ = [
-    3,
-    n0,
-    _PBNCR,
-    0,
-    [_B, _NC, _EBO, _SDV],
-    [
-        [0, 1],
-        [() => NotificationConfiguration$, { [_hP]: 1, [_xN]: _NC }],
-        [0, { [_hH]: _xaebo }],
-        [2, { [_hH]: _xasdv }],
-    ],
-];
-var PutBucketOwnershipControlsRequest$ = [
-    3,
-    n0,
-    _PBOCR,
-    0,
-    [_B, _CMD, _EBO, _OC, _CA],
-    [
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xaebo }],
-        [() => OwnershipControls$, { [_hP]: 1, [_xN]: _OC }],
-        [0, { [_hH]: _xasca }],
-    ],
-];
-var PutBucketPolicyRequest$ = [
-    3,
-    n0,
-    _PBPR,
-    0,
-    [_B, _CMD, _CA, _CRSBA, _Po, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [2, { [_hH]: _xacrsba }],
-        [0, 16],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutBucketReplicationRequest$ = [
-    3,
-    n0,
-    _PBRR,
-    0,
-    [_B, _CMD, _CA, _RCe, _To, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [() => ReplicationConfiguration$, { [_hP]: 1, [_xN]: _RCe }],
-        [0, { [_hH]: _xabolt }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutBucketRequestPaymentRequest$ = [
-    3,
-    n0,
-    _PBRPR,
-    0,
-    [_B, _CMD, _CA, _RPC, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [() => RequestPaymentConfiguration$, { [_hP]: 1, [_xN]: _RPC }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutBucketTaggingRequest$ = [
-    3,
-    n0,
-    _PBTR,
-    0,
-    [_B, _CMD, _CA, _Tag, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [() => Tagging$, { [_hP]: 1, [_xN]: _Tag }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutBucketVersioningRequest$ = [
-    3,
-    n0,
-    _PBVR,
-    0,
-    [_B, _CMD, _CA, _MFA, _VC, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [0, { [_hH]: _xam_ }],
-        [() => VersioningConfiguration$, { [_hP]: 1, [_xN]: _VC }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutBucketWebsiteRequest$ = [
-    3,
-    n0,
-    _PBWR,
-    0,
-    [_B, _CMD, _CA, _WC, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [() => WebsiteConfiguration$, { [_hP]: 1, [_xN]: _WC }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutObjectAclOutput$ = [3, n0, _POAO, 0, [_RC], [[0, { [_hH]: _xarc }]]];
-var PutObjectAclRequest$ = [
-    3,
-    n0,
-    _POAR,
-    0,
-    [_ACL_, _ACP, _B, _CMD, _CA, _GFC, _GR, _GRACP, _GW, _GWACP, _K, _RP, _VI, _EBO],
-    [
-        [0, { [_hH]: _xaa }],
-        [() => AccessControlPolicy$, { [_hP]: 1, [_xN]: _ACP }],
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [0, { [_hH]: _xagfc }],
-        [0, { [_hH]: _xagr }],
-        [0, { [_hH]: _xagra }],
-        [0, { [_hH]: _xagw }],
-        [0, { [_hH]: _xagwa }],
-        [0, 1],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hQ]: _vI }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutObjectLegalHoldOutput$ = [3, n0, _POLHO, 0, [_RC], [[0, { [_hH]: _xarc }]]];
-var PutObjectLegalHoldRequest$ = [
-    3,
-    n0,
-    _POLHR,
-    0,
-    [_B, _K, _LH, _RP, _VI, _CMD, _CA, _EBO],
-    [
-        [0, 1],
-        [0, 1],
-        [() => ObjectLockLegalHold$, { [_hP]: 1, [_xN]: _LH }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hQ]: _vI }],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var PutObjectLockConfigurationOutput$ = [
-    3,
-    n0,
-    _POLCO,
+var AbortMultipartUploadOutput$ = [3, n0, _AMUO,
     0,
     [_RC],
-    [[0, { [_hH]: _xarc }]],
+    [[0, { [_hH]: _xarc }]]
 ];
-var PutObjectLockConfigurationRequest$ = [
-    3,
-    n0,
-    _POLCR,
+var AbortMultipartUploadRequest$ = [3, n0, _AMUR,
     0,
-    [_B, _OLC, _RP, _To, _CMD, _CA, _EBO],
-    [
-        [0, 1],
-        [() => ObjectLockConfiguration$, { [_hP]: 1, [_xN]: _OLC }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xabolt }],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [0, { [_hH]: _xaebo }],
-    ],
+    [_B, _K, _UI, _RP, _EBO, _IMIT],
+    [[0, 1], [0, 1], [0, { [_hQ]: _uI }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }], [6, { [_hH]: _xaimit }]]
 ];
-var PutObjectOutput$ = [
-    3,
-    n0,
-    _POO,
+var AccelerateConfiguration$ = [3, n0, _AC,
     0,
-    [
-        _E,
-        _ETa,
-        _CCRC,
-        _CCRCC,
-        _CCRCNVME,
-        _CSHA,
-        _CSHAh,
-        _CT,
-        _SSE,
-        _VI,
-        _SSECA,
-        _SSECKMD,
-        _SSEKMSKI,
-        _SSEKMSEC,
-        _BKE,
-        _Si,
-        _RC,
-    ],
-    [
-        [0, { [_hH]: _xae }],
-        [0, { [_hH]: _ETa }],
-        [0, { [_hH]: _xacc }],
-        [0, { [_hH]: _xacc_ }],
-        [0, { [_hH]: _xacc__ }],
-        [0, { [_hH]: _xacs }],
-        [0, { [_hH]: _xacs_ }],
-        [0, { [_hH]: _xact }],
-        [0, { [_hH]: _xasse }],
-        [0, { [_hH]: _xavi }],
-        [0, { [_hH]: _xasseca }],
-        [0, { [_hH]: _xasseckM }],
-        [() => SSEKMSKeyId, { [_hH]: _xasseakki }],
-        [() => SSEKMSEncryptionContext, { [_hH]: _xassec }],
-        [2, { [_hH]: _xassebke }],
-        [1, { [_hH]: _xaos }],
-        [0, { [_hH]: _xarc }],
-    ],
+    [_S],
+    [0]
 ];
-var PutObjectRequest$ = [
-    3,
-    n0,
-    _POR,
+var AccessControlPolicy$ = [3, n0, _ACP,
     0,
-    [
-        _ACL_,
-        _Bo,
-        _B,
-        _CC,
-        _CDo,
-        _CEo,
-        _CL,
-        _CLo,
-        _CMD,
-        _CTo,
-        _CA,
-        _CCRC,
-        _CCRCC,
-        _CCRCNVME,
-        _CSHA,
-        _CSHAh,
-        _Ex,
-        _IM,
-        _INM,
-        _GFC,
-        _GR,
-        _GRACP,
-        _GWACP,
-        _K,
-        _WOB,
-        _M,
-        _SSE,
-        _SC,
-        _WRL,
-        _SSECA,
-        _SSECK,
-        _SSECKMD,
-        _SSEKMSKI,
-        _SSEKMSEC,
-        _BKE,
-        _RP,
-        _Tag,
-        _OLM,
-        _OLRUD,
-        _OLLHS,
-        _EBO,
-    ],
-    [
-        [0, { [_hH]: _xaa }],
-        [() => StreamingBlob, 16],
-        [0, 1],
-        [0, { [_hH]: _CC_ }],
-        [0, { [_hH]: _CD_ }],
-        [0, { [_hH]: _CE_ }],
-        [0, { [_hH]: _CL_ }],
-        [1, { [_hH]: _CL__ }],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _CT_ }],
-        [0, { [_hH]: _xasca }],
-        [0, { [_hH]: _xacc }],
-        [0, { [_hH]: _xacc_ }],
-        [0, { [_hH]: _xacc__ }],
-        [0, { [_hH]: _xacs }],
-        [0, { [_hH]: _xacs_ }],
-        [4, { [_hH]: _Ex }],
-        [0, { [_hH]: _IM_ }],
-        [0, { [_hH]: _INM_ }],
-        [0, { [_hH]: _xagfc }],
-        [0, { [_hH]: _xagr }],
-        [0, { [_hH]: _xagra }],
-        [0, { [_hH]: _xagwa }],
-        [0, 1],
-        [1, { [_hH]: _xawob }],
-        [128 | 0, { [_hPH]: _xam }],
-        [0, { [_hH]: _xasse }],
-        [0, { [_hH]: _xasc }],
-        [0, { [_hH]: _xawrl }],
-        [0, { [_hH]: _xasseca }],
-        [() => SSECustomerKey, { [_hH]: _xasseck }],
-        [0, { [_hH]: _xasseckM }],
-        [() => SSEKMSKeyId, { [_hH]: _xasseakki }],
-        [() => SSEKMSEncryptionContext, { [_hH]: _xassec }],
-        [2, { [_hH]: _xassebke }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xat }],
-        [0, { [_hH]: _xaolm }],
-        [5, { [_hH]: _xaolrud }],
-        [0, { [_hH]: _xaollh }],
-        [0, { [_hH]: _xaebo }],
-    ],
+    [_G, _O],
+    [[() => Grants, { [_xN]: _ACL }], () => Owner$]
 ];
-var PutObjectRetentionOutput$ = [3, n0, _PORO, 0, [_RC], [[0, { [_hH]: _xarc }]]];
-var PutObjectRetentionRequest$ = [
-    3,
-    n0,
-    _PORR,
+var AccessControlTranslation$ = [3, n0, _ACT,
     0,
-    [_B, _K, _Ret, _RP, _VI, _BGR, _CMD, _CA, _EBO],
-    [
-        [0, 1],
-        [0, 1],
-        [() => ObjectLockRetention$, { [_hP]: 1, [_xN]: _Ret }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hQ]: _vI }],
-        [2, { [_hH]: _xabgr }],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [0, { [_hH]: _xaebo }],
-    ],
+    [_O],
+    [0]
 ];
-var PutObjectTaggingOutput$ = [3, n0, _POTO, 0, [_VI], [[0, { [_hH]: _xavi }]]];
-var PutObjectTaggingRequest$ = [
-    3,
-    n0,
-    _POTR,
-    0,
-    [_B, _K, _VI, _CMD, _CA, _Tag, _EBO, _RP],
-    [
-        [0, 1],
-        [0, 1],
-        [0, { [_hQ]: _vI }],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [() => Tagging$, { [_hP]: 1, [_xN]: _Tag }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _xarp }],
-    ],
-];
-var PutPublicAccessBlockRequest$ = [
-    3,
-    n0,
-    _PPABR,
-    0,
-    [_B, _CMD, _CA, _PABC, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [() => PublicAccessBlockConfiguration$, { [_hP]: 1, [_xN]: _PABC }],
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var QueueConfiguration$ = [
-    3,
-    n0,
-    _QCue,
-    0,
-    [_I, _QA, _Ev, _F],
-    [0, [0, { [_xN]: _Qu }], [64 | 0, { [_xF]: 1, [_xN]: _Eve }], [() => NotificationConfigurationFilter$, 0]],
-];
-var RecordExpiration$ = [3, n0, _REe, 0, [_E, _D], [0, 1]];
-var RecordsEvent$ = [3, n0, _REec, 0, [_Payl], [[21, { [_eP]: 1 }]]];
-var Redirect$ = [3, n0, _Red, 0, [_HN, _HRC, _Pro, _RKPW, _RKW], [0, 0, 0, 0, 0]];
-var RedirectAllRequestsTo$ = [3, n0, _RART, 0, [_HN, _Pro], [0, 0]];
-var RenameObjectOutput$ = [3, n0, _ROO, 0, [], []];
-var RenameObjectRequest$ = [
-    3,
-    n0,
-    _ROR,
-    0,
-    [_B, _K, _RSen, _DIM, _DINM, _DIMS, _DIUS, _SIM, _SINM, _SIMS, _SIUS, _CTl],
-    [
-        [0, 1],
-        [0, 1],
-        [0, { [_hH]: _xars_ }],
-        [0, { [_hH]: _IM_ }],
-        [0, { [_hH]: _INM_ }],
-        [4, { [_hH]: _IMS_ }],
-        [4, { [_hH]: _IUS_ }],
-        [0, { [_hH]: _xarsim }],
-        [0, { [_hH]: _xarsinm }],
-        [6, { [_hH]: _xarsims }],
-        [6, { [_hH]: _xarsius }],
-        [0, { [_hH]: _xact_, [_iT]: 1 }],
-    ],
-];
-var ReplicaModifications$ = [3, n0, _RM, 0, [_S], [0]];
-var ReplicationConfiguration$ = [
-    3,
-    n0,
-    _RCe,
-    0,
-    [_Ro, _R],
-    [0, [() => ReplicationRules, { [_xF]: 1, [_xN]: _Ru }]],
-];
-var ReplicationRule$ = [
-    3,
-    n0,
-    _RRe,
-    0,
-    [_ID, _Pri, _P, _F, _S, _SSC, _EOR, _Des, _DMR],
-    [
-        0,
-        1,
-        0,
-        [() => ReplicationRuleFilter$, 0],
-        0,
-        () => SourceSelectionCriteria$,
-        () => ExistingObjectReplication$,
-        () => Destination$,
-        () => DeleteMarkerReplication$,
-    ],
-];
-var ReplicationRuleAndOperator$ = [
-    3,
-    n0,
-    _RRAO,
+var AnalyticsAndOperator$ = [3, n0, _AAO,
     0,
     [_P, _T],
-    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }]],
+    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }]]
 ];
-var ReplicationRuleFilter$ = [
-    3,
-    n0,
-    _RRF,
+var AnalyticsConfiguration$ = [3, n0, _ACn,
     0,
-    [_P, _Ta, _An],
-    [0, () => Tag$, [() => ReplicationRuleAndOperator$, 0]],
+    [_I, _F, _SCA],
+    [0, [() => AnalyticsFilter$, 0], () => StorageClassAnalysis$]
 ];
-var ReplicationTime$ = [3, n0, _RT, 0, [_S, _Tim], [0, () => ReplicationTimeValue$]];
-var ReplicationTimeValue$ = [3, n0, _RTV, 0, [_Mi], [1]];
-var RequestPaymentConfiguration$ = [3, n0, _RPC, 0, [_Pay], [0]];
-var RequestProgress$ = [3, n0, _RPe, 0, [_Ena], [2]];
-var RestoreObjectOutput$ = [
-    3,
-    n0,
-    _ROOe,
+var AnalyticsExportDestination$ = [3, n0, _AED,
     0,
-    [_RC, _ROP],
-    [
-        [0, { [_hH]: _xarc }],
-        [0, { [_hH]: _xarop }],
-    ],
+    [_SBD],
+    [() => AnalyticsS3BucketDestination$]
 ];
-var RestoreObjectRequest$ = [
-    3,
-    n0,
-    _RORe,
+var AnalyticsS3BucketDestination$ = [3, n0, _ASBD,
     0,
-    [_B, _K, _VI, _RRes, _RP, _CA, _EBO],
-    [
-        [0, 1],
-        [0, 1],
-        [0, { [_hQ]: _vI }],
-        [() => RestoreRequest$, { [_hP]: 1, [_xN]: _RRes }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xasca }],
-        [0, { [_hH]: _xaebo }],
-    ],
+    [_Fo, _BAI, _B, _P],
+    [0, 0, 0, 0]
 ];
-var RestoreRequest$ = [
-    3,
-    n0,
-    _RRes,
+var BlockedEncryptionTypes$ = [3, n0, _BET,
     0,
-    [_D, _GJP, _Ty, _Ti, _Desc, _SP, _OL],
-    [1, () => GlacierJobParameters$, 0, 0, 0, () => SelectParameters$, [() => OutputLocation$, 0]],
+    [_ET],
+    [[() => EncryptionTypeList, { [_xF]: 1 }]]
 ];
-var RestoreStatus$ = [3, n0, _RSe, 0, [_IRIP, _RED], [2, 4]];
-var RoutingRule$ = [3, n0, _RRo, 0, [_Co, _Red], [() => Condition$, () => Redirect$]];
-var S3KeyFilter$ = [
-    3,
-    n0,
-    _SKF,
+var Bucket$ = [3, n0, _B,
     0,
-    [_FRi],
-    [[() => FilterRuleList, { [_xF]: 1, [_xN]: _FR }]],
+    [_N, _CD, _BR, _BA],
+    [0, 4, 0, 0]
 ];
-var S3Location$ = [
-    3,
-    n0,
-    _SL,
+var BucketAlreadyExists$ = [-3, n0, _BAE,
+    { [_e]: _c, [_hE]: 409 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(BucketAlreadyExists$, BucketAlreadyExists);
+var BucketAlreadyOwnedByYou$ = [-3, n0, _BAOBY,
+    { [_e]: _c, [_hE]: 409 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(BucketAlreadyOwnedByYou$, BucketAlreadyOwnedByYou);
+var BucketInfo$ = [3, n0, _BI,
     0,
-    [_BN, _P, _En, _CACL, _ACL, _Tag, _UM, _SC],
-    [0, 0, [() => Encryption$, 0], 0, [() => Grants, 0], [() => Tagging$, 0], [() => UserMetadata, 0], 0],
+    [_DR, _Ty],
+    [0, 0]
 ];
-var S3TablesDestination$ = [3, n0, _STD, 0, [_TBA, _TNa], [0, 0]];
-var S3TablesDestinationResult$ = [3, n0, _STDR, 0, [_TBA, _TNa, _TA, _TN], [0, 0, 0, 0]];
-var ScanRange$ = [3, n0, _SR, 0, [_St, _End], [1, 1]];
-var SelectObjectContentOutput$ = [
-    3,
-    n0,
-    _SOCO,
-    0,
-    [_Payl],
-    [[() => SelectObjectContentEventStream$, 16]],
-];
-var SelectObjectContentRequest$ = [
-    3,
-    n0,
-    _SOCR,
-    0,
-    [_B, _K, _SSECA, _SSECK, _SSECKMD, _Exp, _ETx, _RPe, _IS, _OSu, _SR, _EBO],
-    [
-        [0, 1],
-        [0, 1],
-        [0, { [_hH]: _xasseca }],
-        [() => SSECustomerKey, { [_hH]: _xasseck }],
-        [0, { [_hH]: _xasseckM }],
-        0,
-        0,
-        () => RequestProgress$,
-        () => InputSerialization$,
-        () => OutputSerialization$,
-        () => ScanRange$,
-        [0, { [_hH]: _xaebo }],
-    ],
-];
-var SelectParameters$ = [
-    3,
-    n0,
-    _SP,
-    0,
-    [_IS, _ETx, _Exp, _OSu],
-    [() => InputSerialization$, 0, 0, () => OutputSerialization$],
-];
-var ServerSideEncryptionByDefault$ = [
-    3,
-    n0,
-    _SSEBD,
-    0,
-    [_SSEA, _KMSMKID],
-    [0, [() => SSEKMSKeyId, 0]],
-];
-var ServerSideEncryptionConfiguration$ = [
-    3,
-    n0,
-    _SSEC,
+var BucketLifecycleConfiguration$ = [3, n0, _BLC,
     0,
     [_R],
-    [[() => ServerSideEncryptionRules, { [_xF]: 1, [_xN]: _Ru }]],
+    [[() => LifecycleRules, { [_xF]: 1, [_xN]: _Ru }]]
 ];
-var ServerSideEncryptionRule$ = [
-    3,
-    n0,
-    _SSER,
+var BucketLoggingStatus$ = [3, n0, _BLS,
     0,
-    [_ASSEBD, _BKE, _BET],
-    [[() => ServerSideEncryptionByDefault$, 0], 2, [() => BlockedEncryptionTypes$, 0]],
+    [_LE],
+    [[() => LoggingEnabled$, 0]]
 ];
-var SessionCredentials$ = [
-    3,
-    n0,
-    _SCe,
+var Checksum$ = [3, n0, _C,
     0,
-    [_AKI, _SAK, _ST, _E],
-    [
-        [0, { [_xN]: _AKI }],
-        [() => SessionCredentialValue, { [_xN]: _SAK }],
-        [() => SessionCredentialValue, { [_xN]: _ST }],
-        [4, { [_xN]: _E }],
-    ],
+    [_CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _CT],
+    [0, 0, 0, 0, 0, 0]
 ];
-var SimplePrefix$ = [3, n0, _SPi, { [_xN]: _SPi }, [], []];
-var SourceSelectionCriteria$ = [
-    3,
-    n0,
-    _SSC,
+var CommonPrefix$ = [3, n0, _CP,
     0,
-    [_SKEO, _RM],
-    [() => SseKmsEncryptedObjects$, () => ReplicaModifications$],
+    [_P],
+    [0]
 ];
-var SSEKMS$ = [3, n0, _SSEKMS, { [_xN]: _SK }, [_KI], [[() => SSEKMSKeyId, 0]]];
-var SseKmsEncryptedObjects$ = [3, n0, _SKEO, 0, [_S], [0]];
-var SSES3$ = [3, n0, _SSES, { [_xN]: _SS }, [], []];
-var Stats$ = [3, n0, _Sta, 0, [_BS, _BP, _BRy], [1, 1, 1]];
-var StatsEvent$ = [3, n0, _SE, 0, [_Det], [[() => Stats$, { [_eP]: 1 }]]];
-var StorageClassAnalysis$ = [
-    3,
-    n0,
-    _SCA,
+var CompletedMultipartUpload$ = [3, n0, _CMU,
     0,
-    [_DE],
-    [() => StorageClassAnalysisDataExport$],
+    [_Pa],
+    [[() => CompletedPartList, { [_xF]: 1, [_xN]: _Par }]]
 ];
-var StorageClassAnalysisDataExport$ = [
-    3,
-    n0,
-    _SCADE,
+var CompletedPart$ = [3, n0, _CPo,
     0,
-    [_OSV, _Des],
-    [0, () => AnalyticsExportDestination$],
+    [_ETa, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _PN],
+    [0, 0, 0, 0, 0, 0, 1]
 ];
-var Tag$ = [3, n0, _Ta, 0, [_K, _V], [0, 0]];
-var Tagging$ = [3, n0, _Tag, 0, [_TS], [[() => TagSet, 0]]];
-var TargetGrant$ = [
-    3,
-    n0,
-    _TGa,
+var CompleteMultipartUploadOutput$ = [3, n0, _CMUO,
+    { [_xN]: _CMUR },
+    [_L, _B, _K, _E, _ETa, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _CT, _SSE, _VI, _SSEKMSKI, _BKE, _RC],
+    [0, 0, 0, [0, { [_hH]: _xae }], 0, 0, 0, 0, 0, 0, 0, [0, { [_hH]: _xasse }], [0, { [_hH]: _xavi }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xarc }]]
+];
+var CompleteMultipartUploadRequest$ = [3, n0, _CMURo,
+    0,
+    [_B, _K, _MU, _UI, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _CT, _MOS, _RP, _EBO, _IM, _INM, _SSECA, _SSECK, _SSECKMD],
+    [[0, 1], [0, 1], [() => CompletedMultipartUpload$, { [_hP]: 1, [_xN]: _CMUo }], [0, { [_hQ]: _uI }], [0, { [_hH]: _xacc }], [0, { [_hH]: _xacc_ }], [0, { [_hH]: _xacc__ }], [0, { [_hH]: _xacs }], [0, { [_hH]: _xacs_ }], [0, { [_hH]: _xact }], [1, { [_hH]: _xamos }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _IM_ }], [0, { [_hH]: _INM_ }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }]]
+];
+var Condition$ = [3, n0, _Co,
+    0,
+    [_HECRE, _KPE],
+    [0, 0]
+];
+var ContinuationEvent$ = [3, n0, _CE,
+    0,
+    [],
+    []
+];
+var CopyObjectOutput$ = [3, n0, _COO,
+    0,
+    [_COR, _E, _CSVI, _VI, _SSE, _SSECA, _SSECKMD, _SSEKMSKI, _SSEKMSEC, _BKE, _RC],
+    [[() => CopyObjectResult$, 16], [0, { [_hH]: _xae }], [0, { [_hH]: _xacsvi }], [0, { [_hH]: _xavi }], [0, { [_hH]: _xasse }], [0, { [_hH]: _xasseca }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xarc }]]
+];
+var CopyObjectRequest$ = [3, n0, _CORo,
+    0,
+    [_ACL_, _B, _CC, _CA, _CDo, _CEo, _CL, _CTo, _CS, _CSIM, _CSIMS, _CSINM, _CSIUS, _Ex, _GFC, _GR, _GRACP, _GWACP, _IM, _INM, _K, _M, _MD, _TD, _SSE, _SC, _WRL, _SSECA, _SSECK, _SSECKMD, _SSEKMSKI, _SSEKMSEC, _BKE, _CSSSECA, _CSSSECK, _CSSSECKMD, _RP, _Tag, _OLM, _OLRUD, _OLLHS, _EBO, _ESBO],
+    [[0, { [_hH]: _xaa }], [0, 1], [0, { [_hH]: _CC_ }], [0, { [_hH]: _xaca }], [0, { [_hH]: _CD_ }], [0, { [_hH]: _CE_ }], [0, { [_hH]: _CL_ }], [0, { [_hH]: _CT_ }], [0, { [_hH]: _xacs__ }], [0, { [_hH]: _xacsim }], [4, { [_hH]: _xacsims }], [0, { [_hH]: _xacsinm }], [4, { [_hH]: _xacsius }], [4, { [_hH]: _Ex }], [0, { [_hH]: _xagfc }], [0, { [_hH]: _xagr }], [0, { [_hH]: _xagra }], [0, { [_hH]: _xagwa }], [0, { [_hH]: _IM_ }], [0, { [_hH]: _INM_ }], [0, 1], [128 | 0, { [_hPH]: _xam }], [0, { [_hH]: _xamd }], [0, { [_hH]: _xatd }], [0, { [_hH]: _xasse }], [0, { [_hH]: _xasc }], [0, { [_hH]: _xawrl }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xacssseca }], [() => CopySourceSSECustomerKey, { [_hH]: _xacssseck }], [0, { [_hH]: _xacssseckM }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xat }], [0, { [_hH]: _xaolm }], [5, { [_hH]: _xaolrud }], [0, { [_hH]: _xaollh }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xasebo }]]
+];
+var CopyObjectResult$ = [3, n0, _COR,
+    0,
+    [_ETa, _LM, _CT, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh],
+    [0, 4, 0, 0, 0, 0, 0, 0]
+];
+var CopyPartResult$ = [3, n0, _CPR,
+    0,
+    [_ETa, _LM, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh],
+    [0, 4, 0, 0, 0, 0, 0]
+];
+var CORSConfiguration$ = [3, n0, _CORSC,
+    0,
+    [_CORSR],
+    [[() => CORSRules, { [_xF]: 1, [_xN]: _CORSRu }]]
+];
+var CORSRule$ = [3, n0, _CORSRu,
+    0,
+    [_ID, _AH, _AM, _AO, _EH, _MAS],
+    [0, [64 | 0, { [_xF]: 1, [_xN]: _AHl }], [64 | 0, { [_xF]: 1, [_xN]: _AMl }], [64 | 0, { [_xF]: 1, [_xN]: _AOl }], [64 | 0, { [_xF]: 1, [_xN]: _EHx }], 1]
+];
+var CreateBucketConfiguration$ = [3, n0, _CBC,
+    0,
+    [_LC, _L, _B, _T],
+    [0, () => LocationInfo$, () => BucketInfo$, [() => TagSet, 0]]
+];
+var CreateBucketMetadataConfigurationRequest$ = [3, n0, _CBMCR,
+    0,
+    [_B, _CMD, _CA, _MC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => MetadataConfiguration$, { [_hP]: 1, [_xN]: _MC }], [0, { [_hH]: _xaebo }]]
+];
+var CreateBucketMetadataTableConfigurationRequest$ = [3, n0, _CBMTCR,
+    0,
+    [_B, _CMD, _CA, _MTC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => MetadataTableConfiguration$, { [_hP]: 1, [_xN]: _MTC }], [0, { [_hH]: _xaebo }]]
+];
+var CreateBucketOutput$ = [3, n0, _CBO,
+    0,
+    [_L, _BA],
+    [[0, { [_hH]: _L }], [0, { [_hH]: _xaba }]]
+];
+var CreateBucketRequest$ = [3, n0, _CBR,
+    0,
+    [_ACL_, _B, _CBC, _GFC, _GR, _GRACP, _GW, _GWACP, _OLEFB, _OO],
+    [[0, { [_hH]: _xaa }], [0, 1], [() => CreateBucketConfiguration$, { [_hP]: 1, [_xN]: _CBC }], [0, { [_hH]: _xagfc }], [0, { [_hH]: _xagr }], [0, { [_hH]: _xagra }], [0, { [_hH]: _xagw }], [0, { [_hH]: _xagwa }], [2, { [_hH]: _xabole }], [0, { [_hH]: _xaoo }]]
+];
+var CreateMultipartUploadOutput$ = [3, n0, _CMUOr,
+    { [_xN]: _IMUR },
+    [_AD, _ARI, _B, _K, _UI, _SSE, _SSECA, _SSECKMD, _SSEKMSKI, _SSEKMSEC, _BKE, _RC, _CA, _CT],
+    [[4, { [_hH]: _xaad }], [0, { [_hH]: _xaari }], [0, { [_xN]: _B }], 0, 0, [0, { [_hH]: _xasse }], [0, { [_hH]: _xasseca }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xarc }], [0, { [_hH]: _xaca }], [0, { [_hH]: _xact }]]
+];
+var CreateMultipartUploadRequest$ = [3, n0, _CMURr,
+    0,
+    [_ACL_, _B, _CC, _CDo, _CEo, _CL, _CTo, _Ex, _GFC, _GR, _GRACP, _GWACP, _K, _M, _SSE, _SC, _WRL, _SSECA, _SSECK, _SSECKMD, _SSEKMSKI, _SSEKMSEC, _BKE, _RP, _Tag, _OLM, _OLRUD, _OLLHS, _EBO, _CA, _CT],
+    [[0, { [_hH]: _xaa }], [0, 1], [0, { [_hH]: _CC_ }], [0, { [_hH]: _CD_ }], [0, { [_hH]: _CE_ }], [0, { [_hH]: _CL_ }], [0, { [_hH]: _CT_ }], [4, { [_hH]: _Ex }], [0, { [_hH]: _xagfc }], [0, { [_hH]: _xagr }], [0, { [_hH]: _xagra }], [0, { [_hH]: _xagwa }], [0, 1], [128 | 0, { [_hPH]: _xam }], [0, { [_hH]: _xasse }], [0, { [_hH]: _xasc }], [0, { [_hH]: _xawrl }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xat }], [0, { [_hH]: _xaolm }], [5, { [_hH]: _xaolrud }], [0, { [_hH]: _xaollh }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xaca }], [0, { [_hH]: _xact }]]
+];
+var CreateSessionOutput$ = [3, n0, _CSO,
+    { [_xN]: _CSR },
+    [_SSE, _SSEKMSKI, _SSEKMSEC, _BKE, _Cr],
+    [[0, { [_hH]: _xasse }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }], [() => SessionCredentials$, { [_xN]: _Cr }]]
+];
+var CreateSessionRequest$ = [3, n0, _CSRr,
+    0,
+    [_SM, _B, _SSE, _SSEKMSKI, _SSEKMSEC, _BKE],
+    [[0, { [_hH]: _xacsm }], [0, 1], [0, { [_hH]: _xasse }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }]]
+];
+var CSVInput$ = [3, n0, _CSVIn,
+    0,
+    [_FHI, _Com, _QEC, _RD, _FD, _QC, _AQRD],
+    [0, 0, 0, 0, 0, 0, 2]
+];
+var CSVOutput$ = [3, n0, _CSVO,
+    0,
+    [_QF, _QEC, _RD, _FD, _QC],
+    [0, 0, 0, 0, 0]
+];
+var DefaultRetention$ = [3, n0, _DRe,
+    0,
+    [_Mo, _D, _Y],
+    [0, 1, 1]
+];
+var Delete$ = [3, n0, _De,
+    0,
+    [_Ob, _Q],
+    [[() => ObjectIdentifierList, { [_xF]: 1, [_xN]: _Obj }], 2]
+];
+var DeleteBucketAnalyticsConfigurationRequest$ = [3, n0, _DBACR,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketCorsRequest$ = [3, n0, _DBCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketEncryptionRequest$ = [3, n0, _DBER,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketIntelligentTieringConfigurationRequest$ = [3, n0, _DBITCR,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketInventoryConfigurationRequest$ = [3, n0, _DBICR,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketLifecycleRequest$ = [3, n0, _DBLR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketMetadataConfigurationRequest$ = [3, n0, _DBMCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketMetadataTableConfigurationRequest$ = [3, n0, _DBMTCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketMetricsConfigurationRequest$ = [3, n0, _DBMCRe,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketOwnershipControlsRequest$ = [3, n0, _DBOCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketPolicyRequest$ = [3, n0, _DBPR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketReplicationRequest$ = [3, n0, _DBRR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketRequest$ = [3, n0, _DBR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketTaggingRequest$ = [3, n0, _DBTR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeleteBucketWebsiteRequest$ = [3, n0, _DBWR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var DeletedObject$ = [3, n0, _DO,
+    0,
+    [_K, _VI, _DM, _DMVI],
+    [0, 0, 2, 0]
+];
+var DeleteMarkerEntry$ = [3, n0, _DME,
+    0,
+    [_O, _K, _VI, _IL, _LM],
+    [() => Owner$, 0, 0, 2, 4]
+];
+var DeleteMarkerReplication$ = [3, n0, _DMR,
+    0,
+    [_S],
+    [0]
+];
+var DeleteObjectOutput$ = [3, n0, _DOO,
+    0,
+    [_DM, _VI, _RC],
+    [[2, { [_hH]: _xadm }], [0, { [_hH]: _xavi }], [0, { [_hH]: _xarc }]]
+];
+var DeleteObjectRequest$ = [3, n0, _DOR,
+    0,
+    [_B, _K, _MFA, _VI, _RP, _BGR, _EBO, _IM, _IMLMT, _IMS],
+    [[0, 1], [0, 1], [0, { [_hH]: _xam_ }], [0, { [_hQ]: _vI }], [0, { [_hH]: _xarp }], [2, { [_hH]: _xabgr }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _IM_ }], [6, { [_hH]: _xaimlmt }], [1, { [_hH]: _xaims }]]
+];
+var DeleteObjectsOutput$ = [3, n0, _DOOe,
+    { [_xN]: _DRel },
+    [_Del, _RC, _Er],
+    [[() => DeletedObjects, { [_xF]: 1 }], [0, { [_hH]: _xarc }], [() => Errors, { [_xF]: 1, [_xN]: _Err }]]
+];
+var DeleteObjectsRequest$ = [3, n0, _DORe,
+    0,
+    [_B, _De, _MFA, _RP, _BGR, _EBO, _CA],
+    [[0, 1], [() => Delete$, { [_hP]: 1, [_xN]: _De }], [0, { [_hH]: _xam_ }], [0, { [_hH]: _xarp }], [2, { [_hH]: _xabgr }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xasca }]]
+];
+var DeleteObjectTaggingOutput$ = [3, n0, _DOTO,
+    0,
+    [_VI],
+    [[0, { [_hH]: _xavi }]]
+];
+var DeleteObjectTaggingRequest$ = [3, n0, _DOTR,
+    0,
+    [_B, _K, _VI, _EBO],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [0, { [_hH]: _xaebo }]]
+];
+var DeletePublicAccessBlockRequest$ = [3, n0, _DPABR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var Destination$ = [3, n0, _Des,
+    0,
+    [_B, _A, _SC, _ACT, _EC, _RT, _Me],
+    [0, 0, 0, () => AccessControlTranslation$, () => EncryptionConfiguration$, () => ReplicationTime$, () => Metrics$]
+];
+var DestinationResult$ = [3, n0, _DRes,
+    0,
+    [_TBT, _TBA, _TN],
+    [0, 0, 0]
+];
+var Encryption$ = [3, n0, _En,
+    0,
+    [_ET, _KMSKI, _KMSC],
+    [0, [() => SSEKMSKeyId, 0], 0]
+];
+var EncryptionConfiguration$ = [3, n0, _EC,
+    0,
+    [_RKKID],
+    [0]
+];
+var EncryptionTypeMismatch$ = [-3, n0, _ETM,
+    { [_e]: _c, [_hE]: 400 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(EncryptionTypeMismatch$, EncryptionTypeMismatch);
+var EndEvent$ = [3, n0, _EE,
+    0,
+    [],
+    []
+];
+var _Error$ = [3, n0, _Err,
+    0,
+    [_K, _VI, _Cod, _Mes],
+    [0, 0, 0, 0]
+];
+var ErrorDetails$ = [3, n0, _ED,
+    0,
+    [_ECr, _EM],
+    [0, 0]
+];
+var ErrorDocument$ = [3, n0, _EDr,
+    0,
+    [_K],
+    [0]
+];
+var EventBridgeConfiguration$ = [3, n0, _EBC,
+    0,
+    [],
+    []
+];
+var ExistingObjectReplication$ = [3, n0, _EOR,
+    0,
+    [_S],
+    [0]
+];
+var FilterRule$ = [3, n0, _FR,
+    0,
+    [_N, _V],
+    [0, 0]
+];
+var GetBucketAbacOutput$ = [3, n0, _GBAO,
+    0,
+    [_AS],
+    [[() => AbacStatus$, 16]]
+];
+var GetBucketAbacRequest$ = [3, n0, _GBAR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketAccelerateConfigurationOutput$ = [3, n0, _GBACO,
+    { [_xN]: _AC },
+    [_S, _RC],
+    [0, [0, { [_hH]: _xarc }]]
+];
+var GetBucketAccelerateConfigurationRequest$ = [3, n0, _GBACR,
+    0,
+    [_B, _EBO, _RP],
+    [[0, 1], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xarp }]]
+];
+var GetBucketAclOutput$ = [3, n0, _GBAOe,
+    { [_xN]: _ACP },
+    [_O, _G],
+    [() => Owner$, [() => Grants, { [_xN]: _ACL }]]
+];
+var GetBucketAclRequest$ = [3, n0, _GBARe,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketAnalyticsConfigurationOutput$ = [3, n0, _GBACOe,
+    0,
+    [_ACn],
+    [[() => AnalyticsConfiguration$, 16]]
+];
+var GetBucketAnalyticsConfigurationRequest$ = [3, n0, _GBACRe,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketCorsOutput$ = [3, n0, _GBCO,
+    { [_xN]: _CORSC },
+    [_CORSR],
+    [[() => CORSRules, { [_xF]: 1, [_xN]: _CORSRu }]]
+];
+var GetBucketCorsRequest$ = [3, n0, _GBCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketEncryptionOutput$ = [3, n0, _GBEO,
+    0,
+    [_SSEC],
+    [[() => ServerSideEncryptionConfiguration$, 16]]
+];
+var GetBucketEncryptionRequest$ = [3, n0, _GBER,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketIntelligentTieringConfigurationOutput$ = [3, n0, _GBITCO,
+    0,
+    [_ITC],
+    [[() => IntelligentTieringConfiguration$, 16]]
+];
+var GetBucketIntelligentTieringConfigurationRequest$ = [3, n0, _GBITCR,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketInventoryConfigurationOutput$ = [3, n0, _GBICO,
+    0,
+    [_IC],
+    [[() => InventoryConfiguration$, 16]]
+];
+var GetBucketInventoryConfigurationRequest$ = [3, n0, _GBICR,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketLifecycleConfigurationOutput$ = [3, n0, _GBLCO,
+    { [_xN]: _LCi },
+    [_R, _TDMOS],
+    [[() => LifecycleRules, { [_xF]: 1, [_xN]: _Ru }], [0, { [_hH]: _xatdmos }]]
+];
+var GetBucketLifecycleConfigurationRequest$ = [3, n0, _GBLCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketLocationOutput$ = [3, n0, _GBLO,
+    { [_xN]: _LC },
+    [_LC],
+    [0]
+];
+var GetBucketLocationRequest$ = [3, n0, _GBLR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketLoggingOutput$ = [3, n0, _GBLOe,
+    { [_xN]: _BLS },
+    [_LE],
+    [[() => LoggingEnabled$, 0]]
+];
+var GetBucketLoggingRequest$ = [3, n0, _GBLRe,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketMetadataConfigurationOutput$ = [3, n0, _GBMCO,
+    0,
+    [_GBMCR],
+    [[() => GetBucketMetadataConfigurationResult$, 16]]
+];
+var GetBucketMetadataConfigurationRequest$ = [3, n0, _GBMCRe,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketMetadataConfigurationResult$ = [3, n0, _GBMCR,
+    0,
+    [_MCR],
+    [() => MetadataConfigurationResult$]
+];
+var GetBucketMetadataTableConfigurationOutput$ = [3, n0, _GBMTCO,
+    0,
+    [_GBMTCR],
+    [[() => GetBucketMetadataTableConfigurationResult$, 16]]
+];
+var GetBucketMetadataTableConfigurationRequest$ = [3, n0, _GBMTCRe,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketMetadataTableConfigurationResult$ = [3, n0, _GBMTCR,
+    0,
+    [_MTCR, _S, _Err],
+    [() => MetadataTableConfigurationResult$, 0, () => ErrorDetails$]
+];
+var GetBucketMetricsConfigurationOutput$ = [3, n0, _GBMCOe,
+    0,
+    [_MCe],
+    [[() => MetricsConfiguration$, 16]]
+];
+var GetBucketMetricsConfigurationRequest$ = [3, n0, _GBMCRet,
+    0,
+    [_B, _I, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketNotificationConfigurationRequest$ = [3, n0, _GBNCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketOwnershipControlsOutput$ = [3, n0, _GBOCO,
+    0,
+    [_OC],
+    [[() => OwnershipControls$, 16]]
+];
+var GetBucketOwnershipControlsRequest$ = [3, n0, _GBOCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketPolicyOutput$ = [3, n0, _GBPO,
+    0,
+    [_Po],
+    [[0, 16]]
+];
+var GetBucketPolicyRequest$ = [3, n0, _GBPR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketPolicyStatusOutput$ = [3, n0, _GBPSO,
+    0,
+    [_PS],
+    [[() => PolicyStatus$, 16]]
+];
+var GetBucketPolicyStatusRequest$ = [3, n0, _GBPSR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketReplicationOutput$ = [3, n0, _GBRO,
+    0,
+    [_RCe],
+    [[() => ReplicationConfiguration$, 16]]
+];
+var GetBucketReplicationRequest$ = [3, n0, _GBRR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketRequestPaymentOutput$ = [3, n0, _GBRPO,
+    { [_xN]: _RPC },
+    [_Pay],
+    [0]
+];
+var GetBucketRequestPaymentRequest$ = [3, n0, _GBRPR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketTaggingOutput$ = [3, n0, _GBTO,
+    { [_xN]: _Tag },
+    [_TS],
+    [[() => TagSet, 0]]
+];
+var GetBucketTaggingRequest$ = [3, n0, _GBTR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketVersioningOutput$ = [3, n0, _GBVO,
+    { [_xN]: _VC },
+    [_S, _MFAD],
+    [0, [0, { [_xN]: _MDf }]]
+];
+var GetBucketVersioningRequest$ = [3, n0, _GBVR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetBucketWebsiteOutput$ = [3, n0, _GBWO,
+    { [_xN]: _WC },
+    [_RART, _IDn, _EDr, _RR],
+    [() => RedirectAllRequestsTo$, () => IndexDocument$, () => ErrorDocument$, [() => RoutingRules, 0]]
+];
+var GetBucketWebsiteRequest$ = [3, n0, _GBWR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetObjectAclOutput$ = [3, n0, _GOAO,
+    { [_xN]: _ACP },
+    [_O, _G, _RC],
+    [() => Owner$, [() => Grants, { [_xN]: _ACL }], [0, { [_hH]: _xarc }]]
+];
+var GetObjectAclRequest$ = [3, n0, _GOAR,
+    0,
+    [_B, _K, _VI, _RP, _EBO],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }]]
+];
+var GetObjectAttributesOutput$ = [3, n0, _GOAOe,
+    { [_xN]: _GOARe },
+    [_DM, _LM, _VI, _RC, _ETa, _C, _OP, _SC, _OS],
+    [[2, { [_hH]: _xadm }], [4, { [_hH]: _LM_ }], [0, { [_hH]: _xavi }], [0, { [_hH]: _xarc }], 0, () => Checksum$, [() => GetObjectAttributesParts$, 0], 0, 1]
+];
+var GetObjectAttributesParts$ = [3, n0, _GOAP,
+    0,
+    [_TPC, _PNM, _NPNM, _MP, _IT, _Pa],
+    [[1, { [_xN]: _PC }], 0, 0, 1, 2, [() => PartsList, { [_xF]: 1, [_xN]: _Par }]]
+];
+var GetObjectAttributesRequest$ = [3, n0, _GOARet,
+    0,
+    [_B, _K, _VI, _MP, _PNM, _SSECA, _SSECK, _SSECKMD, _RP, _EBO, _OA],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [1, { [_hH]: _xamp }], [0, { [_hH]: _xapnm }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }], [64 | 0, { [_hH]: _xaoa }]]
+];
+var GetObjectLegalHoldOutput$ = [3, n0, _GOLHO,
+    0,
+    [_LH],
+    [[() => ObjectLockLegalHold$, { [_hP]: 1, [_xN]: _LH }]]
+];
+var GetObjectLegalHoldRequest$ = [3, n0, _GOLHR,
+    0,
+    [_B, _K, _VI, _RP, _EBO],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }]]
+];
+var GetObjectLockConfigurationOutput$ = [3, n0, _GOLCO,
+    0,
+    [_OLC],
+    [[() => ObjectLockConfiguration$, 16]]
+];
+var GetObjectLockConfigurationRequest$ = [3, n0, _GOLCR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GetObjectOutput$ = [3, n0, _GOO,
+    0,
+    [_Bo, _DM, _AR, _E, _Re, _LM, _CLo, _ETa, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _CT, _MM, _VI, _CC, _CDo, _CEo, _CL, _CR, _CTo, _Ex, _ES, _WRL, _SSE, _M, _SSECA, _SSECKMD, _SSEKMSKI, _BKE, _SC, _RC, _RS, _PC, _TC, _OLM, _OLRUD, _OLLHS],
+    [[() => StreamingBlob, 16], [2, { [_hH]: _xadm }], [0, { [_hH]: _ar }], [0, { [_hH]: _xae }], [0, { [_hH]: _xar }], [4, { [_hH]: _LM_ }], [1, { [_hH]: _CL__ }], [0, { [_hH]: _ETa }], [0, { [_hH]: _xacc }], [0, { [_hH]: _xacc_ }], [0, { [_hH]: _xacc__ }], [0, { [_hH]: _xacs }], [0, { [_hH]: _xacs_ }], [0, { [_hH]: _xact }], [1, { [_hH]: _xamm }], [0, { [_hH]: _xavi }], [0, { [_hH]: _CC_ }], [0, { [_hH]: _CD_ }], [0, { [_hH]: _CE_ }], [0, { [_hH]: _CL_ }], [0, { [_hH]: _CR_ }], [0, { [_hH]: _CT_ }], [4, { [_hH]: _Ex }], [0, { [_hH]: _ES }], [0, { [_hH]: _xawrl }], [0, { [_hH]: _xasse }], [128 | 0, { [_hPH]: _xam }], [0, { [_hH]: _xasseca }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xasc }], [0, { [_hH]: _xarc }], [0, { [_hH]: _xars }], [1, { [_hH]: _xampc }], [1, { [_hH]: _xatc }], [0, { [_hH]: _xaolm }], [5, { [_hH]: _xaolrud }], [0, { [_hH]: _xaollh }]]
+];
+var GetObjectRequest$ = [3, n0, _GOR,
+    0,
+    [_B, _IM, _IMSf, _INM, _IUS, _K, _Ra, _RCC, _RCD, _RCE, _RCL, _RCT, _RE, _VI, _SSECA, _SSECK, _SSECKMD, _RP, _PN, _EBO, _CMh],
+    [[0, 1], [0, { [_hH]: _IM_ }], [4, { [_hH]: _IMS_ }], [0, { [_hH]: _INM_ }], [4, { [_hH]: _IUS_ }], [0, 1], [0, { [_hH]: _Ra }], [0, { [_hQ]: _rcc }], [0, { [_hQ]: _rcd }], [0, { [_hQ]: _rce }], [0, { [_hQ]: _rcl }], [0, { [_hQ]: _rct }], [6, { [_hQ]: _re }], [0, { [_hQ]: _vI }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [0, { [_hH]: _xarp }], [1, { [_hQ]: _pN }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xacm }]]
+];
+var GetObjectRetentionOutput$ = [3, n0, _GORO,
+    0,
+    [_Ret],
+    [[() => ObjectLockRetention$, { [_hP]: 1, [_xN]: _Ret }]]
+];
+var GetObjectRetentionRequest$ = [3, n0, _GORR,
+    0,
+    [_B, _K, _VI, _RP, _EBO],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }]]
+];
+var GetObjectTaggingOutput$ = [3, n0, _GOTO,
+    { [_xN]: _Tag },
+    [_VI, _TS],
+    [[0, { [_hH]: _xavi }], [() => TagSet, 0]]
+];
+var GetObjectTaggingRequest$ = [3, n0, _GOTR,
+    0,
+    [_B, _K, _VI, _EBO, _RP],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xarp }]]
+];
+var GetObjectTorrentOutput$ = [3, n0, _GOTOe,
+    0,
+    [_Bo, _RC],
+    [[() => StreamingBlob, 16], [0, { [_hH]: _xarc }]]
+];
+var GetObjectTorrentRequest$ = [3, n0, _GOTRe,
+    0,
+    [_B, _K, _RP, _EBO],
+    [[0, 1], [0, 1], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }]]
+];
+var GetPublicAccessBlockOutput$ = [3, n0, _GPABO,
+    0,
+    [_PABC],
+    [[() => PublicAccessBlockConfiguration$, 16]]
+];
+var GetPublicAccessBlockRequest$ = [3, n0, _GPABR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var GlacierJobParameters$ = [3, n0, _GJP,
+    0,
+    [_Ti],
+    [0]
+];
+var Grant$ = [3, n0, _Gr,
     0,
     [_Gra, _Pe],
-    [[() => Grantee$, { [_xNm]: [_x, _hi] }], 0],
+    [[() => Grantee$, { [_xNm]: [_x, _hi] }], 0]
 ];
-var TargetObjectKeyFormat$ = [
-    3,
-    n0,
-    _TOKF,
+var Grantee$ = [3, n0, _Gra,
+    0,
+    [_DN, _EA, _ID, _URI, _Ty],
+    [0, 0, 0, 0, [0, { [_xA]: 1, [_xN]: _xs }]]
+];
+var HeadBucketOutput$ = [3, n0, _HBO,
+    0,
+    [_BA, _BLT, _BLN, _BR, _APA],
+    [[0, { [_hH]: _xaba }], [0, { [_hH]: _xablt }], [0, { [_hH]: _xabln }], [0, { [_hH]: _xabr }], [2, { [_hH]: _xaapa }]]
+];
+var HeadBucketRequest$ = [3, n0, _HBR,
+    0,
+    [_B, _EBO],
+    [[0, 1], [0, { [_hH]: _xaebo }]]
+];
+var HeadObjectOutput$ = [3, n0, _HOO,
+    0,
+    [_DM, _AR, _E, _Re, _ASr, _LM, _CLo, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _CT, _ETa, _MM, _VI, _CC, _CDo, _CEo, _CL, _CTo, _CR, _Ex, _ES, _WRL, _SSE, _M, _SSECA, _SSECKMD, _SSEKMSKI, _BKE, _SC, _RC, _RS, _PC, _TC, _OLM, _OLRUD, _OLLHS],
+    [[2, { [_hH]: _xadm }], [0, { [_hH]: _ar }], [0, { [_hH]: _xae }], [0, { [_hH]: _xar }], [0, { [_hH]: _xaas }], [4, { [_hH]: _LM_ }], [1, { [_hH]: _CL__ }], [0, { [_hH]: _xacc }], [0, { [_hH]: _xacc_ }], [0, { [_hH]: _xacc__ }], [0, { [_hH]: _xacs }], [0, { [_hH]: _xacs_ }], [0, { [_hH]: _xact }], [0, { [_hH]: _ETa }], [1, { [_hH]: _xamm }], [0, { [_hH]: _xavi }], [0, { [_hH]: _CC_ }], [0, { [_hH]: _CD_ }], [0, { [_hH]: _CE_ }], [0, { [_hH]: _CL_ }], [0, { [_hH]: _CT_ }], [0, { [_hH]: _CR_ }], [4, { [_hH]: _Ex }], [0, { [_hH]: _ES }], [0, { [_hH]: _xawrl }], [0, { [_hH]: _xasse }], [128 | 0, { [_hPH]: _xam }], [0, { [_hH]: _xasseca }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xasc }], [0, { [_hH]: _xarc }], [0, { [_hH]: _xars }], [1, { [_hH]: _xampc }], [1, { [_hH]: _xatc }], [0, { [_hH]: _xaolm }], [5, { [_hH]: _xaolrud }], [0, { [_hH]: _xaollh }]]
+];
+var HeadObjectRequest$ = [3, n0, _HOR,
+    0,
+    [_B, _IM, _IMSf, _INM, _IUS, _K, _Ra, _RCC, _RCD, _RCE, _RCL, _RCT, _RE, _VI, _SSECA, _SSECK, _SSECKMD, _RP, _PN, _EBO, _CMh],
+    [[0, 1], [0, { [_hH]: _IM_ }], [4, { [_hH]: _IMS_ }], [0, { [_hH]: _INM_ }], [4, { [_hH]: _IUS_ }], [0, 1], [0, { [_hH]: _Ra }], [0, { [_hQ]: _rcc }], [0, { [_hQ]: _rcd }], [0, { [_hQ]: _rce }], [0, { [_hQ]: _rcl }], [0, { [_hQ]: _rct }], [6, { [_hQ]: _re }], [0, { [_hQ]: _vI }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [0, { [_hH]: _xarp }], [1, { [_hQ]: _pN }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xacm }]]
+];
+var IdempotencyParameterMismatch$ = [-3, n0, _IPM,
+    { [_e]: _c, [_hE]: 400 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(IdempotencyParameterMismatch$, IdempotencyParameterMismatch);
+var IndexDocument$ = [3, n0, _IDn,
+    0,
+    [_Su],
+    [0]
+];
+var Initiator$ = [3, n0, _In,
+    0,
+    [_ID, _DN],
+    [0, 0]
+];
+var InputSerialization$ = [3, n0, _IS,
+    0,
+    [_CSV, _CTom, _JSON, _Parq],
+    [() => CSVInput$, 0, () => JSONInput$, () => ParquetInput$]
+];
+var IntelligentTieringAndOperator$ = [3, n0, _ITAO,
+    0,
+    [_P, _T],
+    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }]]
+];
+var IntelligentTieringConfiguration$ = [3, n0, _ITC,
+    0,
+    [_I, _F, _S, _Tie],
+    [0, [() => IntelligentTieringFilter$, 0], 0, [() => TieringList, { [_xF]: 1, [_xN]: _Tier }]]
+];
+var IntelligentTieringFilter$ = [3, n0, _ITF,
+    0,
+    [_P, _Ta, _An],
+    [0, () => Tag$, [() => IntelligentTieringAndOperator$, 0]]
+];
+var InvalidObjectState$ = [-3, n0, _IOS,
+    { [_e]: _c, [_hE]: 403 },
+    [_SC, _AT],
+    [0, 0]
+];
+schema.TypeRegistry.for(n0).registerError(InvalidObjectState$, InvalidObjectState);
+var InvalidRequest$ = [-3, n0, _IR,
+    { [_e]: _c, [_hE]: 400 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(InvalidRequest$, InvalidRequest);
+var InvalidWriteOffset$ = [-3, n0, _IWO,
+    { [_e]: _c, [_hE]: 400 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(InvalidWriteOffset$, InvalidWriteOffset);
+var InventoryConfiguration$ = [3, n0, _IC,
+    0,
+    [_Des, _IE, _F, _I, _IOV, _OF, _Sc],
+    [[() => InventoryDestination$, 0], 2, () => InventoryFilter$, 0, 0, [() => InventoryOptionalFields, 0], () => InventorySchedule$]
+];
+var InventoryDestination$ = [3, n0, _IDnv,
+    0,
+    [_SBD],
+    [[() => InventoryS3BucketDestination$, 0]]
+];
+var InventoryEncryption$ = [3, n0, _IEn,
+    0,
+    [_SSES, _SSEKMS],
+    [[() => SSES3$, { [_xN]: _SS }], [() => SSEKMS$, { [_xN]: _SK }]]
+];
+var InventoryFilter$ = [3, n0, _IF,
+    0,
+    [_P],
+    [0]
+];
+var InventoryS3BucketDestination$ = [3, n0, _ISBD,
+    0,
+    [_AI, _B, _Fo, _P, _En],
+    [0, 0, 0, 0, [() => InventoryEncryption$, 0]]
+];
+var InventorySchedule$ = [3, n0, _ISn,
+    0,
+    [_Fr],
+    [0]
+];
+var InventoryTableConfiguration$ = [3, n0, _ITCn,
+    0,
+    [_CSo, _EC],
+    [0, () => MetadataTableEncryptionConfiguration$]
+];
+var InventoryTableConfigurationResult$ = [3, n0, _ITCR,
+    0,
+    [_CSo, _TSa, _Err, _TNa, _TA],
+    [0, 0, () => ErrorDetails$, 0, 0]
+];
+var InventoryTableConfigurationUpdates$ = [3, n0, _ITCU,
+    0,
+    [_CSo, _EC],
+    [0, () => MetadataTableEncryptionConfiguration$]
+];
+var JournalTableConfiguration$ = [3, n0, _JTC,
+    0,
+    [_REe, _EC],
+    [() => RecordExpiration$, () => MetadataTableEncryptionConfiguration$]
+];
+var JournalTableConfigurationResult$ = [3, n0, _JTCR,
+    0,
+    [_TSa, _Err, _TNa, _TA, _REe],
+    [0, () => ErrorDetails$, 0, 0, () => RecordExpiration$]
+];
+var JournalTableConfigurationUpdates$ = [3, n0, _JTCU,
+    0,
+    [_REe],
+    [() => RecordExpiration$]
+];
+var JSONInput$ = [3, n0, _JSONI,
+    0,
+    [_Ty],
+    [0]
+];
+var JSONOutput$ = [3, n0, _JSONO,
+    0,
+    [_RD],
+    [0]
+];
+var LambdaFunctionConfiguration$ = [3, n0, _LFC,
+    0,
+    [_I, _LFA, _Ev, _F],
+    [0, [0, { [_xN]: _CF }], [64 | 0, { [_xF]: 1, [_xN]: _Eve }], [() => NotificationConfigurationFilter$, 0]]
+];
+var LifecycleExpiration$ = [3, n0, _LEi,
+    0,
+    [_Da, _D, _EODM],
+    [5, 1, 2]
+];
+var LifecycleRule$ = [3, n0, _LR,
+    0,
+    [_E, _ID, _P, _F, _S, _Tr, _NVT, _NVE, _AIMU],
+    [() => LifecycleExpiration$, 0, 0, [() => LifecycleRuleFilter$, 0], 0, [() => TransitionList, { [_xF]: 1, [_xN]: _Tra }], [() => NoncurrentVersionTransitionList, { [_xF]: 1, [_xN]: _NVTo }], () => NoncurrentVersionExpiration$, () => AbortIncompleteMultipartUpload$]
+];
+var LifecycleRuleAndOperator$ = [3, n0, _LRAO,
+    0,
+    [_P, _T, _OSGT, _OSLT],
+    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }], 1, 1]
+];
+var LifecycleRuleFilter$ = [3, n0, _LRF,
+    0,
+    [_P, _Ta, _OSGT, _OSLT, _An],
+    [0, () => Tag$, 1, 1, [() => LifecycleRuleAndOperator$, 0]]
+];
+var ListBucketAnalyticsConfigurationsOutput$ = [3, n0, _LBACO,
+    { [_xN]: _LBACR },
+    [_IT, _CTon, _NCT, _ACLn],
+    [2, 0, 0, [() => AnalyticsConfigurationList, { [_xF]: 1, [_xN]: _ACn }]]
+];
+var ListBucketAnalyticsConfigurationsRequest$ = [3, n0, _LBACRi,
+    0,
+    [_B, _CTon, _EBO],
+    [[0, 1], [0, { [_hQ]: _ct }], [0, { [_hH]: _xaebo }]]
+];
+var ListBucketIntelligentTieringConfigurationsOutput$ = [3, n0, _LBITCO,
+    0,
+    [_IT, _CTon, _NCT, _ITCL],
+    [2, 0, 0, [() => IntelligentTieringConfigurationList, { [_xF]: 1, [_xN]: _ITC }]]
+];
+var ListBucketIntelligentTieringConfigurationsRequest$ = [3, n0, _LBITCR,
+    0,
+    [_B, _CTon, _EBO],
+    [[0, 1], [0, { [_hQ]: _ct }], [0, { [_hH]: _xaebo }]]
+];
+var ListBucketInventoryConfigurationsOutput$ = [3, n0, _LBICO,
+    { [_xN]: _LICR },
+    [_CTon, _ICL, _IT, _NCT],
+    [0, [() => InventoryConfigurationList, { [_xF]: 1, [_xN]: _IC }], 2, 0]
+];
+var ListBucketInventoryConfigurationsRequest$ = [3, n0, _LBICR,
+    0,
+    [_B, _CTon, _EBO],
+    [[0, 1], [0, { [_hQ]: _ct }], [0, { [_hH]: _xaebo }]]
+];
+var ListBucketMetricsConfigurationsOutput$ = [3, n0, _LBMCO,
+    { [_xN]: _LMCR },
+    [_IT, _CTon, _NCT, _MCL],
+    [2, 0, 0, [() => MetricsConfigurationList, { [_xF]: 1, [_xN]: _MCe }]]
+];
+var ListBucketMetricsConfigurationsRequest$ = [3, n0, _LBMCR,
+    0,
+    [_B, _CTon, _EBO],
+    [[0, 1], [0, { [_hQ]: _ct }], [0, { [_hH]: _xaebo }]]
+];
+var ListBucketsOutput$ = [3, n0, _LBO,
+    { [_xN]: _LAMBR },
+    [_Bu, _O, _CTon, _P],
+    [[() => Buckets, 0], () => Owner$, 0, 0]
+];
+var ListBucketsRequest$ = [3, n0, _LBR,
+    0,
+    [_MB, _CTon, _P, _BR],
+    [[1, { [_hQ]: _mb }], [0, { [_hQ]: _ct }], [0, { [_hQ]: _p }], [0, { [_hQ]: _br }]]
+];
+var ListDirectoryBucketsOutput$ = [3, n0, _LDBO,
+    { [_xN]: _LAMDBR },
+    [_Bu, _CTon],
+    [[() => Buckets, 0], 0]
+];
+var ListDirectoryBucketsRequest$ = [3, n0, _LDBR,
+    0,
+    [_CTon, _MDB],
+    [[0, { [_hQ]: _ct }], [1, { [_hQ]: _mdb }]]
+];
+var ListMultipartUploadsOutput$ = [3, n0, _LMUO,
+    { [_xN]: _LMUR },
+    [_B, _KM, _UIM, _NKM, _P, _Deli, _NUIM, _MUa, _IT, _U, _CPom, _ETn, _RC],
+    [0, 0, 0, 0, 0, 0, 0, 1, 2, [() => MultipartUploadList, { [_xF]: 1, [_xN]: _Up }], [() => CommonPrefixList, { [_xF]: 1 }], 0, [0, { [_hH]: _xarc }]]
+];
+var ListMultipartUploadsRequest$ = [3, n0, _LMURi,
+    0,
+    [_B, _Deli, _ETn, _KM, _MUa, _P, _UIM, _EBO, _RP],
+    [[0, 1], [0, { [_hQ]: _d }], [0, { [_hQ]: _et }], [0, { [_hQ]: _km }], [1, { [_hQ]: _mu }], [0, { [_hQ]: _p }], [0, { [_hQ]: _uim }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xarp }]]
+];
+var ListObjectsOutput$ = [3, n0, _LOO,
+    { [_xN]: _LBRi },
+    [_IT, _Ma, _NM, _Con, _N, _P, _Deli, _MK, _CPom, _ETn, _RC],
+    [2, 0, 0, [() => ObjectList, { [_xF]: 1 }], 0, 0, 0, 1, [() => CommonPrefixList, { [_xF]: 1 }], 0, [0, { [_hH]: _xarc }]]
+];
+var ListObjectsRequest$ = [3, n0, _LOR,
+    0,
+    [_B, _Deli, _ETn, _Ma, _MK, _P, _RP, _EBO, _OOA],
+    [[0, 1], [0, { [_hQ]: _d }], [0, { [_hQ]: _et }], [0, { [_hQ]: _m }], [1, { [_hQ]: _mk }], [0, { [_hQ]: _p }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }], [64 | 0, { [_hH]: _xaooa }]]
+];
+var ListObjectsV2Output$ = [3, n0, _LOVO,
+    { [_xN]: _LBRi },
+    [_IT, _Con, _N, _P, _Deli, _MK, _CPom, _ETn, _KC, _CTon, _NCT, _SA, _RC],
+    [2, [() => ObjectList, { [_xF]: 1 }], 0, 0, 0, 1, [() => CommonPrefixList, { [_xF]: 1 }], 0, 1, 0, 0, 0, [0, { [_hH]: _xarc }]]
+];
+var ListObjectsV2Request$ = [3, n0, _LOVR,
+    0,
+    [_B, _Deli, _ETn, _MK, _P, _CTon, _FO, _SA, _RP, _EBO, _OOA],
+    [[0, 1], [0, { [_hQ]: _d }], [0, { [_hQ]: _et }], [1, { [_hQ]: _mk }], [0, { [_hQ]: _p }], [0, { [_hQ]: _ct }], [2, { [_hQ]: _fo }], [0, { [_hQ]: _sa }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }], [64 | 0, { [_hH]: _xaooa }]]
+];
+var ListObjectVersionsOutput$ = [3, n0, _LOVOi,
+    { [_xN]: _LVR },
+    [_IT, _KM, _VIM, _NKM, _NVIM, _Ve, _DMe, _N, _P, _Deli, _MK, _CPom, _ETn, _RC],
+    [2, 0, 0, 0, 0, [() => ObjectVersionList, { [_xF]: 1, [_xN]: _Ver }], [() => DeleteMarkers, { [_xF]: 1, [_xN]: _DM }], 0, 0, 0, 1, [() => CommonPrefixList, { [_xF]: 1 }], 0, [0, { [_hH]: _xarc }]]
+];
+var ListObjectVersionsRequest$ = [3, n0, _LOVRi,
+    0,
+    [_B, _Deli, _ETn, _KM, _MK, _P, _VIM, _EBO, _RP, _OOA],
+    [[0, 1], [0, { [_hQ]: _d }], [0, { [_hQ]: _et }], [0, { [_hQ]: _km }], [1, { [_hQ]: _mk }], [0, { [_hQ]: _p }], [0, { [_hQ]: _vim }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xarp }], [64 | 0, { [_hH]: _xaooa }]]
+];
+var ListPartsOutput$ = [3, n0, _LPO,
+    { [_xN]: _LPR },
+    [_AD, _ARI, _B, _K, _UI, _PNM, _NPNM, _MP, _IT, _Pa, _In, _O, _SC, _RC, _CA, _CT],
+    [[4, { [_hH]: _xaad }], [0, { [_hH]: _xaari }], 0, 0, 0, 0, 0, 1, 2, [() => Parts, { [_xF]: 1, [_xN]: _Par }], () => Initiator$, () => Owner$, 0, [0, { [_hH]: _xarc }], 0, 0]
+];
+var ListPartsRequest$ = [3, n0, _LPRi,
+    0,
+    [_B, _K, _MP, _PNM, _UI, _RP, _EBO, _SSECA, _SSECK, _SSECKMD],
+    [[0, 1], [0, 1], [1, { [_hQ]: _mp }], [0, { [_hQ]: _pnm }], [0, { [_hQ]: _uI }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }]]
+];
+var LocationInfo$ = [3, n0, _LI,
+    0,
+    [_Ty, _N],
+    [0, 0]
+];
+var LoggingEnabled$ = [3, n0, _LE,
+    0,
+    [_TB, _TG, _TP, _TOKF],
+    [0, [() => TargetGrants, 0], 0, [() => TargetObjectKeyFormat$, 0]]
+];
+var MetadataConfiguration$ = [3, n0, _MC,
+    0,
+    [_JTC, _ITCn],
+    [() => JournalTableConfiguration$, () => InventoryTableConfiguration$]
+];
+var MetadataConfigurationResult$ = [3, n0, _MCR,
+    0,
+    [_DRes, _JTCR, _ITCR],
+    [() => DestinationResult$, () => JournalTableConfigurationResult$, () => InventoryTableConfigurationResult$]
+];
+var MetadataEntry$ = [3, n0, _ME,
+    0,
+    [_N, _V],
+    [0, 0]
+];
+var MetadataTableConfiguration$ = [3, n0, _MTC,
+    0,
+    [_STD],
+    [() => S3TablesDestination$]
+];
+var MetadataTableConfigurationResult$ = [3, n0, _MTCR,
+    0,
+    [_STDR],
+    [() => S3TablesDestinationResult$]
+];
+var MetadataTableEncryptionConfiguration$ = [3, n0, _MTEC,
+    0,
+    [_SAs, _KKA],
+    [0, 0]
+];
+var Metrics$ = [3, n0, _Me,
+    0,
+    [_S, _ETv],
+    [0, () => ReplicationTimeValue$]
+];
+var MetricsAndOperator$ = [3, n0, _MAO,
+    0,
+    [_P, _T, _APAc],
+    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }], 0]
+];
+var MetricsConfiguration$ = [3, n0, _MCe,
+    0,
+    [_I, _F],
+    [0, [() => MetricsFilter$, 0]]
+];
+var MultipartUpload$ = [3, n0, _MU,
+    0,
+    [_UI, _K, _Ini, _SC, _O, _In, _CA, _CT],
+    [0, 0, 4, 0, () => Owner$, () => Initiator$, 0, 0]
+];
+var NoncurrentVersionExpiration$ = [3, n0, _NVE,
+    0,
+    [_ND, _NNV],
+    [1, 1]
+];
+var NoncurrentVersionTransition$ = [3, n0, _NVTo,
+    0,
+    [_ND, _SC, _NNV],
+    [1, 0, 1]
+];
+var NoSuchBucket$ = [-3, n0, _NSB,
+    { [_e]: _c, [_hE]: 404 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(NoSuchBucket$, NoSuchBucket);
+var NoSuchKey$ = [-3, n0, _NSK,
+    { [_e]: _c, [_hE]: 404 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(NoSuchKey$, NoSuchKey);
+var NoSuchUpload$ = [-3, n0, _NSU,
+    { [_e]: _c, [_hE]: 404 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(NoSuchUpload$, NoSuchUpload);
+var NotFound$ = [-3, n0, _NF,
+    { [_e]: _c },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(NotFound$, NotFound);
+var NotificationConfiguration$ = [3, n0, _NC,
+    0,
+    [_TCo, _QCu, _LFCa, _EBC],
+    [[() => TopicConfigurationList, { [_xF]: 1, [_xN]: _TCop }], [() => QueueConfigurationList, { [_xF]: 1, [_xN]: _QCue }], [() => LambdaFunctionConfigurationList, { [_xF]: 1, [_xN]: _CFC }], () => EventBridgeConfiguration$]
+];
+var NotificationConfigurationFilter$ = [3, n0, _NCF,
+    0,
+    [_K],
+    [[() => S3KeyFilter$, { [_xN]: _SKe }]]
+];
+var _Object$ = [3, n0, _Obj,
+    0,
+    [_K, _LM, _ETa, _CA, _CT, _Si, _SC, _O, _RSe],
+    [0, 4, 0, [64 | 0, { [_xF]: 1 }], 0, 1, 0, () => Owner$, () => RestoreStatus$]
+];
+var ObjectAlreadyInActiveTierError$ = [-3, n0, _OAIATE,
+    { [_e]: _c, [_hE]: 403 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(ObjectAlreadyInActiveTierError$, ObjectAlreadyInActiveTierError);
+var ObjectIdentifier$ = [3, n0, _OI,
+    0,
+    [_K, _VI, _ETa, _LMT, _Si],
+    [0, 0, 0, 6, 1]
+];
+var ObjectLockConfiguration$ = [3, n0, _OLC,
+    0,
+    [_OLE, _Ru],
+    [0, () => ObjectLockRule$]
+];
+var ObjectLockLegalHold$ = [3, n0, _OLLH,
+    0,
+    [_S],
+    [0]
+];
+var ObjectLockRetention$ = [3, n0, _OLR,
+    0,
+    [_Mo, _RUD],
+    [0, 5]
+];
+var ObjectLockRule$ = [3, n0, _OLRb,
+    0,
+    [_DRe],
+    [() => DefaultRetention$]
+];
+var ObjectNotInActiveTierError$ = [-3, n0, _ONIATE,
+    { [_e]: _c, [_hE]: 403 },
+    [],
+    []
+];
+schema.TypeRegistry.for(n0).registerError(ObjectNotInActiveTierError$, ObjectNotInActiveTierError);
+var ObjectPart$ = [3, n0, _OPb,
+    0,
+    [_PN, _Si, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh],
+    [1, 1, 0, 0, 0, 0, 0]
+];
+var ObjectVersion$ = [3, n0, _OV,
+    0,
+    [_ETa, _CA, _CT, _Si, _SC, _K, _VI, _IL, _LM, _O, _RSe],
+    [0, [64 | 0, { [_xF]: 1 }], 0, 1, 0, 0, 0, 2, 4, () => Owner$, () => RestoreStatus$]
+];
+var OutputLocation$ = [3, n0, _OL,
+    0,
+    [_S_],
+    [[() => S3Location$, 0]]
+];
+var OutputSerialization$ = [3, n0, _OSu,
+    0,
+    [_CSV, _JSON],
+    [() => CSVOutput$, () => JSONOutput$]
+];
+var Owner$ = [3, n0, _O,
+    0,
+    [_DN, _ID],
+    [0, 0]
+];
+var OwnershipControls$ = [3, n0, _OC,
+    0,
+    [_R],
+    [[() => OwnershipControlsRules, { [_xF]: 1, [_xN]: _Ru }]]
+];
+var OwnershipControlsRule$ = [3, n0, _OCR,
+    0,
+    [_OO],
+    [0]
+];
+var ParquetInput$ = [3, n0, _PI,
+    0,
+    [],
+    []
+];
+var Part$ = [3, n0, _Par,
+    0,
+    [_PN, _LM, _ETa, _Si, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh],
+    [1, 4, 0, 1, 0, 0, 0, 0, 0]
+];
+var PartitionedPrefix$ = [3, n0, _PP,
+    { [_xN]: _PP },
+    [_PDS],
+    [0]
+];
+var PolicyStatus$ = [3, n0, _PS,
+    0,
+    [_IP],
+    [[2, { [_xN]: _IP }]]
+];
+var Progress$ = [3, n0, _Pr,
+    0,
+    [_BS, _BP, _BRy],
+    [1, 1, 1]
+];
+var ProgressEvent$ = [3, n0, _PE,
+    0,
+    [_Det],
+    [[() => Progress$, { [_eP]: 1 }]]
+];
+var PublicAccessBlockConfiguration$ = [3, n0, _PABC,
+    0,
+    [_BPA, _IPA, _BPP, _RPB],
+    [[2, { [_xN]: _BPA }], [2, { [_xN]: _IPA }], [2, { [_xN]: _BPP }], [2, { [_xN]: _RPB }]]
+];
+var PutBucketAbacRequest$ = [3, n0, _PBAR,
+    0,
+    [_B, _CMD, _CA, _EBO, _AS],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xaebo }], [() => AbacStatus$, { [_hP]: 1, [_xN]: _AS }]]
+];
+var PutBucketAccelerateConfigurationRequest$ = [3, n0, _PBACR,
+    0,
+    [_B, _AC, _EBO, _CA],
+    [[0, 1], [() => AccelerateConfiguration$, { [_hP]: 1, [_xN]: _AC }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xasca }]]
+];
+var PutBucketAclRequest$ = [3, n0, _PBARu,
+    0,
+    [_ACL_, _ACP, _B, _CMD, _CA, _GFC, _GR, _GRACP, _GW, _GWACP, _EBO],
+    [[0, { [_hH]: _xaa }], [() => AccessControlPolicy$, { [_hP]: 1, [_xN]: _ACP }], [0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xagfc }], [0, { [_hH]: _xagr }], [0, { [_hH]: _xagra }], [0, { [_hH]: _xagw }], [0, { [_hH]: _xagwa }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketAnalyticsConfigurationRequest$ = [3, n0, _PBACRu,
+    0,
+    [_B, _I, _ACn, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [() => AnalyticsConfiguration$, { [_hP]: 1, [_xN]: _ACn }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketCorsRequest$ = [3, n0, _PBCR,
+    0,
+    [_B, _CORSC, _CMD, _CA, _EBO],
+    [[0, 1], [() => CORSConfiguration$, { [_hP]: 1, [_xN]: _CORSC }], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketEncryptionRequest$ = [3, n0, _PBER,
+    0,
+    [_B, _CMD, _CA, _SSEC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => ServerSideEncryptionConfiguration$, { [_hP]: 1, [_xN]: _SSEC }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketIntelligentTieringConfigurationRequest$ = [3, n0, _PBITCR,
+    0,
+    [_B, _I, _EBO, _ITC],
+    [[0, 1], [0, { [_hQ]: _i }], [0, { [_hH]: _xaebo }], [() => IntelligentTieringConfiguration$, { [_hP]: 1, [_xN]: _ITC }]]
+];
+var PutBucketInventoryConfigurationRequest$ = [3, n0, _PBICR,
+    0,
+    [_B, _I, _IC, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [() => InventoryConfiguration$, { [_hP]: 1, [_xN]: _IC }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketLifecycleConfigurationOutput$ = [3, n0, _PBLCO,
+    0,
+    [_TDMOS],
+    [[0, { [_hH]: _xatdmos }]]
+];
+var PutBucketLifecycleConfigurationRequest$ = [3, n0, _PBLCR,
+    0,
+    [_B, _CA, _LCi, _EBO, _TDMOS],
+    [[0, 1], [0, { [_hH]: _xasca }], [() => BucketLifecycleConfiguration$, { [_hP]: 1, [_xN]: _LCi }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xatdmos }]]
+];
+var PutBucketLoggingRequest$ = [3, n0, _PBLR,
+    0,
+    [_B, _BLS, _CMD, _CA, _EBO],
+    [[0, 1], [() => BucketLoggingStatus$, { [_hP]: 1, [_xN]: _BLS }], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketMetricsConfigurationRequest$ = [3, n0, _PBMCR,
+    0,
+    [_B, _I, _MCe, _EBO],
+    [[0, 1], [0, { [_hQ]: _i }], [() => MetricsConfiguration$, { [_hP]: 1, [_xN]: _MCe }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketNotificationConfigurationRequest$ = [3, n0, _PBNCR,
+    0,
+    [_B, _NC, _EBO, _SDV],
+    [[0, 1], [() => NotificationConfiguration$, { [_hP]: 1, [_xN]: _NC }], [0, { [_hH]: _xaebo }], [2, { [_hH]: _xasdv }]]
+];
+var PutBucketOwnershipControlsRequest$ = [3, n0, _PBOCR,
+    0,
+    [_B, _CMD, _EBO, _OC, _CA],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xaebo }], [() => OwnershipControls$, { [_hP]: 1, [_xN]: _OC }], [0, { [_hH]: _xasca }]]
+];
+var PutBucketPolicyRequest$ = [3, n0, _PBPR,
+    0,
+    [_B, _CMD, _CA, _CRSBA, _Po, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [2, { [_hH]: _xacrsba }], [0, 16], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketReplicationRequest$ = [3, n0, _PBRR,
+    0,
+    [_B, _CMD, _CA, _RCe, _To, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => ReplicationConfiguration$, { [_hP]: 1, [_xN]: _RCe }], [0, { [_hH]: _xabolt }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketRequestPaymentRequest$ = [3, n0, _PBRPR,
+    0,
+    [_B, _CMD, _CA, _RPC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => RequestPaymentConfiguration$, { [_hP]: 1, [_xN]: _RPC }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketTaggingRequest$ = [3, n0, _PBTR,
+    0,
+    [_B, _CMD, _CA, _Tag, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => Tagging$, { [_hP]: 1, [_xN]: _Tag }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketVersioningRequest$ = [3, n0, _PBVR,
+    0,
+    [_B, _CMD, _CA, _MFA, _VC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xam_ }], [() => VersioningConfiguration$, { [_hP]: 1, [_xN]: _VC }], [0, { [_hH]: _xaebo }]]
+];
+var PutBucketWebsiteRequest$ = [3, n0, _PBWR,
+    0,
+    [_B, _CMD, _CA, _WC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => WebsiteConfiguration$, { [_hP]: 1, [_xN]: _WC }], [0, { [_hH]: _xaebo }]]
+];
+var PutObjectAclOutput$ = [3, n0, _POAO,
+    0,
+    [_RC],
+    [[0, { [_hH]: _xarc }]]
+];
+var PutObjectAclRequest$ = [3, n0, _POAR,
+    0,
+    [_ACL_, _ACP, _B, _CMD, _CA, _GFC, _GR, _GRACP, _GW, _GWACP, _K, _RP, _VI, _EBO],
+    [[0, { [_hH]: _xaa }], [() => AccessControlPolicy$, { [_hP]: 1, [_xN]: _ACP }], [0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xagfc }], [0, { [_hH]: _xagr }], [0, { [_hH]: _xagra }], [0, { [_hH]: _xagw }], [0, { [_hH]: _xagwa }], [0, 1], [0, { [_hH]: _xarp }], [0, { [_hQ]: _vI }], [0, { [_hH]: _xaebo }]]
+];
+var PutObjectLegalHoldOutput$ = [3, n0, _POLHO,
+    0,
+    [_RC],
+    [[0, { [_hH]: _xarc }]]
+];
+var PutObjectLegalHoldRequest$ = [3, n0, _POLHR,
+    0,
+    [_B, _K, _LH, _RP, _VI, _CMD, _CA, _EBO],
+    [[0, 1], [0, 1], [() => ObjectLockLegalHold$, { [_hP]: 1, [_xN]: _LH }], [0, { [_hH]: _xarp }], [0, { [_hQ]: _vI }], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xaebo }]]
+];
+var PutObjectLockConfigurationOutput$ = [3, n0, _POLCO,
+    0,
+    [_RC],
+    [[0, { [_hH]: _xarc }]]
+];
+var PutObjectLockConfigurationRequest$ = [3, n0, _POLCR,
+    0,
+    [_B, _OLC, _RP, _To, _CMD, _CA, _EBO],
+    [[0, 1], [() => ObjectLockConfiguration$, { [_hP]: 1, [_xN]: _OLC }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xabolt }], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xaebo }]]
+];
+var PutObjectOutput$ = [3, n0, _POO,
+    0,
+    [_E, _ETa, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _CT, _SSE, _VI, _SSECA, _SSECKMD, _SSEKMSKI, _SSEKMSEC, _BKE, _Si, _RC],
+    [[0, { [_hH]: _xae }], [0, { [_hH]: _ETa }], [0, { [_hH]: _xacc }], [0, { [_hH]: _xacc_ }], [0, { [_hH]: _xacc__ }], [0, { [_hH]: _xacs }], [0, { [_hH]: _xacs_ }], [0, { [_hH]: _xact }], [0, { [_hH]: _xasse }], [0, { [_hH]: _xavi }], [0, { [_hH]: _xasseca }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }], [1, { [_hH]: _xaos }], [0, { [_hH]: _xarc }]]
+];
+var PutObjectRequest$ = [3, n0, _POR,
+    0,
+    [_ACL_, _Bo, _B, _CC, _CDo, _CEo, _CL, _CLo, _CMD, _CTo, _CA, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _Ex, _IM, _INM, _GFC, _GR, _GRACP, _GWACP, _K, _WOB, _M, _SSE, _SC, _WRL, _SSECA, _SSECK, _SSECKMD, _SSEKMSKI, _SSEKMSEC, _BKE, _RP, _Tag, _OLM, _OLRUD, _OLLHS, _EBO],
+    [[0, { [_hH]: _xaa }], [() => StreamingBlob, 16], [0, 1], [0, { [_hH]: _CC_ }], [0, { [_hH]: _CD_ }], [0, { [_hH]: _CE_ }], [0, { [_hH]: _CL_ }], [1, { [_hH]: _CL__ }], [0, { [_hH]: _CM }], [0, { [_hH]: _CT_ }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xacc }], [0, { [_hH]: _xacc_ }], [0, { [_hH]: _xacc__ }], [0, { [_hH]: _xacs }], [0, { [_hH]: _xacs_ }], [4, { [_hH]: _Ex }], [0, { [_hH]: _IM_ }], [0, { [_hH]: _INM_ }], [0, { [_hH]: _xagfc }], [0, { [_hH]: _xagr }], [0, { [_hH]: _xagra }], [0, { [_hH]: _xagwa }], [0, 1], [1, { [_hH]: _xawob }], [128 | 0, { [_hPH]: _xam }], [0, { [_hH]: _xasse }], [0, { [_hH]: _xasc }], [0, { [_hH]: _xawrl }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [() => SSEKMSEncryptionContext, { [_hH]: _xassec }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xat }], [0, { [_hH]: _xaolm }], [5, { [_hH]: _xaolrud }], [0, { [_hH]: _xaollh }], [0, { [_hH]: _xaebo }]]
+];
+var PutObjectRetentionOutput$ = [3, n0, _PORO,
+    0,
+    [_RC],
+    [[0, { [_hH]: _xarc }]]
+];
+var PutObjectRetentionRequest$ = [3, n0, _PORR,
+    0,
+    [_B, _K, _Ret, _RP, _VI, _BGR, _CMD, _CA, _EBO],
+    [[0, 1], [0, 1], [() => ObjectLockRetention$, { [_hP]: 1, [_xN]: _Ret }], [0, { [_hH]: _xarp }], [0, { [_hQ]: _vI }], [2, { [_hH]: _xabgr }], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xaebo }]]
+];
+var PutObjectTaggingOutput$ = [3, n0, _POTO,
+    0,
+    [_VI],
+    [[0, { [_hH]: _xavi }]]
+];
+var PutObjectTaggingRequest$ = [3, n0, _POTR,
+    0,
+    [_B, _K, _VI, _CMD, _CA, _Tag, _EBO, _RP],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => Tagging$, { [_hP]: 1, [_xN]: _Tag }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xarp }]]
+];
+var PutPublicAccessBlockRequest$ = [3, n0, _PPABR,
+    0,
+    [_B, _CMD, _CA, _PABC, _EBO],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => PublicAccessBlockConfiguration$, { [_hP]: 1, [_xN]: _PABC }], [0, { [_hH]: _xaebo }]]
+];
+var QueueConfiguration$ = [3, n0, _QCue,
+    0,
+    [_I, _QA, _Ev, _F],
+    [0, [0, { [_xN]: _Qu }], [64 | 0, { [_xF]: 1, [_xN]: _Eve }], [() => NotificationConfigurationFilter$, 0]]
+];
+var RecordExpiration$ = [3, n0, _REe,
+    0,
+    [_E, _D],
+    [0, 1]
+];
+var RecordsEvent$ = [3, n0, _REec,
+    0,
+    [_Payl],
+    [[21, { [_eP]: 1 }]]
+];
+var Redirect$ = [3, n0, _Red,
+    0,
+    [_HN, _HRC, _Pro, _RKPW, _RKW],
+    [0, 0, 0, 0, 0]
+];
+var RedirectAllRequestsTo$ = [3, n0, _RART,
+    0,
+    [_HN, _Pro],
+    [0, 0]
+];
+var RenameObjectOutput$ = [3, n0, _ROO,
+    0,
+    [],
+    []
+];
+var RenameObjectRequest$ = [3, n0, _ROR,
+    0,
+    [_B, _K, _RSen, _DIM, _DINM, _DIMS, _DIUS, _SIM, _SINM, _SIMS, _SIUS, _CTl],
+    [[0, 1], [0, 1], [0, { [_hH]: _xars_ }], [0, { [_hH]: _IM_ }], [0, { [_hH]: _INM_ }], [4, { [_hH]: _IMS_ }], [4, { [_hH]: _IUS_ }], [0, { [_hH]: _xarsim }], [0, { [_hH]: _xarsinm }], [6, { [_hH]: _xarsims }], [6, { [_hH]: _xarsius }], [0, { [_hH]: _xact_, [_iT]: 1 }]]
+];
+var ReplicaModifications$ = [3, n0, _RM,
+    0,
+    [_S],
+    [0]
+];
+var ReplicationConfiguration$ = [3, n0, _RCe,
+    0,
+    [_Ro, _R],
+    [0, [() => ReplicationRules, { [_xF]: 1, [_xN]: _Ru }]]
+];
+var ReplicationRule$ = [3, n0, _RRe,
+    0,
+    [_ID, _Pri, _P, _F, _S, _SSC, _EOR, _Des, _DMR],
+    [0, 1, 0, [() => ReplicationRuleFilter$, 0], 0, () => SourceSelectionCriteria$, () => ExistingObjectReplication$, () => Destination$, () => DeleteMarkerReplication$]
+];
+var ReplicationRuleAndOperator$ = [3, n0, _RRAO,
+    0,
+    [_P, _T],
+    [0, [() => TagSet, { [_xF]: 1, [_xN]: _Ta }]]
+];
+var ReplicationRuleFilter$ = [3, n0, _RRF,
+    0,
+    [_P, _Ta, _An],
+    [0, () => Tag$, [() => ReplicationRuleAndOperator$, 0]]
+];
+var ReplicationTime$ = [3, n0, _RT,
+    0,
+    [_S, _Tim],
+    [0, () => ReplicationTimeValue$]
+];
+var ReplicationTimeValue$ = [3, n0, _RTV,
+    0,
+    [_Mi],
+    [1]
+];
+var RequestPaymentConfiguration$ = [3, n0, _RPC,
+    0,
+    [_Pay],
+    [0]
+];
+var RequestProgress$ = [3, n0, _RPe,
+    0,
+    [_Ena],
+    [2]
+];
+var RestoreObjectOutput$ = [3, n0, _ROOe,
+    0,
+    [_RC, _ROP],
+    [[0, { [_hH]: _xarc }], [0, { [_hH]: _xarop }]]
+];
+var RestoreObjectRequest$ = [3, n0, _RORe,
+    0,
+    [_B, _K, _VI, _RRes, _RP, _CA, _EBO],
+    [[0, 1], [0, 1], [0, { [_hQ]: _vI }], [() => RestoreRequest$, { [_hP]: 1, [_xN]: _RRes }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xaebo }]]
+];
+var RestoreRequest$ = [3, n0, _RRes,
+    0,
+    [_D, _GJP, _Ty, _Ti, _Desc, _SP, _OL],
+    [1, () => GlacierJobParameters$, 0, 0, 0, () => SelectParameters$, [() => OutputLocation$, 0]]
+];
+var RestoreStatus$ = [3, n0, _RSe,
+    0,
+    [_IRIP, _RED],
+    [2, 4]
+];
+var RoutingRule$ = [3, n0, _RRo,
+    0,
+    [_Co, _Red],
+    [() => Condition$, () => Redirect$]
+];
+var S3KeyFilter$ = [3, n0, _SKF,
+    0,
+    [_FRi],
+    [[() => FilterRuleList, { [_xF]: 1, [_xN]: _FR }]]
+];
+var S3Location$ = [3, n0, _SL,
+    0,
+    [_BN, _P, _En, _CACL, _ACL, _Tag, _UM, _SC],
+    [0, 0, [() => Encryption$, 0], 0, [() => Grants, 0], [() => Tagging$, 0], [() => UserMetadata, 0], 0]
+];
+var S3TablesDestination$ = [3, n0, _STD,
+    0,
+    [_TBA, _TNa],
+    [0, 0]
+];
+var S3TablesDestinationResult$ = [3, n0, _STDR,
+    0,
+    [_TBA, _TNa, _TA, _TN],
+    [0, 0, 0, 0]
+];
+var ScanRange$ = [3, n0, _SR,
+    0,
+    [_St, _End],
+    [1, 1]
+];
+var SelectObjectContentOutput$ = [3, n0, _SOCO,
+    0,
+    [_Payl],
+    [[() => SelectObjectContentEventStream$, 16]]
+];
+var SelectObjectContentRequest$ = [3, n0, _SOCR,
+    0,
+    [_B, _K, _SSECA, _SSECK, _SSECKMD, _Exp, _ETx, _RPe, _IS, _OSu, _SR, _EBO],
+    [[0, 1], [0, 1], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], 0, 0, () => RequestProgress$, () => InputSerialization$, () => OutputSerialization$, () => ScanRange$, [0, { [_hH]: _xaebo }]]
+];
+var SelectParameters$ = [3, n0, _SP,
+    0,
+    [_IS, _ETx, _Exp, _OSu],
+    [() => InputSerialization$, 0, 0, () => OutputSerialization$]
+];
+var ServerSideEncryptionByDefault$ = [3, n0, _SSEBD,
+    0,
+    [_SSEA, _KMSMKID],
+    [0, [() => SSEKMSKeyId, 0]]
+];
+var ServerSideEncryptionConfiguration$ = [3, n0, _SSEC,
+    0,
+    [_R],
+    [[() => ServerSideEncryptionRules, { [_xF]: 1, [_xN]: _Ru }]]
+];
+var ServerSideEncryptionRule$ = [3, n0, _SSER,
+    0,
+    [_ASSEBD, _BKE, _BET],
+    [[() => ServerSideEncryptionByDefault$, 0], 2, [() => BlockedEncryptionTypes$, 0]]
+];
+var SessionCredentials$ = [3, n0, _SCe,
+    0,
+    [_AKI, _SAK, _ST, _E],
+    [[0, { [_xN]: _AKI }], [() => SessionCredentialValue, { [_xN]: _SAK }], [() => SessionCredentialValue, { [_xN]: _ST }], [4, { [_xN]: _E }]]
+];
+var SimplePrefix$ = [3, n0, _SPi,
+    { [_xN]: _SPi },
+    [],
+    []
+];
+var SourceSelectionCriteria$ = [3, n0, _SSC,
+    0,
+    [_SKEO, _RM],
+    [() => SseKmsEncryptedObjects$, () => ReplicaModifications$]
+];
+var SSEKMS$ = [3, n0, _SSEKMS,
+    { [_xN]: _SK },
+    [_KI],
+    [[() => SSEKMSKeyId, 0]]
+];
+var SseKmsEncryptedObjects$ = [3, n0, _SKEO,
+    0,
+    [_S],
+    [0]
+];
+var SSES3$ = [3, n0, _SSES,
+    { [_xN]: _SS },
+    [],
+    []
+];
+var Stats$ = [3, n0, _Sta,
+    0,
+    [_BS, _BP, _BRy],
+    [1, 1, 1]
+];
+var StatsEvent$ = [3, n0, _SE,
+    0,
+    [_Det],
+    [[() => Stats$, { [_eP]: 1 }]]
+];
+var StorageClassAnalysis$ = [3, n0, _SCA,
+    0,
+    [_DE],
+    [() => StorageClassAnalysisDataExport$]
+];
+var StorageClassAnalysisDataExport$ = [3, n0, _SCADE,
+    0,
+    [_OSV, _Des],
+    [0, () => AnalyticsExportDestination$]
+];
+var Tag$ = [3, n0, _Ta,
+    0,
+    [_K, _V],
+    [0, 0]
+];
+var Tagging$ = [3, n0, _Tag,
+    0,
+    [_TS],
+    [[() => TagSet, 0]]
+];
+var TargetGrant$ = [3, n0, _TGa,
+    0,
+    [_Gra, _Pe],
+    [[() => Grantee$, { [_xNm]: [_x, _hi] }], 0]
+];
+var TargetObjectKeyFormat$ = [3, n0, _TOKF,
     0,
     [_SPi, _PP],
-    [
-        [() => SimplePrefix$, { [_xN]: _SPi }],
-        [() => PartitionedPrefix$, { [_xN]: _PP }],
-    ],
+    [[() => SimplePrefix$, { [_xN]: _SPi }], [() => PartitionedPrefix$, { [_xN]: _PP }]]
 ];
-var Tiering$ = [3, n0, _Tier, 0, [_D, _AT], [1, 0]];
-var TooManyParts$ = [-3, n0, _TMP, { [_e]: _c, [_hE]: 400 }, [], []];
+var Tiering$ = [3, n0, _Tier,
+    0,
+    [_D, _AT],
+    [1, 0]
+];
+var TooManyParts$ = [-3, n0, _TMP,
+    { [_e]: _c, [_hE]: 400 },
+    [],
+    []
+];
 schema.TypeRegistry.for(n0).registerError(TooManyParts$, TooManyParts);
-var TopicConfiguration$ = [
-    3,
-    n0,
-    _TCop,
+var TopicConfiguration$ = [3, n0, _TCop,
     0,
     [_I, _TAo, _Ev, _F],
-    [0, [0, { [_xN]: _Top }], [64 | 0, { [_xF]: 1, [_xN]: _Eve }], [() => NotificationConfigurationFilter$, 0]],
+    [0, [0, { [_xN]: _Top }], [64 | 0, { [_xF]: 1, [_xN]: _Eve }], [() => NotificationConfigurationFilter$, 0]]
 ];
-var Transition$ = [3, n0, _Tra, 0, [_Da, _D, _SC], [5, 1, 0]];
-var UpdateBucketMetadataInventoryTableConfigurationRequest$ = [
-    3,
-    n0,
-    _UBMITCR,
+var Transition$ = [3, n0, _Tra,
+    0,
+    [_Da, _D, _SC],
+    [5, 1, 0]
+];
+var UpdateBucketMetadataInventoryTableConfigurationRequest$ = [3, n0, _UBMITCR,
     0,
     [_B, _CMD, _CA, _ITCn, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [() => InventoryTableConfigurationUpdates$, { [_hP]: 1, [_xN]: _ITCn }],
-        [0, { [_hH]: _xaebo }],
-    ],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => InventoryTableConfigurationUpdates$, { [_hP]: 1, [_xN]: _ITCn }], [0, { [_hH]: _xaebo }]]
 ];
-var UpdateBucketMetadataJournalTableConfigurationRequest$ = [
-    3,
-    n0,
-    _UBMJTCR,
+var UpdateBucketMetadataJournalTableConfigurationRequest$ = [3, n0, _UBMJTCR,
     0,
     [_B, _CMD, _CA, _JTC, _EBO],
-    [
-        [0, 1],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [() => JournalTableConfigurationUpdates$, { [_hP]: 1, [_xN]: _JTC }],
-        [0, { [_hH]: _xaebo }],
-    ],
+    [[0, 1], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [() => JournalTableConfigurationUpdates$, { [_hP]: 1, [_xN]: _JTC }], [0, { [_hH]: _xaebo }]]
 ];
-var UploadPartCopyOutput$ = [
-    3,
-    n0,
-    _UPCO,
+var UploadPartCopyOutput$ = [3, n0, _UPCO,
     0,
     [_CSVI, _CPR, _SSE, _SSECA, _SSECKMD, _SSEKMSKI, _BKE, _RC],
-    [
-        [0, { [_hH]: _xacsvi }],
-        [() => CopyPartResult$, 16],
-        [0, { [_hH]: _xasse }],
-        [0, { [_hH]: _xasseca }],
-        [0, { [_hH]: _xasseckM }],
-        [() => SSEKMSKeyId, { [_hH]: _xasseakki }],
-        [2, { [_hH]: _xassebke }],
-        [0, { [_hH]: _xarc }],
-    ],
+    [[0, { [_hH]: _xacsvi }], [() => CopyPartResult$, 16], [0, { [_hH]: _xasse }], [0, { [_hH]: _xasseca }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xarc }]]
 ];
-var UploadPartCopyRequest$ = [
-    3,
-    n0,
-    _UPCR,
+var UploadPartCopyRequest$ = [3, n0, _UPCR,
     0,
-    [
-        _B,
-        _CS,
-        _CSIM,
-        _CSIMS,
-        _CSINM,
-        _CSIUS,
-        _CSRo,
-        _K,
-        _PN,
-        _UI,
-        _SSECA,
-        _SSECK,
-        _SSECKMD,
-        _CSSSECA,
-        _CSSSECK,
-        _CSSSECKMD,
-        _RP,
-        _EBO,
-        _ESBO,
-    ],
-    [
-        [0, 1],
-        [0, { [_hH]: _xacs__ }],
-        [0, { [_hH]: _xacsim }],
-        [4, { [_hH]: _xacsims }],
-        [0, { [_hH]: _xacsinm }],
-        [4, { [_hH]: _xacsius }],
-        [0, { [_hH]: _xacsr }],
-        [0, 1],
-        [1, { [_hQ]: _pN }],
-        [0, { [_hQ]: _uI }],
-        [0, { [_hH]: _xasseca }],
-        [() => SSECustomerKey, { [_hH]: _xasseck }],
-        [0, { [_hH]: _xasseckM }],
-        [0, { [_hH]: _xacssseca }],
-        [() => CopySourceSSECustomerKey, { [_hH]: _xacssseck }],
-        [0, { [_hH]: _xacssseckM }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xaebo }],
-        [0, { [_hH]: _xasebo }],
-    ],
+    [_B, _CS, _CSIM, _CSIMS, _CSINM, _CSIUS, _CSRo, _K, _PN, _UI, _SSECA, _SSECK, _SSECKMD, _CSSSECA, _CSSSECK, _CSSSECKMD, _RP, _EBO, _ESBO],
+    [[0, 1], [0, { [_hH]: _xacs__ }], [0, { [_hH]: _xacsim }], [4, { [_hH]: _xacsims }], [0, { [_hH]: _xacsinm }], [4, { [_hH]: _xacsius }], [0, { [_hH]: _xacsr }], [0, 1], [1, { [_hQ]: _pN }], [0, { [_hQ]: _uI }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [0, { [_hH]: _xacssseca }], [() => CopySourceSSECustomerKey, { [_hH]: _xacssseck }], [0, { [_hH]: _xacssseckM }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }], [0, { [_hH]: _xasebo }]]
 ];
-var UploadPartOutput$ = [
-    3,
-    n0,
-    _UPO,
+var UploadPartOutput$ = [3, n0, _UPO,
     0,
     [_SSE, _ETa, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _SSECA, _SSECKMD, _SSEKMSKI, _BKE, _RC],
-    [
-        [0, { [_hH]: _xasse }],
-        [0, { [_hH]: _ETa }],
-        [0, { [_hH]: _xacc }],
-        [0, { [_hH]: _xacc_ }],
-        [0, { [_hH]: _xacc__ }],
-        [0, { [_hH]: _xacs }],
-        [0, { [_hH]: _xacs_ }],
-        [0, { [_hH]: _xasseca }],
-        [0, { [_hH]: _xasseckM }],
-        [() => SSEKMSKeyId, { [_hH]: _xasseakki }],
-        [2, { [_hH]: _xassebke }],
-        [0, { [_hH]: _xarc }],
-    ],
+    [[0, { [_hH]: _xasse }], [0, { [_hH]: _ETa }], [0, { [_hH]: _xacc }], [0, { [_hH]: _xacc_ }], [0, { [_hH]: _xacc__ }], [0, { [_hH]: _xacs }], [0, { [_hH]: _xacs_ }], [0, { [_hH]: _xasseca }], [0, { [_hH]: _xasseckM }], [() => SSEKMSKeyId, { [_hH]: _xasseakki }], [2, { [_hH]: _xassebke }], [0, { [_hH]: _xarc }]]
 ];
-var UploadPartRequest$ = [
-    3,
-    n0,
-    _UPR,
+var UploadPartRequest$ = [3, n0, _UPR,
     0,
-    [
-        _Bo,
-        _B,
-        _CLo,
-        _CMD,
-        _CA,
-        _CCRC,
-        _CCRCC,
-        _CCRCNVME,
-        _CSHA,
-        _CSHAh,
-        _K,
-        _PN,
-        _UI,
-        _SSECA,
-        _SSECK,
-        _SSECKMD,
-        _RP,
-        _EBO,
-    ],
-    [
-        [() => StreamingBlob, 16],
-        [0, 1],
-        [1, { [_hH]: _CL__ }],
-        [0, { [_hH]: _CM }],
-        [0, { [_hH]: _xasca }],
-        [0, { [_hH]: _xacc }],
-        [0, { [_hH]: _xacc_ }],
-        [0, { [_hH]: _xacc__ }],
-        [0, { [_hH]: _xacs }],
-        [0, { [_hH]: _xacs_ }],
-        [0, 1],
-        [1, { [_hQ]: _pN }],
-        [0, { [_hQ]: _uI }],
-        [0, { [_hH]: _xasseca }],
-        [() => SSECustomerKey, { [_hH]: _xasseck }],
-        [0, { [_hH]: _xasseckM }],
-        [0, { [_hH]: _xarp }],
-        [0, { [_hH]: _xaebo }],
-    ],
+    [_Bo, _B, _CLo, _CMD, _CA, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _K, _PN, _UI, _SSECA, _SSECK, _SSECKMD, _RP, _EBO],
+    [[() => StreamingBlob, 16], [0, 1], [1, { [_hH]: _CL__ }], [0, { [_hH]: _CM }], [0, { [_hH]: _xasca }], [0, { [_hH]: _xacc }], [0, { [_hH]: _xacc_ }], [0, { [_hH]: _xacc__ }], [0, { [_hH]: _xacs }], [0, { [_hH]: _xacs_ }], [0, 1], [1, { [_hQ]: _pN }], [0, { [_hQ]: _uI }], [0, { [_hH]: _xasseca }], [() => SSECustomerKey, { [_hH]: _xasseck }], [0, { [_hH]: _xasseckM }], [0, { [_hH]: _xarp }], [0, { [_hH]: _xaebo }]]
 ];
-var VersioningConfiguration$ = [3, n0, _VC, 0, [_MFAD, _S], [[0, { [_xN]: _MDf }], 0]];
-var WebsiteConfiguration$ = [
-    3,
-    n0,
-    _WC,
+var VersioningConfiguration$ = [3, n0, _VC,
+    0,
+    [_MFAD, _S],
+    [[0, { [_xN]: _MDf }], 0]
+];
+var WebsiteConfiguration$ = [3, n0, _WC,
     0,
     [_EDr, _IDn, _RART, _RR],
-    [() => ErrorDocument$, () => IndexDocument$, () => RedirectAllRequestsTo$, [() => RoutingRules, 0]],
+    [() => ErrorDocument$, () => IndexDocument$, () => RedirectAllRequestsTo$, [() => RoutingRules, 0]]
 ];
-var WriteGetObjectResponseRequest$ = [
-    3,
-    n0,
-    _WGORR,
+var WriteGetObjectResponseRequest$ = [3, n0, _WGORR,
     0,
-    [
-        _RReq,
-        _RTe,
-        _Bo,
-        _SCt,
-        _ECr,
-        _EM,
-        _AR,
-        _CC,
-        _CDo,
-        _CEo,
-        _CL,
-        _CLo,
-        _CR,
-        _CTo,
-        _CCRC,
-        _CCRCC,
-        _CCRCNVME,
-        _CSHA,
-        _CSHAh,
-        _DM,
-        _ETa,
-        _Ex,
-        _E,
-        _LM,
-        _MM,
-        _M,
-        _OLM,
-        _OLLHS,
-        _OLRUD,
-        _PC,
-        _RS,
-        _RC,
-        _Re,
-        _SSE,
-        _SSECA,
-        _SSEKMSKI,
-        _SSECKMD,
-        _SC,
-        _TC,
-        _VI,
-        _BKE,
-    ],
-    [
-        [0, { [_hL]: 1, [_hH]: _xarr }],
-        [0, { [_hH]: _xart }],
-        [() => StreamingBlob, 16],
-        [1, { [_hH]: _xafs }],
-        [0, { [_hH]: _xafec }],
-        [0, { [_hH]: _xafem }],
-        [0, { [_hH]: _xafhar }],
-        [0, { [_hH]: _xafhCC }],
-        [0, { [_hH]: _xafhCD }],
-        [0, { [_hH]: _xafhCE }],
-        [0, { [_hH]: _xafhCL }],
-        [1, { [_hH]: _CL__ }],
-        [0, { [_hH]: _xafhCR }],
-        [0, { [_hH]: _xafhCT }],
-        [0, { [_hH]: _xafhxacc }],
-        [0, { [_hH]: _xafhxacc_ }],
-        [0, { [_hH]: _xafhxacc__ }],
-        [0, { [_hH]: _xafhxacs }],
-        [0, { [_hH]: _xafhxacs_ }],
-        [2, { [_hH]: _xafhxadm }],
-        [0, { [_hH]: _xafhE }],
-        [4, { [_hH]: _xafhE_ }],
-        [0, { [_hH]: _xafhxae }],
-        [4, { [_hH]: _xafhLM }],
-        [1, { [_hH]: _xafhxamm }],
-        [128 | 0, { [_hPH]: _xam }],
-        [0, { [_hH]: _xafhxaolm }],
-        [0, { [_hH]: _xafhxaollh }],
-        [5, { [_hH]: _xafhxaolrud }],
-        [1, { [_hH]: _xafhxampc }],
-        [0, { [_hH]: _xafhxars }],
-        [0, { [_hH]: _xafhxarc }],
-        [0, { [_hH]: _xafhxar }],
-        [0, { [_hH]: _xafhxasse }],
-        [0, { [_hH]: _xafhxasseca }],
-        [() => SSEKMSKeyId, { [_hH]: _xafhxasseakki }],
-        [0, { [_hH]: _xafhxasseckM }],
-        [0, { [_hH]: _xafhxasc }],
-        [1, { [_hH]: _xafhxatc }],
-        [0, { [_hH]: _xafhxavi }],
-        [2, { [_hH]: _xafhxassebke }],
-    ],
+    [_RReq, _RTe, _Bo, _SCt, _ECr, _EM, _AR, _CC, _CDo, _CEo, _CL, _CLo, _CR, _CTo, _CCRC, _CCRCC, _CCRCNVME, _CSHA, _CSHAh, _DM, _ETa, _Ex, _E, _LM, _MM, _M, _OLM, _OLLHS, _OLRUD, _PC, _RS, _RC, _Re, _SSE, _SSECA, _SSEKMSKI, _SSECKMD, _SC, _TC, _VI, _BKE],
+    [[0, { [_hL]: 1, [_hH]: _xarr }], [0, { [_hH]: _xart }], [() => StreamingBlob, 16], [1, { [_hH]: _xafs }], [0, { [_hH]: _xafec }], [0, { [_hH]: _xafem }], [0, { [_hH]: _xafhar }], [0, { [_hH]: _xafhCC }], [0, { [_hH]: _xafhCD }], [0, { [_hH]: _xafhCE }], [0, { [_hH]: _xafhCL }], [1, { [_hH]: _CL__ }], [0, { [_hH]: _xafhCR }], [0, { [_hH]: _xafhCT }], [0, { [_hH]: _xafhxacc }], [0, { [_hH]: _xafhxacc_ }], [0, { [_hH]: _xafhxacc__ }], [0, { [_hH]: _xafhxacs }], [0, { [_hH]: _xafhxacs_ }], [2, { [_hH]: _xafhxadm }], [0, { [_hH]: _xafhE }], [4, { [_hH]: _xafhE_ }], [0, { [_hH]: _xafhxae }], [4, { [_hH]: _xafhLM }], [1, { [_hH]: _xafhxamm }], [128 | 0, { [_hPH]: _xam }], [0, { [_hH]: _xafhxaolm }], [0, { [_hH]: _xafhxaollh }], [5, { [_hH]: _xafhxaolrud }], [1, { [_hH]: _xafhxampc }], [0, { [_hH]: _xafhxars }], [0, { [_hH]: _xafhxarc }], [0, { [_hH]: _xafhxar }], [0, { [_hH]: _xafhxasse }], [0, { [_hH]: _xafhxasseca }], [() => SSEKMSKeyId, { [_hH]: _xafhxasseakki }], [0, { [_hH]: _xafhxasseckM }], [0, { [_hH]: _xafhxasc }], [1, { [_hH]: _xafhxatc }], [0, { [_hH]: _xafhxavi }], [2, { [_hH]: _xafhxassebke }]]
 ];
 var __Unit = "unit";
 var S3ServiceException$ = [-3, _sm, "S3ServiceException", 0, [], []];
 schema.TypeRegistry.for(_sm).registerError(S3ServiceException$, S3ServiceException);
-var AnalyticsConfigurationList = [1, n0, _ACLn, 0, [() => AnalyticsConfiguration$, 0]];
-var Buckets = [1, n0, _Bu, 0, [() => Bucket$, { [_xN]: _B }]];
-var CommonPrefixList = [1, n0, _CPL, 0, () => CommonPrefix$];
-var CompletedPartList = [1, n0, _CPLo, 0, () => CompletedPart$];
-var CORSRules = [1, n0, _CORSR, 0, [() => CORSRule$, 0]];
-var DeletedObjects = [1, n0, _DOe, 0, () => DeletedObject$];
-var DeleteMarkers = [1, n0, _DMe, 0, () => DeleteMarkerEntry$];
-var EncryptionTypeList = [1, n0, _ETL, 0, [0, { [_xN]: _ET }]];
-var Errors = [1, n0, _Er, 0, () => _Error$];
-var FilterRuleList = [1, n0, _FRL, 0, () => FilterRule$];
-var Grants = [1, n0, _G, 0, [() => Grant$, { [_xN]: _Gr }]];
-var IntelligentTieringConfigurationList = [
-    1,
-    n0,
-    _ITCL,
-    0,
-    [() => IntelligentTieringConfiguration$, 0],
+var AnalyticsConfigurationList = [1, n0, _ACLn,
+    0, [() => AnalyticsConfiguration$,
+        0]
 ];
-var InventoryConfigurationList = [1, n0, _ICL, 0, [() => InventoryConfiguration$, 0]];
-var InventoryOptionalFields = [1, n0, _IOF, 0, [0, { [_xN]: _Fi }]];
-var LambdaFunctionConfigurationList = [1, n0, _LFCL, 0, [() => LambdaFunctionConfiguration$, 0]];
-var LifecycleRules = [1, n0, _LRi, 0, [() => LifecycleRule$, 0]];
-var MetricsConfigurationList = [1, n0, _MCL, 0, [() => MetricsConfiguration$, 0]];
-var MultipartUploadList = [1, n0, _MUL, 0, () => MultipartUpload$];
-var NoncurrentVersionTransitionList = [1, n0, _NVTL, 0, () => NoncurrentVersionTransition$];
-var ObjectIdentifierList = [1, n0, _OIL, 0, () => ObjectIdentifier$];
-var ObjectList = [1, n0, _OLb, 0, [() => _Object$, 0]];
-var ObjectVersionList = [1, n0, _OVL, 0, [() => ObjectVersion$, 0]];
-var OwnershipControlsRules = [1, n0, _OCRw, 0, () => OwnershipControlsRule$];
-var Parts = [1, n0, _Pa, 0, () => Part$];
-var PartsList = [1, n0, _PL, 0, () => ObjectPart$];
-var QueueConfigurationList = [1, n0, _QCL, 0, [() => QueueConfiguration$, 0]];
-var ReplicationRules = [1, n0, _RRep, 0, [() => ReplicationRule$, 0]];
-var RoutingRules = [1, n0, _RR, 0, [() => RoutingRule$, { [_xN]: _RRo }]];
-var ServerSideEncryptionRules = [1, n0, _SSERe, 0, [() => ServerSideEncryptionRule$, 0]];
-var TagSet = [1, n0, _TS, 0, [() => Tag$, { [_xN]: _Ta }]];
-var TargetGrants = [1, n0, _TG, 0, [() => TargetGrant$, { [_xN]: _Gr }]];
-var TieringList = [1, n0, _TL, 0, () => Tiering$];
-var TopicConfigurationList = [1, n0, _TCL, 0, [() => TopicConfiguration$, 0]];
-var TransitionList = [1, n0, _TLr, 0, () => Transition$];
-var UserMetadata = [1, n0, _UM, 0, [() => MetadataEntry$, { [_xN]: _ME }]];
-var AnalyticsFilter$ = [
-    4,
-    n0,
-    _AF,
+var Buckets = [1, n0, _Bu,
+    0, [() => Bucket$,
+        { [_xN]: _B }]
+];
+var CommonPrefixList = [1, n0, _CPL,
+    0, () => CommonPrefix$
+];
+var CompletedPartList = [1, n0, _CPLo,
+    0, () => CompletedPart$
+];
+var CORSRules = [1, n0, _CORSR,
+    0, [() => CORSRule$,
+        0]
+];
+var DeletedObjects = [1, n0, _DOe,
+    0, () => DeletedObject$
+];
+var DeleteMarkers = [1, n0, _DMe,
+    0, () => DeleteMarkerEntry$
+];
+var EncryptionTypeList = [1, n0, _ETL,
+    0, [0,
+        { [_xN]: _ET }]
+];
+var Errors = [1, n0, _Er,
+    0, () => _Error$
+];
+var FilterRuleList = [1, n0, _FRL,
+    0, () => FilterRule$
+];
+var Grants = [1, n0, _G,
+    0, [() => Grant$,
+        { [_xN]: _Gr }]
+];
+var IntelligentTieringConfigurationList = [1, n0, _ITCL,
+    0, [() => IntelligentTieringConfiguration$,
+        0]
+];
+var InventoryConfigurationList = [1, n0, _ICL,
+    0, [() => InventoryConfiguration$,
+        0]
+];
+var InventoryOptionalFields = [1, n0, _IOF,
+    0, [0,
+        { [_xN]: _Fi }]
+];
+var LambdaFunctionConfigurationList = [1, n0, _LFCL,
+    0, [() => LambdaFunctionConfiguration$,
+        0]
+];
+var LifecycleRules = [1, n0, _LRi,
+    0, [() => LifecycleRule$,
+        0]
+];
+var MetricsConfigurationList = [1, n0, _MCL,
+    0, [() => MetricsConfiguration$,
+        0]
+];
+var MultipartUploadList = [1, n0, _MUL,
+    0, () => MultipartUpload$
+];
+var NoncurrentVersionTransitionList = [1, n0, _NVTL,
+    0, () => NoncurrentVersionTransition$
+];
+var ObjectIdentifierList = [1, n0, _OIL,
+    0, () => ObjectIdentifier$
+];
+var ObjectList = [1, n0, _OLb,
+    0, [() => _Object$,
+        0]
+];
+var ObjectVersionList = [1, n0, _OVL,
+    0, [() => ObjectVersion$,
+        0]
+];
+var OwnershipControlsRules = [1, n0, _OCRw,
+    0, () => OwnershipControlsRule$
+];
+var Parts = [1, n0, _Pa,
+    0, () => Part$
+];
+var PartsList = [1, n0, _PL,
+    0, () => ObjectPart$
+];
+var QueueConfigurationList = [1, n0, _QCL,
+    0, [() => QueueConfiguration$,
+        0]
+];
+var ReplicationRules = [1, n0, _RRep,
+    0, [() => ReplicationRule$,
+        0]
+];
+var RoutingRules = [1, n0, _RR,
+    0, [() => RoutingRule$,
+        { [_xN]: _RRo }]
+];
+var ServerSideEncryptionRules = [1, n0, _SSERe,
+    0, [() => ServerSideEncryptionRule$,
+        0]
+];
+var TagSet = [1, n0, _TS,
+    0, [() => Tag$,
+        { [_xN]: _Ta }]
+];
+var TargetGrants = [1, n0, _TG,
+    0, [() => TargetGrant$,
+        { [_xN]: _Gr }]
+];
+var TieringList = [1, n0, _TL,
+    0, () => Tiering$
+];
+var TopicConfigurationList = [1, n0, _TCL,
+    0, [() => TopicConfiguration$,
+        0]
+];
+var TransitionList = [1, n0, _TLr,
+    0, () => Transition$
+];
+var UserMetadata = [1, n0, _UM,
+    0, [() => MetadataEntry$,
+        { [_xN]: _ME }]
+];
+var AnalyticsFilter$ = [4, n0, _AF,
     0,
     [_P, _Ta, _An],
-    [0, () => Tag$, [() => AnalyticsAndOperator$, 0]],
+    [0, () => Tag$, [() => AnalyticsAndOperator$, 0]]
 ];
-var MetricsFilter$ = [
-    4,
-    n0,
-    _MF,
+var MetricsFilter$ = [4, n0, _MF,
     0,
     [_P, _Ta, _APAc, _An],
-    [0, () => Tag$, 0, [() => MetricsAndOperator$, 0]],
+    [0, () => Tag$, 0, [() => MetricsAndOperator$, 0]]
 ];
-var SelectObjectContentEventStream$ = [
-    4,
-    n0,
-    _SOCES,
+var SelectObjectContentEventStream$ = [4, n0, _SOCES,
     { [_s]: 1 },
     [_Rec, _Sta, _Pr, _Cont, _End],
-    [
-        [() => RecordsEvent$, 0],
-        [() => StatsEvent$, 0],
-        [() => ProgressEvent$, 0],
-        () => ContinuationEvent$,
-        () => EndEvent$,
-    ],
-];
-var AbortMultipartUpload$ = [
-    9,
-    n0,
-    _AMU,
-    { [_h]: ["DELETE", "/{Key+}?x-id=AbortMultipartUpload", 204] },
-    () => AbortMultipartUploadRequest$,
-    () => AbortMultipartUploadOutput$,
-];
-var CompleteMultipartUpload$ = [
-    9,
-    n0,
-    _CMUo,
-    { [_h]: ["POST", "/{Key+}", 200] },
-    () => CompleteMultipartUploadRequest$,
-    () => CompleteMultipartUploadOutput$,
-];
-var CopyObject$ = [
-    9,
-    n0,
-    _CO,
-    { [_h]: ["PUT", "/{Key+}?x-id=CopyObject", 200] },
-    () => CopyObjectRequest$,
-    () => CopyObjectOutput$,
-];
-var CreateBucket$ = [
-    9,
-    n0,
-    _CB,
-    { [_h]: ["PUT", "/", 200] },
-    () => CreateBucketRequest$,
-    () => CreateBucketOutput$,
-];
-var CreateBucketMetadataConfiguration$ = [
-    9,
-    n0,
-    _CBMC,
-    { [_hC]: "-", [_h]: ["POST", "/?metadataConfiguration", 200] },
-    () => CreateBucketMetadataConfigurationRequest$,
-    () => __Unit,
-];
-var CreateBucketMetadataTableConfiguration$ = [
-    9,
-    n0,
-    _CBMTC,
-    { [_hC]: "-", [_h]: ["POST", "/?metadataTable", 200] },
-    () => CreateBucketMetadataTableConfigurationRequest$,
-    () => __Unit,
-];
-var CreateMultipartUpload$ = [
-    9,
-    n0,
-    _CMUr,
-    { [_h]: ["POST", "/{Key+}?uploads", 200] },
-    () => CreateMultipartUploadRequest$,
-    () => CreateMultipartUploadOutput$,
-];
-var CreateSession$ = [
-    9,
-    n0,
-    _CSr,
-    { [_h]: ["GET", "/?session", 200] },
-    () => CreateSessionRequest$,
-    () => CreateSessionOutput$,
-];
-var DeleteBucket$ = [
-    9,
-    n0,
-    _DB,
-    { [_h]: ["DELETE", "/", 204] },
-    () => DeleteBucketRequest$,
-    () => __Unit,
-];
-var DeleteBucketAnalyticsConfiguration$ = [
-    9,
-    n0,
-    _DBAC,
-    { [_h]: ["DELETE", "/?analytics", 204] },
-    () => DeleteBucketAnalyticsConfigurationRequest$,
-    () => __Unit,
-];
-var DeleteBucketCors$ = [
-    9,
-    n0,
-    _DBC,
-    { [_h]: ["DELETE", "/?cors", 204] },
-    () => DeleteBucketCorsRequest$,
-    () => __Unit,
-];
-var DeleteBucketEncryption$ = [
-    9,
-    n0,
-    _DBE,
-    { [_h]: ["DELETE", "/?encryption", 204] },
-    () => DeleteBucketEncryptionRequest$,
-    () => __Unit,
-];
-var DeleteBucketIntelligentTieringConfiguration$ = [
-    9,
-    n0,
-    _DBITC,
-    { [_h]: ["DELETE", "/?intelligent-tiering", 204] },
-    () => DeleteBucketIntelligentTieringConfigurationRequest$,
-    () => __Unit,
-];
-var DeleteBucketInventoryConfiguration$ = [
-    9,
-    n0,
-    _DBIC,
-    { [_h]: ["DELETE", "/?inventory", 204] },
-    () => DeleteBucketInventoryConfigurationRequest$,
-    () => __Unit,
-];
-var DeleteBucketLifecycle$ = [
-    9,
-    n0,
-    _DBL,
-    { [_h]: ["DELETE", "/?lifecycle", 204] },
-    () => DeleteBucketLifecycleRequest$,
-    () => __Unit,
-];
-var DeleteBucketMetadataConfiguration$ = [
-    9,
-    n0,
-    _DBMC,
-    { [_h]: ["DELETE", "/?metadataConfiguration", 204] },
-    () => DeleteBucketMetadataConfigurationRequest$,
-    () => __Unit,
-];
-var DeleteBucketMetadataTableConfiguration$ = [
-    9,
-    n0,
-    _DBMTC,
-    { [_h]: ["DELETE", "/?metadataTable", 204] },
-    () => DeleteBucketMetadataTableConfigurationRequest$,
-    () => __Unit,
-];
-var DeleteBucketMetricsConfiguration$ = [
-    9,
-    n0,
-    _DBMCe,
-    { [_h]: ["DELETE", "/?metrics", 204] },
-    () => DeleteBucketMetricsConfigurationRequest$,
-    () => __Unit,
-];
-var DeleteBucketOwnershipControls$ = [
-    9,
-    n0,
-    _DBOC,
-    { [_h]: ["DELETE", "/?ownershipControls", 204] },
-    () => DeleteBucketOwnershipControlsRequest$,
-    () => __Unit,
-];
-var DeleteBucketPolicy$ = [
-    9,
-    n0,
-    _DBP,
-    { [_h]: ["DELETE", "/?policy", 204] },
-    () => DeleteBucketPolicyRequest$,
-    () => __Unit,
-];
-var DeleteBucketReplication$ = [
-    9,
-    n0,
-    _DBRe,
-    { [_h]: ["DELETE", "/?replication", 204] },
-    () => DeleteBucketReplicationRequest$,
-    () => __Unit,
-];
-var DeleteBucketTagging$ = [
-    9,
-    n0,
-    _DBT,
-    { [_h]: ["DELETE", "/?tagging", 204] },
-    () => DeleteBucketTaggingRequest$,
-    () => __Unit,
-];
-var DeleteBucketWebsite$ = [
-    9,
-    n0,
-    _DBW,
-    { [_h]: ["DELETE", "/?website", 204] },
-    () => DeleteBucketWebsiteRequest$,
-    () => __Unit,
-];
-var DeleteObject$ = [
-    9,
-    n0,
-    _DOel,
-    { [_h]: ["DELETE", "/{Key+}?x-id=DeleteObject", 204] },
-    () => DeleteObjectRequest$,
-    () => DeleteObjectOutput$,
-];
-var DeleteObjects$ = [
-    9,
-    n0,
-    _DOele,
-    { [_hC]: "-", [_h]: ["POST", "/?delete", 200] },
-    () => DeleteObjectsRequest$,
-    () => DeleteObjectsOutput$,
-];
-var DeleteObjectTagging$ = [
-    9,
-    n0,
-    _DOT,
-    { [_h]: ["DELETE", "/{Key+}?tagging", 204] },
-    () => DeleteObjectTaggingRequest$,
-    () => DeleteObjectTaggingOutput$,
-];
-var DeletePublicAccessBlock$ = [
-    9,
-    n0,
-    _DPAB,
-    { [_h]: ["DELETE", "/?publicAccessBlock", 204] },
-    () => DeletePublicAccessBlockRequest$,
-    () => __Unit,
-];
-var GetBucketAbac$ = [
-    9,
-    n0,
-    _GBA,
-    { [_h]: ["GET", "/?abac", 200] },
-    () => GetBucketAbacRequest$,
-    () => GetBucketAbacOutput$,
-];
-var GetBucketAccelerateConfiguration$ = [
-    9,
-    n0,
-    _GBAC,
-    { [_h]: ["GET", "/?accelerate", 200] },
-    () => GetBucketAccelerateConfigurationRequest$,
-    () => GetBucketAccelerateConfigurationOutput$,
-];
-var GetBucketAcl$ = [
-    9,
-    n0,
-    _GBAe,
-    { [_h]: ["GET", "/?acl", 200] },
-    () => GetBucketAclRequest$,
-    () => GetBucketAclOutput$,
-];
-var GetBucketAnalyticsConfiguration$ = [
-    9,
-    n0,
-    _GBACe,
-    { [_h]: ["GET", "/?analytics&x-id=GetBucketAnalyticsConfiguration", 200] },
-    () => GetBucketAnalyticsConfigurationRequest$,
-    () => GetBucketAnalyticsConfigurationOutput$,
-];
-var GetBucketCors$ = [
-    9,
-    n0,
-    _GBC,
-    { [_h]: ["GET", "/?cors", 200] },
-    () => GetBucketCorsRequest$,
-    () => GetBucketCorsOutput$,
-];
-var GetBucketEncryption$ = [
-    9,
-    n0,
-    _GBE,
-    { [_h]: ["GET", "/?encryption", 200] },
-    () => GetBucketEncryptionRequest$,
-    () => GetBucketEncryptionOutput$,
-];
-var GetBucketIntelligentTieringConfiguration$ = [
-    9,
-    n0,
-    _GBITC,
-    { [_h]: ["GET", "/?intelligent-tiering&x-id=GetBucketIntelligentTieringConfiguration", 200] },
-    () => GetBucketIntelligentTieringConfigurationRequest$,
-    () => GetBucketIntelligentTieringConfigurationOutput$,
-];
-var GetBucketInventoryConfiguration$ = [
-    9,
-    n0,
-    _GBIC,
-    { [_h]: ["GET", "/?inventory&x-id=GetBucketInventoryConfiguration", 200] },
-    () => GetBucketInventoryConfigurationRequest$,
-    () => GetBucketInventoryConfigurationOutput$,
-];
-var GetBucketLifecycleConfiguration$ = [
-    9,
-    n0,
-    _GBLC,
-    { [_h]: ["GET", "/?lifecycle", 200] },
-    () => GetBucketLifecycleConfigurationRequest$,
-    () => GetBucketLifecycleConfigurationOutput$,
-];
-var GetBucketLocation$ = [
-    9,
-    n0,
-    _GBL,
-    { [_h]: ["GET", "/?location", 200] },
-    () => GetBucketLocationRequest$,
-    () => GetBucketLocationOutput$,
-];
-var GetBucketLogging$ = [
-    9,
-    n0,
-    _GBLe,
-    { [_h]: ["GET", "/?logging", 200] },
-    () => GetBucketLoggingRequest$,
-    () => GetBucketLoggingOutput$,
-];
-var GetBucketMetadataConfiguration$ = [
-    9,
-    n0,
-    _GBMC,
-    { [_h]: ["GET", "/?metadataConfiguration", 200] },
-    () => GetBucketMetadataConfigurationRequest$,
-    () => GetBucketMetadataConfigurationOutput$,
-];
-var GetBucketMetadataTableConfiguration$ = [
-    9,
-    n0,
-    _GBMTC,
-    { [_h]: ["GET", "/?metadataTable", 200] },
-    () => GetBucketMetadataTableConfigurationRequest$,
-    () => GetBucketMetadataTableConfigurationOutput$,
-];
-var GetBucketMetricsConfiguration$ = [
-    9,
-    n0,
-    _GBMCe,
-    { [_h]: ["GET", "/?metrics&x-id=GetBucketMetricsConfiguration", 200] },
-    () => GetBucketMetricsConfigurationRequest$,
-    () => GetBucketMetricsConfigurationOutput$,
-];
-var GetBucketNotificationConfiguration$ = [
-    9,
-    n0,
-    _GBNC,
-    { [_h]: ["GET", "/?notification", 200] },
-    () => GetBucketNotificationConfigurationRequest$,
-    () => NotificationConfiguration$,
-];
-var GetBucketOwnershipControls$ = [
-    9,
-    n0,
-    _GBOC,
-    { [_h]: ["GET", "/?ownershipControls", 200] },
-    () => GetBucketOwnershipControlsRequest$,
-    () => GetBucketOwnershipControlsOutput$,
-];
-var GetBucketPolicy$ = [
-    9,
-    n0,
-    _GBP,
-    { [_h]: ["GET", "/?policy", 200] },
-    () => GetBucketPolicyRequest$,
-    () => GetBucketPolicyOutput$,
-];
-var GetBucketPolicyStatus$ = [
-    9,
-    n0,
-    _GBPS,
-    { [_h]: ["GET", "/?policyStatus", 200] },
-    () => GetBucketPolicyStatusRequest$,
-    () => GetBucketPolicyStatusOutput$,
-];
-var GetBucketReplication$ = [
-    9,
-    n0,
-    _GBR,
-    { [_h]: ["GET", "/?replication", 200] },
-    () => GetBucketReplicationRequest$,
-    () => GetBucketReplicationOutput$,
-];
-var GetBucketRequestPayment$ = [
-    9,
-    n0,
-    _GBRP,
-    { [_h]: ["GET", "/?requestPayment", 200] },
-    () => GetBucketRequestPaymentRequest$,
-    () => GetBucketRequestPaymentOutput$,
-];
-var GetBucketTagging$ = [
-    9,
-    n0,
-    _GBT,
-    { [_h]: ["GET", "/?tagging", 200] },
-    () => GetBucketTaggingRequest$,
-    () => GetBucketTaggingOutput$,
-];
-var GetBucketVersioning$ = [
-    9,
-    n0,
-    _GBV,
-    { [_h]: ["GET", "/?versioning", 200] },
-    () => GetBucketVersioningRequest$,
-    () => GetBucketVersioningOutput$,
-];
-var GetBucketWebsite$ = [
-    9,
-    n0,
-    _GBW,
-    { [_h]: ["GET", "/?website", 200] },
-    () => GetBucketWebsiteRequest$,
-    () => GetBucketWebsiteOutput$,
-];
-var GetObject$ = [
-    9,
-    n0,
-    _GO,
-    { [_hC]: "-", [_h]: ["GET", "/{Key+}?x-id=GetObject", 200] },
-    () => GetObjectRequest$,
-    () => GetObjectOutput$,
-];
-var GetObjectAcl$ = [
-    9,
-    n0,
-    _GOA,
-    { [_h]: ["GET", "/{Key+}?acl", 200] },
-    () => GetObjectAclRequest$,
-    () => GetObjectAclOutput$,
-];
-var GetObjectAttributes$ = [
-    9,
-    n0,
-    _GOAe,
-    { [_h]: ["GET", "/{Key+}?attributes", 200] },
-    () => GetObjectAttributesRequest$,
-    () => GetObjectAttributesOutput$,
-];
-var GetObjectLegalHold$ = [
-    9,
-    n0,
-    _GOLH,
-    { [_h]: ["GET", "/{Key+}?legal-hold", 200] },
-    () => GetObjectLegalHoldRequest$,
-    () => GetObjectLegalHoldOutput$,
-];
-var GetObjectLockConfiguration$ = [
-    9,
-    n0,
-    _GOLC,
-    { [_h]: ["GET", "/?object-lock", 200] },
-    () => GetObjectLockConfigurationRequest$,
-    () => GetObjectLockConfigurationOutput$,
-];
-var GetObjectRetention$ = [
-    9,
-    n0,
-    _GORe,
-    { [_h]: ["GET", "/{Key+}?retention", 200] },
-    () => GetObjectRetentionRequest$,
-    () => GetObjectRetentionOutput$,
-];
-var GetObjectTagging$ = [
-    9,
-    n0,
-    _GOT,
-    { [_h]: ["GET", "/{Key+}?tagging", 200] },
-    () => GetObjectTaggingRequest$,
-    () => GetObjectTaggingOutput$,
-];
-var GetObjectTorrent$ = [
-    9,
-    n0,
-    _GOTe,
-    { [_h]: ["GET", "/{Key+}?torrent", 200] },
-    () => GetObjectTorrentRequest$,
-    () => GetObjectTorrentOutput$,
-];
-var GetPublicAccessBlock$ = [
-    9,
-    n0,
-    _GPAB,
-    { [_h]: ["GET", "/?publicAccessBlock", 200] },
-    () => GetPublicAccessBlockRequest$,
-    () => GetPublicAccessBlockOutput$,
-];
-var HeadBucket$ = [
-    9,
-    n0,
-    _HB,
-    { [_h]: ["HEAD", "/", 200] },
-    () => HeadBucketRequest$,
-    () => HeadBucketOutput$,
-];
-var HeadObject$ = [
-    9,
-    n0,
-    _HO,
-    { [_h]: ["HEAD", "/{Key+}", 200] },
-    () => HeadObjectRequest$,
-    () => HeadObjectOutput$,
-];
-var ListBucketAnalyticsConfigurations$ = [
-    9,
-    n0,
-    _LBAC,
-    { [_h]: ["GET", "/?analytics&x-id=ListBucketAnalyticsConfigurations", 200] },
-    () => ListBucketAnalyticsConfigurationsRequest$,
-    () => ListBucketAnalyticsConfigurationsOutput$,
-];
-var ListBucketIntelligentTieringConfigurations$ = [
-    9,
-    n0,
-    _LBITC,
-    { [_h]: ["GET", "/?intelligent-tiering&x-id=ListBucketIntelligentTieringConfigurations", 200] },
-    () => ListBucketIntelligentTieringConfigurationsRequest$,
-    () => ListBucketIntelligentTieringConfigurationsOutput$,
-];
-var ListBucketInventoryConfigurations$ = [
-    9,
-    n0,
-    _LBIC,
-    { [_h]: ["GET", "/?inventory&x-id=ListBucketInventoryConfigurations", 200] },
-    () => ListBucketInventoryConfigurationsRequest$,
-    () => ListBucketInventoryConfigurationsOutput$,
-];
-var ListBucketMetricsConfigurations$ = [
-    9,
-    n0,
-    _LBMC,
-    { [_h]: ["GET", "/?metrics&x-id=ListBucketMetricsConfigurations", 200] },
-    () => ListBucketMetricsConfigurationsRequest$,
-    () => ListBucketMetricsConfigurationsOutput$,
-];
-var ListBuckets$ = [
-    9,
-    n0,
-    _LB,
-    { [_h]: ["GET", "/?x-id=ListBuckets", 200] },
-    () => ListBucketsRequest$,
-    () => ListBucketsOutput$,
-];
-var ListDirectoryBuckets$ = [
-    9,
-    n0,
-    _LDB,
-    { [_h]: ["GET", "/?x-id=ListDirectoryBuckets", 200] },
-    () => ListDirectoryBucketsRequest$,
-    () => ListDirectoryBucketsOutput$,
-];
-var ListMultipartUploads$ = [
-    9,
-    n0,
-    _LMU,
-    { [_h]: ["GET", "/?uploads", 200] },
-    () => ListMultipartUploadsRequest$,
-    () => ListMultipartUploadsOutput$,
-];
-var ListObjects$ = [
-    9,
-    n0,
-    _LO,
-    { [_h]: ["GET", "/", 200] },
-    () => ListObjectsRequest$,
-    () => ListObjectsOutput$,
-];
-var ListObjectsV2$ = [
-    9,
-    n0,
-    _LOV,
-    { [_h]: ["GET", "/?list-type=2", 200] },
-    () => ListObjectsV2Request$,
-    () => ListObjectsV2Output$,
-];
-var ListObjectVersions$ = [
-    9,
-    n0,
-    _LOVi,
-    { [_h]: ["GET", "/?versions", 200] },
-    () => ListObjectVersionsRequest$,
-    () => ListObjectVersionsOutput$,
-];
-var ListParts$ = [
-    9,
-    n0,
-    _LP,
-    { [_h]: ["GET", "/{Key+}?x-id=ListParts", 200] },
-    () => ListPartsRequest$,
-    () => ListPartsOutput$,
-];
-var PutBucketAbac$ = [
-    9,
-    n0,
-    _PBA,
-    { [_hC]: "-", [_h]: ["PUT", "/?abac", 200] },
-    () => PutBucketAbacRequest$,
-    () => __Unit,
-];
-var PutBucketAccelerateConfiguration$ = [
-    9,
-    n0,
-    _PBAC,
-    { [_hC]: "-", [_h]: ["PUT", "/?accelerate", 200] },
-    () => PutBucketAccelerateConfigurationRequest$,
-    () => __Unit,
-];
-var PutBucketAcl$ = [
-    9,
-    n0,
-    _PBAu,
-    { [_hC]: "-", [_h]: ["PUT", "/?acl", 200] },
-    () => PutBucketAclRequest$,
-    () => __Unit,
-];
-var PutBucketAnalyticsConfiguration$ = [
-    9,
-    n0,
-    _PBACu,
-    { [_h]: ["PUT", "/?analytics", 200] },
-    () => PutBucketAnalyticsConfigurationRequest$,
-    () => __Unit,
-];
-var PutBucketCors$ = [
-    9,
-    n0,
-    _PBC,
-    { [_hC]: "-", [_h]: ["PUT", "/?cors", 200] },
-    () => PutBucketCorsRequest$,
-    () => __Unit,
-];
-var PutBucketEncryption$ = [
-    9,
-    n0,
-    _PBE,
-    { [_hC]: "-", [_h]: ["PUT", "/?encryption", 200] },
-    () => PutBucketEncryptionRequest$,
-    () => __Unit,
-];
-var PutBucketIntelligentTieringConfiguration$ = [
-    9,
-    n0,
-    _PBITC,
-    { [_h]: ["PUT", "/?intelligent-tiering", 200] },
-    () => PutBucketIntelligentTieringConfigurationRequest$,
-    () => __Unit,
-];
-var PutBucketInventoryConfiguration$ = [
-    9,
-    n0,
-    _PBIC,
-    { [_h]: ["PUT", "/?inventory", 200] },
-    () => PutBucketInventoryConfigurationRequest$,
-    () => __Unit,
-];
-var PutBucketLifecycleConfiguration$ = [
-    9,
-    n0,
-    _PBLC,
-    { [_hC]: "-", [_h]: ["PUT", "/?lifecycle", 200] },
-    () => PutBucketLifecycleConfigurationRequest$,
-    () => PutBucketLifecycleConfigurationOutput$,
-];
-var PutBucketLogging$ = [
-    9,
-    n0,
-    _PBL,
-    { [_hC]: "-", [_h]: ["PUT", "/?logging", 200] },
-    () => PutBucketLoggingRequest$,
-    () => __Unit,
-];
-var PutBucketMetricsConfiguration$ = [
-    9,
-    n0,
-    _PBMC,
-    { [_h]: ["PUT", "/?metrics", 200] },
-    () => PutBucketMetricsConfigurationRequest$,
-    () => __Unit,
-];
-var PutBucketNotificationConfiguration$ = [
-    9,
-    n0,
-    _PBNC,
-    { [_h]: ["PUT", "/?notification", 200] },
-    () => PutBucketNotificationConfigurationRequest$,
-    () => __Unit,
-];
-var PutBucketOwnershipControls$ = [
-    9,
-    n0,
-    _PBOC,
-    { [_hC]: "-", [_h]: ["PUT", "/?ownershipControls", 200] },
-    () => PutBucketOwnershipControlsRequest$,
-    () => __Unit,
-];
-var PutBucketPolicy$ = [
-    9,
-    n0,
-    _PBP,
-    { [_hC]: "-", [_h]: ["PUT", "/?policy", 200] },
-    () => PutBucketPolicyRequest$,
-    () => __Unit,
-];
-var PutBucketReplication$ = [
-    9,
-    n0,
-    _PBR,
-    { [_hC]: "-", [_h]: ["PUT", "/?replication", 200] },
-    () => PutBucketReplicationRequest$,
-    () => __Unit,
-];
-var PutBucketRequestPayment$ = [
-    9,
-    n0,
-    _PBRP,
-    { [_hC]: "-", [_h]: ["PUT", "/?requestPayment", 200] },
-    () => PutBucketRequestPaymentRequest$,
-    () => __Unit,
-];
-var PutBucketTagging$ = [
-    9,
-    n0,
-    _PBT,
-    { [_hC]: "-", [_h]: ["PUT", "/?tagging", 200] },
-    () => PutBucketTaggingRequest$,
-    () => __Unit,
-];
-var PutBucketVersioning$ = [
-    9,
-    n0,
-    _PBV,
-    { [_hC]: "-", [_h]: ["PUT", "/?versioning", 200] },
-    () => PutBucketVersioningRequest$,
-    () => __Unit,
-];
-var PutBucketWebsite$ = [
-    9,
-    n0,
-    _PBW,
-    { [_hC]: "-", [_h]: ["PUT", "/?website", 200] },
-    () => PutBucketWebsiteRequest$,
-    () => __Unit,
-];
-var PutObject$ = [
-    9,
-    n0,
-    _PO,
-    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?x-id=PutObject", 200] },
-    () => PutObjectRequest$,
-    () => PutObjectOutput$,
-];
-var PutObjectAcl$ = [
-    9,
-    n0,
-    _POA,
-    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?acl", 200] },
-    () => PutObjectAclRequest$,
-    () => PutObjectAclOutput$,
-];
-var PutObjectLegalHold$ = [
-    9,
-    n0,
-    _POLH,
-    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?legal-hold", 200] },
-    () => PutObjectLegalHoldRequest$,
-    () => PutObjectLegalHoldOutput$,
-];
-var PutObjectLockConfiguration$ = [
-    9,
-    n0,
-    _POLC,
-    { [_hC]: "-", [_h]: ["PUT", "/?object-lock", 200] },
-    () => PutObjectLockConfigurationRequest$,
-    () => PutObjectLockConfigurationOutput$,
-];
-var PutObjectRetention$ = [
-    9,
-    n0,
-    _PORu,
-    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?retention", 200] },
-    () => PutObjectRetentionRequest$,
-    () => PutObjectRetentionOutput$,
-];
-var PutObjectTagging$ = [
-    9,
-    n0,
-    _POT,
-    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?tagging", 200] },
-    () => PutObjectTaggingRequest$,
-    () => PutObjectTaggingOutput$,
-];
-var PutPublicAccessBlock$ = [
-    9,
-    n0,
-    _PPAB,
-    { [_hC]: "-", [_h]: ["PUT", "/?publicAccessBlock", 200] },
-    () => PutPublicAccessBlockRequest$,
-    () => __Unit,
-];
-var RenameObject$ = [
-    9,
-    n0,
-    _RO,
-    { [_h]: ["PUT", "/{Key+}?renameObject", 200] },
-    () => RenameObjectRequest$,
-    () => RenameObjectOutput$,
-];
-var RestoreObject$ = [
-    9,
-    n0,
-    _ROe,
-    { [_hC]: "-", [_h]: ["POST", "/{Key+}?restore", 200] },
-    () => RestoreObjectRequest$,
-    () => RestoreObjectOutput$,
-];
-var SelectObjectContent$ = [
-    9,
-    n0,
-    _SOC,
-    { [_h]: ["POST", "/{Key+}?select&select-type=2", 200] },
-    () => SelectObjectContentRequest$,
-    () => SelectObjectContentOutput$,
-];
-var UpdateBucketMetadataInventoryTableConfiguration$ = [
-    9,
-    n0,
-    _UBMITC,
-    { [_hC]: "-", [_h]: ["PUT", "/?metadataInventoryTable", 200] },
-    () => UpdateBucketMetadataInventoryTableConfigurationRequest$,
-    () => __Unit,
-];
-var UpdateBucketMetadataJournalTableConfiguration$ = [
-    9,
-    n0,
-    _UBMJTC,
-    { [_hC]: "-", [_h]: ["PUT", "/?metadataJournalTable", 200] },
-    () => UpdateBucketMetadataJournalTableConfigurationRequest$,
-    () => __Unit,
-];
-var UploadPart$ = [
-    9,
-    n0,
-    _UP,
-    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?x-id=UploadPart", 200] },
-    () => UploadPartRequest$,
-    () => UploadPartOutput$,
-];
-var UploadPartCopy$ = [
-    9,
-    n0,
-    _UPC,
-    { [_h]: ["PUT", "/{Key+}?x-id=UploadPartCopy", 200] },
-    () => UploadPartCopyRequest$,
-    () => UploadPartCopyOutput$,
-];
-var WriteGetObjectResponse$ = [
-    9,
-    n0,
-    _WGOR,
-    { [_en]: ["{RequestRoute}."], [_h]: ["POST", "/WriteGetObjectResponse", 200] },
-    () => WriteGetObjectResponseRequest$,
-    () => __Unit,
+    [[() => RecordsEvent$, 0], [() => StatsEvent$, 0], [() => ProgressEvent$, 0], () => ContinuationEvent$, () => EndEvent$]
+];
+var AbortMultipartUpload$ = [9, n0, _AMU,
+    { [_h]: ["DELETE", "/{Key+}?x-id=AbortMultipartUpload", 204] }, () => AbortMultipartUploadRequest$, () => AbortMultipartUploadOutput$
+];
+var CompleteMultipartUpload$ = [9, n0, _CMUo,
+    { [_h]: ["POST", "/{Key+}", 200] }, () => CompleteMultipartUploadRequest$, () => CompleteMultipartUploadOutput$
+];
+var CopyObject$ = [9, n0, _CO,
+    { [_h]: ["PUT", "/{Key+}?x-id=CopyObject", 200] }, () => CopyObjectRequest$, () => CopyObjectOutput$
+];
+var CreateBucket$ = [9, n0, _CB,
+    { [_h]: ["PUT", "/", 200] }, () => CreateBucketRequest$, () => CreateBucketOutput$
+];
+var CreateBucketMetadataConfiguration$ = [9, n0, _CBMC,
+    { [_hC]: "-", [_h]: ["POST", "/?metadataConfiguration", 200] }, () => CreateBucketMetadataConfigurationRequest$, () => __Unit
+];
+var CreateBucketMetadataTableConfiguration$ = [9, n0, _CBMTC,
+    { [_hC]: "-", [_h]: ["POST", "/?metadataTable", 200] }, () => CreateBucketMetadataTableConfigurationRequest$, () => __Unit
+];
+var CreateMultipartUpload$ = [9, n0, _CMUr,
+    { [_h]: ["POST", "/{Key+}?uploads", 200] }, () => CreateMultipartUploadRequest$, () => CreateMultipartUploadOutput$
+];
+var CreateSession$ = [9, n0, _CSr,
+    { [_h]: ["GET", "/?session", 200] }, () => CreateSessionRequest$, () => CreateSessionOutput$
+];
+var DeleteBucket$ = [9, n0, _DB,
+    { [_h]: ["DELETE", "/", 204] }, () => DeleteBucketRequest$, () => __Unit
+];
+var DeleteBucketAnalyticsConfiguration$ = [9, n0, _DBAC,
+    { [_h]: ["DELETE", "/?analytics", 204] }, () => DeleteBucketAnalyticsConfigurationRequest$, () => __Unit
+];
+var DeleteBucketCors$ = [9, n0, _DBC,
+    { [_h]: ["DELETE", "/?cors", 204] }, () => DeleteBucketCorsRequest$, () => __Unit
+];
+var DeleteBucketEncryption$ = [9, n0, _DBE,
+    { [_h]: ["DELETE", "/?encryption", 204] }, () => DeleteBucketEncryptionRequest$, () => __Unit
+];
+var DeleteBucketIntelligentTieringConfiguration$ = [9, n0, _DBITC,
+    { [_h]: ["DELETE", "/?intelligent-tiering", 204] }, () => DeleteBucketIntelligentTieringConfigurationRequest$, () => __Unit
+];
+var DeleteBucketInventoryConfiguration$ = [9, n0, _DBIC,
+    { [_h]: ["DELETE", "/?inventory", 204] }, () => DeleteBucketInventoryConfigurationRequest$, () => __Unit
+];
+var DeleteBucketLifecycle$ = [9, n0, _DBL,
+    { [_h]: ["DELETE", "/?lifecycle", 204] }, () => DeleteBucketLifecycleRequest$, () => __Unit
+];
+var DeleteBucketMetadataConfiguration$ = [9, n0, _DBMC,
+    { [_h]: ["DELETE", "/?metadataConfiguration", 204] }, () => DeleteBucketMetadataConfigurationRequest$, () => __Unit
+];
+var DeleteBucketMetadataTableConfiguration$ = [9, n0, _DBMTC,
+    { [_h]: ["DELETE", "/?metadataTable", 204] }, () => DeleteBucketMetadataTableConfigurationRequest$, () => __Unit
+];
+var DeleteBucketMetricsConfiguration$ = [9, n0, _DBMCe,
+    { [_h]: ["DELETE", "/?metrics", 204] }, () => DeleteBucketMetricsConfigurationRequest$, () => __Unit
+];
+var DeleteBucketOwnershipControls$ = [9, n0, _DBOC,
+    { [_h]: ["DELETE", "/?ownershipControls", 204] }, () => DeleteBucketOwnershipControlsRequest$, () => __Unit
+];
+var DeleteBucketPolicy$ = [9, n0, _DBP,
+    { [_h]: ["DELETE", "/?policy", 204] }, () => DeleteBucketPolicyRequest$, () => __Unit
+];
+var DeleteBucketReplication$ = [9, n0, _DBRe,
+    { [_h]: ["DELETE", "/?replication", 204] }, () => DeleteBucketReplicationRequest$, () => __Unit
+];
+var DeleteBucketTagging$ = [9, n0, _DBT,
+    { [_h]: ["DELETE", "/?tagging", 204] }, () => DeleteBucketTaggingRequest$, () => __Unit
+];
+var DeleteBucketWebsite$ = [9, n0, _DBW,
+    { [_h]: ["DELETE", "/?website", 204] }, () => DeleteBucketWebsiteRequest$, () => __Unit
+];
+var DeleteObject$ = [9, n0, _DOel,
+    { [_h]: ["DELETE", "/{Key+}?x-id=DeleteObject", 204] }, () => DeleteObjectRequest$, () => DeleteObjectOutput$
+];
+var DeleteObjects$ = [9, n0, _DOele,
+    { [_hC]: "-", [_h]: ["POST", "/?delete", 200] }, () => DeleteObjectsRequest$, () => DeleteObjectsOutput$
+];
+var DeleteObjectTagging$ = [9, n0, _DOT,
+    { [_h]: ["DELETE", "/{Key+}?tagging", 204] }, () => DeleteObjectTaggingRequest$, () => DeleteObjectTaggingOutput$
+];
+var DeletePublicAccessBlock$ = [9, n0, _DPAB,
+    { [_h]: ["DELETE", "/?publicAccessBlock", 204] }, () => DeletePublicAccessBlockRequest$, () => __Unit
+];
+var GetBucketAbac$ = [9, n0, _GBA,
+    { [_h]: ["GET", "/?abac", 200] }, () => GetBucketAbacRequest$, () => GetBucketAbacOutput$
+];
+var GetBucketAccelerateConfiguration$ = [9, n0, _GBAC,
+    { [_h]: ["GET", "/?accelerate", 200] }, () => GetBucketAccelerateConfigurationRequest$, () => GetBucketAccelerateConfigurationOutput$
+];
+var GetBucketAcl$ = [9, n0, _GBAe,
+    { [_h]: ["GET", "/?acl", 200] }, () => GetBucketAclRequest$, () => GetBucketAclOutput$
+];
+var GetBucketAnalyticsConfiguration$ = [9, n0, _GBACe,
+    { [_h]: ["GET", "/?analytics&x-id=GetBucketAnalyticsConfiguration", 200] }, () => GetBucketAnalyticsConfigurationRequest$, () => GetBucketAnalyticsConfigurationOutput$
+];
+var GetBucketCors$ = [9, n0, _GBC,
+    { [_h]: ["GET", "/?cors", 200] }, () => GetBucketCorsRequest$, () => GetBucketCorsOutput$
+];
+var GetBucketEncryption$ = [9, n0, _GBE,
+    { [_h]: ["GET", "/?encryption", 200] }, () => GetBucketEncryptionRequest$, () => GetBucketEncryptionOutput$
+];
+var GetBucketIntelligentTieringConfiguration$ = [9, n0, _GBITC,
+    { [_h]: ["GET", "/?intelligent-tiering&x-id=GetBucketIntelligentTieringConfiguration", 200] }, () => GetBucketIntelligentTieringConfigurationRequest$, () => GetBucketIntelligentTieringConfigurationOutput$
+];
+var GetBucketInventoryConfiguration$ = [9, n0, _GBIC,
+    { [_h]: ["GET", "/?inventory&x-id=GetBucketInventoryConfiguration", 200] }, () => GetBucketInventoryConfigurationRequest$, () => GetBucketInventoryConfigurationOutput$
+];
+var GetBucketLifecycleConfiguration$ = [9, n0, _GBLC,
+    { [_h]: ["GET", "/?lifecycle", 200] }, () => GetBucketLifecycleConfigurationRequest$, () => GetBucketLifecycleConfigurationOutput$
+];
+var GetBucketLocation$ = [9, n0, _GBL,
+    { [_h]: ["GET", "/?location", 200] }, () => GetBucketLocationRequest$, () => GetBucketLocationOutput$
+];
+var GetBucketLogging$ = [9, n0, _GBLe,
+    { [_h]: ["GET", "/?logging", 200] }, () => GetBucketLoggingRequest$, () => GetBucketLoggingOutput$
+];
+var GetBucketMetadataConfiguration$ = [9, n0, _GBMC,
+    { [_h]: ["GET", "/?metadataConfiguration", 200] }, () => GetBucketMetadataConfigurationRequest$, () => GetBucketMetadataConfigurationOutput$
+];
+var GetBucketMetadataTableConfiguration$ = [9, n0, _GBMTC,
+    { [_h]: ["GET", "/?metadataTable", 200] }, () => GetBucketMetadataTableConfigurationRequest$, () => GetBucketMetadataTableConfigurationOutput$
+];
+var GetBucketMetricsConfiguration$ = [9, n0, _GBMCe,
+    { [_h]: ["GET", "/?metrics&x-id=GetBucketMetricsConfiguration", 200] }, () => GetBucketMetricsConfigurationRequest$, () => GetBucketMetricsConfigurationOutput$
+];
+var GetBucketNotificationConfiguration$ = [9, n0, _GBNC,
+    { [_h]: ["GET", "/?notification", 200] }, () => GetBucketNotificationConfigurationRequest$, () => NotificationConfiguration$
+];
+var GetBucketOwnershipControls$ = [9, n0, _GBOC,
+    { [_h]: ["GET", "/?ownershipControls", 200] }, () => GetBucketOwnershipControlsRequest$, () => GetBucketOwnershipControlsOutput$
+];
+var GetBucketPolicy$ = [9, n0, _GBP,
+    { [_h]: ["GET", "/?policy", 200] }, () => GetBucketPolicyRequest$, () => GetBucketPolicyOutput$
+];
+var GetBucketPolicyStatus$ = [9, n0, _GBPS,
+    { [_h]: ["GET", "/?policyStatus", 200] }, () => GetBucketPolicyStatusRequest$, () => GetBucketPolicyStatusOutput$
+];
+var GetBucketReplication$ = [9, n0, _GBR,
+    { [_h]: ["GET", "/?replication", 200] }, () => GetBucketReplicationRequest$, () => GetBucketReplicationOutput$
+];
+var GetBucketRequestPayment$ = [9, n0, _GBRP,
+    { [_h]: ["GET", "/?requestPayment", 200] }, () => GetBucketRequestPaymentRequest$, () => GetBucketRequestPaymentOutput$
+];
+var GetBucketTagging$ = [9, n0, _GBT,
+    { [_h]: ["GET", "/?tagging", 200] }, () => GetBucketTaggingRequest$, () => GetBucketTaggingOutput$
+];
+var GetBucketVersioning$ = [9, n0, _GBV,
+    { [_h]: ["GET", "/?versioning", 200] }, () => GetBucketVersioningRequest$, () => GetBucketVersioningOutput$
+];
+var GetBucketWebsite$ = [9, n0, _GBW,
+    { [_h]: ["GET", "/?website", 200] }, () => GetBucketWebsiteRequest$, () => GetBucketWebsiteOutput$
+];
+var GetObject$ = [9, n0, _GO,
+    { [_hC]: "-", [_h]: ["GET", "/{Key+}?x-id=GetObject", 200] }, () => GetObjectRequest$, () => GetObjectOutput$
+];
+var GetObjectAcl$ = [9, n0, _GOA,
+    { [_h]: ["GET", "/{Key+}?acl", 200] }, () => GetObjectAclRequest$, () => GetObjectAclOutput$
+];
+var GetObjectAttributes$ = [9, n0, _GOAe,
+    { [_h]: ["GET", "/{Key+}?attributes", 200] }, () => GetObjectAttributesRequest$, () => GetObjectAttributesOutput$
+];
+var GetObjectLegalHold$ = [9, n0, _GOLH,
+    { [_h]: ["GET", "/{Key+}?legal-hold", 200] }, () => GetObjectLegalHoldRequest$, () => GetObjectLegalHoldOutput$
+];
+var GetObjectLockConfiguration$ = [9, n0, _GOLC,
+    { [_h]: ["GET", "/?object-lock", 200] }, () => GetObjectLockConfigurationRequest$, () => GetObjectLockConfigurationOutput$
+];
+var GetObjectRetention$ = [9, n0, _GORe,
+    { [_h]: ["GET", "/{Key+}?retention", 200] }, () => GetObjectRetentionRequest$, () => GetObjectRetentionOutput$
+];
+var GetObjectTagging$ = [9, n0, _GOT,
+    { [_h]: ["GET", "/{Key+}?tagging", 200] }, () => GetObjectTaggingRequest$, () => GetObjectTaggingOutput$
+];
+var GetObjectTorrent$ = [9, n0, _GOTe,
+    { [_h]: ["GET", "/{Key+}?torrent", 200] }, () => GetObjectTorrentRequest$, () => GetObjectTorrentOutput$
+];
+var GetPublicAccessBlock$ = [9, n0, _GPAB,
+    { [_h]: ["GET", "/?publicAccessBlock", 200] }, () => GetPublicAccessBlockRequest$, () => GetPublicAccessBlockOutput$
+];
+var HeadBucket$ = [9, n0, _HB,
+    { [_h]: ["HEAD", "/", 200] }, () => HeadBucketRequest$, () => HeadBucketOutput$
+];
+var HeadObject$ = [9, n0, _HO,
+    { [_h]: ["HEAD", "/{Key+}", 200] }, () => HeadObjectRequest$, () => HeadObjectOutput$
+];
+var ListBucketAnalyticsConfigurations$ = [9, n0, _LBAC,
+    { [_h]: ["GET", "/?analytics&x-id=ListBucketAnalyticsConfigurations", 200] }, () => ListBucketAnalyticsConfigurationsRequest$, () => ListBucketAnalyticsConfigurationsOutput$
+];
+var ListBucketIntelligentTieringConfigurations$ = [9, n0, _LBITC,
+    { [_h]: ["GET", "/?intelligent-tiering&x-id=ListBucketIntelligentTieringConfigurations", 200] }, () => ListBucketIntelligentTieringConfigurationsRequest$, () => ListBucketIntelligentTieringConfigurationsOutput$
+];
+var ListBucketInventoryConfigurations$ = [9, n0, _LBIC,
+    { [_h]: ["GET", "/?inventory&x-id=ListBucketInventoryConfigurations", 200] }, () => ListBucketInventoryConfigurationsRequest$, () => ListBucketInventoryConfigurationsOutput$
+];
+var ListBucketMetricsConfigurations$ = [9, n0, _LBMC,
+    { [_h]: ["GET", "/?metrics&x-id=ListBucketMetricsConfigurations", 200] }, () => ListBucketMetricsConfigurationsRequest$, () => ListBucketMetricsConfigurationsOutput$
+];
+var ListBuckets$ = [9, n0, _LB,
+    { [_h]: ["GET", "/?x-id=ListBuckets", 200] }, () => ListBucketsRequest$, () => ListBucketsOutput$
+];
+var ListDirectoryBuckets$ = [9, n0, _LDB,
+    { [_h]: ["GET", "/?x-id=ListDirectoryBuckets", 200] }, () => ListDirectoryBucketsRequest$, () => ListDirectoryBucketsOutput$
+];
+var ListMultipartUploads$ = [9, n0, _LMU,
+    { [_h]: ["GET", "/?uploads", 200] }, () => ListMultipartUploadsRequest$, () => ListMultipartUploadsOutput$
+];
+var ListObjects$ = [9, n0, _LO,
+    { [_h]: ["GET", "/", 200] }, () => ListObjectsRequest$, () => ListObjectsOutput$
+];
+var ListObjectsV2$ = [9, n0, _LOV,
+    { [_h]: ["GET", "/?list-type=2", 200] }, () => ListObjectsV2Request$, () => ListObjectsV2Output$
+];
+var ListObjectVersions$ = [9, n0, _LOVi,
+    { [_h]: ["GET", "/?versions", 200] }, () => ListObjectVersionsRequest$, () => ListObjectVersionsOutput$
+];
+var ListParts$ = [9, n0, _LP,
+    { [_h]: ["GET", "/{Key+}?x-id=ListParts", 200] }, () => ListPartsRequest$, () => ListPartsOutput$
+];
+var PutBucketAbac$ = [9, n0, _PBA,
+    { [_hC]: "-", [_h]: ["PUT", "/?abac", 200] }, () => PutBucketAbacRequest$, () => __Unit
+];
+var PutBucketAccelerateConfiguration$ = [9, n0, _PBAC,
+    { [_hC]: "-", [_h]: ["PUT", "/?accelerate", 200] }, () => PutBucketAccelerateConfigurationRequest$, () => __Unit
+];
+var PutBucketAcl$ = [9, n0, _PBAu,
+    { [_hC]: "-", [_h]: ["PUT", "/?acl", 200] }, () => PutBucketAclRequest$, () => __Unit
+];
+var PutBucketAnalyticsConfiguration$ = [9, n0, _PBACu,
+    { [_h]: ["PUT", "/?analytics", 200] }, () => PutBucketAnalyticsConfigurationRequest$, () => __Unit
+];
+var PutBucketCors$ = [9, n0, _PBC,
+    { [_hC]: "-", [_h]: ["PUT", "/?cors", 200] }, () => PutBucketCorsRequest$, () => __Unit
+];
+var PutBucketEncryption$ = [9, n0, _PBE,
+    { [_hC]: "-", [_h]: ["PUT", "/?encryption", 200] }, () => PutBucketEncryptionRequest$, () => __Unit
+];
+var PutBucketIntelligentTieringConfiguration$ = [9, n0, _PBITC,
+    { [_h]: ["PUT", "/?intelligent-tiering", 200] }, () => PutBucketIntelligentTieringConfigurationRequest$, () => __Unit
+];
+var PutBucketInventoryConfiguration$ = [9, n0, _PBIC,
+    { [_h]: ["PUT", "/?inventory", 200] }, () => PutBucketInventoryConfigurationRequest$, () => __Unit
+];
+var PutBucketLifecycleConfiguration$ = [9, n0, _PBLC,
+    { [_hC]: "-", [_h]: ["PUT", "/?lifecycle", 200] }, () => PutBucketLifecycleConfigurationRequest$, () => PutBucketLifecycleConfigurationOutput$
+];
+var PutBucketLogging$ = [9, n0, _PBL,
+    { [_hC]: "-", [_h]: ["PUT", "/?logging", 200] }, () => PutBucketLoggingRequest$, () => __Unit
+];
+var PutBucketMetricsConfiguration$ = [9, n0, _PBMC,
+    { [_h]: ["PUT", "/?metrics", 200] }, () => PutBucketMetricsConfigurationRequest$, () => __Unit
+];
+var PutBucketNotificationConfiguration$ = [9, n0, _PBNC,
+    { [_h]: ["PUT", "/?notification", 200] }, () => PutBucketNotificationConfigurationRequest$, () => __Unit
+];
+var PutBucketOwnershipControls$ = [9, n0, _PBOC,
+    { [_hC]: "-", [_h]: ["PUT", "/?ownershipControls", 200] }, () => PutBucketOwnershipControlsRequest$, () => __Unit
+];
+var PutBucketPolicy$ = [9, n0, _PBP,
+    { [_hC]: "-", [_h]: ["PUT", "/?policy", 200] }, () => PutBucketPolicyRequest$, () => __Unit
+];
+var PutBucketReplication$ = [9, n0, _PBR,
+    { [_hC]: "-", [_h]: ["PUT", "/?replication", 200] }, () => PutBucketReplicationRequest$, () => __Unit
+];
+var PutBucketRequestPayment$ = [9, n0, _PBRP,
+    { [_hC]: "-", [_h]: ["PUT", "/?requestPayment", 200] }, () => PutBucketRequestPaymentRequest$, () => __Unit
+];
+var PutBucketTagging$ = [9, n0, _PBT,
+    { [_hC]: "-", [_h]: ["PUT", "/?tagging", 200] }, () => PutBucketTaggingRequest$, () => __Unit
+];
+var PutBucketVersioning$ = [9, n0, _PBV,
+    { [_hC]: "-", [_h]: ["PUT", "/?versioning", 200] }, () => PutBucketVersioningRequest$, () => __Unit
+];
+var PutBucketWebsite$ = [9, n0, _PBW,
+    { [_hC]: "-", [_h]: ["PUT", "/?website", 200] }, () => PutBucketWebsiteRequest$, () => __Unit
+];
+var PutObject$ = [9, n0, _PO,
+    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?x-id=PutObject", 200] }, () => PutObjectRequest$, () => PutObjectOutput$
+];
+var PutObjectAcl$ = [9, n0, _POA,
+    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?acl", 200] }, () => PutObjectAclRequest$, () => PutObjectAclOutput$
+];
+var PutObjectLegalHold$ = [9, n0, _POLH,
+    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?legal-hold", 200] }, () => PutObjectLegalHoldRequest$, () => PutObjectLegalHoldOutput$
+];
+var PutObjectLockConfiguration$ = [9, n0, _POLC,
+    { [_hC]: "-", [_h]: ["PUT", "/?object-lock", 200] }, () => PutObjectLockConfigurationRequest$, () => PutObjectLockConfigurationOutput$
+];
+var PutObjectRetention$ = [9, n0, _PORu,
+    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?retention", 200] }, () => PutObjectRetentionRequest$, () => PutObjectRetentionOutput$
+];
+var PutObjectTagging$ = [9, n0, _POT,
+    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?tagging", 200] }, () => PutObjectTaggingRequest$, () => PutObjectTaggingOutput$
+];
+var PutPublicAccessBlock$ = [9, n0, _PPAB,
+    { [_hC]: "-", [_h]: ["PUT", "/?publicAccessBlock", 200] }, () => PutPublicAccessBlockRequest$, () => __Unit
+];
+var RenameObject$ = [9, n0, _RO,
+    { [_h]: ["PUT", "/{Key+}?renameObject", 200] }, () => RenameObjectRequest$, () => RenameObjectOutput$
+];
+var RestoreObject$ = [9, n0, _ROe,
+    { [_hC]: "-", [_h]: ["POST", "/{Key+}?restore", 200] }, () => RestoreObjectRequest$, () => RestoreObjectOutput$
+];
+var SelectObjectContent$ = [9, n0, _SOC,
+    { [_h]: ["POST", "/{Key+}?select&select-type=2", 200] }, () => SelectObjectContentRequest$, () => SelectObjectContentOutput$
+];
+var UpdateBucketMetadataInventoryTableConfiguration$ = [9, n0, _UBMITC,
+    { [_hC]: "-", [_h]: ["PUT", "/?metadataInventoryTable", 200] }, () => UpdateBucketMetadataInventoryTableConfigurationRequest$, () => __Unit
+];
+var UpdateBucketMetadataJournalTableConfiguration$ = [9, n0, _UBMJTC,
+    { [_hC]: "-", [_h]: ["PUT", "/?metadataJournalTable", 200] }, () => UpdateBucketMetadataJournalTableConfigurationRequest$, () => __Unit
+];
+var UploadPart$ = [9, n0, _UP,
+    { [_hC]: "-", [_h]: ["PUT", "/{Key+}?x-id=UploadPart", 200] }, () => UploadPartRequest$, () => UploadPartOutput$
+];
+var UploadPartCopy$ = [9, n0, _UPC,
+    { [_h]: ["PUT", "/{Key+}?x-id=UploadPartCopy", 200] }, () => UploadPartCopyRequest$, () => UploadPartCopyOutput$
+];
+var WriteGetObjectResponse$ = [9, n0, _WGOR,
+    { [_en]: ["{RequestRoute}."], [_h]: ["POST", "/WriteGetObjectResponse", 200] }, () => WriteGetObjectResponseRequest$, () => __Unit
 ];
 
 class CreateSessionCommand extends smithyClient.Command
@@ -10828,7 +8602,10 @@ class CreateSessionCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "CreateSession", {})
     .n("S3Client", "CreateSessionCommand")
@@ -10933,7 +8710,10 @@ class AbortMultipartUploadCommand extends smithyClient.Command
     Key: { type: "contextParams", name: "Key" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "AbortMultipartUpload", {})
     .n("S3Client", "AbortMultipartUploadCommand")
@@ -11015,7 +8795,7 @@ class CreateBucketMetadataConfigurationCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -11037,7 +8817,7 @@ class CreateBucketMetadataTableConfigurationCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -11316,7 +9096,10 @@ class DeleteObjectCommand extends smithyClient.Command
     Key: { type: "contextParams", name: "Key" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "DeleteObject", {})
     .n("S3Client", "DeleteObjectCommand")
@@ -11334,7 +9117,7 @@ class DeleteObjectsCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -11353,7 +9136,10 @@ class DeleteObjectTaggingCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "DeleteObjectTagging", {})
     .n("S3Client", "DeleteObjectTaggingCommand")
@@ -11384,7 +9170,10 @@ class GetBucketAbacCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketAbac", {})
     .n("S3Client", "GetBucketAbacCommand")
@@ -11400,7 +9189,10 @@ class GetBucketAccelerateConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketAccelerateConfiguration", {})
     .n("S3Client", "GetBucketAccelerateConfigurationCommand")
@@ -11416,7 +9208,10 @@ class GetBucketAclCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketAcl", {})
     .n("S3Client", "GetBucketAclCommand")
@@ -11432,7 +9227,10 @@ class GetBucketAnalyticsConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketAnalyticsConfiguration", {})
     .n("S3Client", "GetBucketAnalyticsConfigurationCommand")
@@ -11448,7 +9246,10 @@ class GetBucketCorsCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketCors", {})
     .n("S3Client", "GetBucketCorsCommand")
@@ -11464,7 +9265,10 @@ class GetBucketEncryptionCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketEncryption", {})
     .n("S3Client", "GetBucketEncryptionCommand")
@@ -11480,7 +9284,10 @@ class GetBucketIntelligentTieringConfigurationCommand extends smithyClient.Comma
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketIntelligentTieringConfiguration", {})
     .n("S3Client", "GetBucketIntelligentTieringConfigurationCommand")
@@ -11496,7 +9303,10 @@ class GetBucketInventoryConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketInventoryConfiguration", {})
     .n("S3Client", "GetBucketInventoryConfigurationCommand")
@@ -11512,7 +9322,10 @@ class GetBucketLifecycleConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketLifecycleConfiguration", {})
     .n("S3Client", "GetBucketLifecycleConfigurationCommand")
@@ -11528,7 +9341,10 @@ class GetBucketLocationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketLocation", {})
     .n("S3Client", "GetBucketLocationCommand")
@@ -11544,7 +9360,10 @@ class GetBucketLoggingCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketLogging", {})
     .n("S3Client", "GetBucketLoggingCommand")
@@ -11560,7 +9379,10 @@ class GetBucketMetadataConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketMetadataConfiguration", {})
     .n("S3Client", "GetBucketMetadataConfigurationCommand")
@@ -11576,7 +9398,10 @@ class GetBucketMetadataTableConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketMetadataTableConfiguration", {})
     .n("S3Client", "GetBucketMetadataTableConfigurationCommand")
@@ -11592,7 +9417,10 @@ class GetBucketMetricsConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketMetricsConfiguration", {})
     .n("S3Client", "GetBucketMetricsConfigurationCommand")
@@ -11608,7 +9436,10 @@ class GetBucketNotificationConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketNotificationConfiguration", {})
     .n("S3Client", "GetBucketNotificationConfigurationCommand")
@@ -11624,7 +9455,10 @@ class GetBucketOwnershipControlsCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketOwnershipControls", {})
     .n("S3Client", "GetBucketOwnershipControlsCommand")
@@ -11640,7 +9474,10 @@ class GetBucketPolicyCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketPolicy", {})
     .n("S3Client", "GetBucketPolicyCommand")
@@ -11656,7 +9493,10 @@ class GetBucketPolicyStatusCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketPolicyStatus", {})
     .n("S3Client", "GetBucketPolicyStatusCommand")
@@ -11672,7 +9512,10 @@ class GetBucketReplicationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketReplication", {})
     .n("S3Client", "GetBucketReplicationCommand")
@@ -11688,7 +9531,10 @@ class GetBucketRequestPaymentCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketRequestPayment", {})
     .n("S3Client", "GetBucketRequestPaymentCommand")
@@ -11704,7 +9550,10 @@ class GetBucketTaggingCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketTagging", {})
     .n("S3Client", "GetBucketTaggingCommand")
@@ -11720,7 +9569,10 @@ class GetBucketVersioningCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketVersioning", {})
     .n("S3Client", "GetBucketVersioningCommand")
@@ -11736,7 +9588,10 @@ class GetBucketWebsiteCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetBucketWebsite", {})
     .n("S3Client", "GetBucketWebsiteCommand")
@@ -11752,7 +9607,10 @@ class GetObjectAclCommand extends smithyClient.Command
     Key: { type: "contextParams", name: "Key" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetObjectAcl", {})
     .n("S3Client", "GetObjectAclCommand")
@@ -11791,8 +9649,8 @@ class GetObjectCommand extends smithyClient.Command
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
             requestChecksumRequired: false,
-            requestValidationModeMember: "ChecksumMode",
-            responseAlgorithms: ["CRC64NVME", "CRC32", "CRC32C", "SHA256", "SHA1"],
+            requestValidationModeMember: 'ChecksumMode',
+            'responseAlgorithms': ['CRC64NVME', 'CRC32', 'CRC32C', 'SHA256', 'SHA1'],
         }),
         middlewareSsec.getSsecPlugin(config),
         middlewareSdkS3.getS3ExpiresMiddlewarePlugin(config),
@@ -11811,7 +9669,10 @@ class GetObjectLegalHoldCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetObjectLegalHold", {})
     .n("S3Client", "GetObjectLegalHoldCommand")
@@ -11826,7 +9687,10 @@ class GetObjectLockConfigurationCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetObjectLockConfiguration", {})
     .n("S3Client", "GetObjectLockConfigurationCommand")
@@ -11841,7 +9705,10 @@ class GetObjectRetentionCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetObjectRetention", {})
     .n("S3Client", "GetObjectRetentionCommand")
@@ -11856,7 +9723,10 @@ class GetObjectTaggingCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetObjectTagging", {})
     .n("S3Client", "GetObjectTaggingCommand")
@@ -11887,7 +9757,10 @@ class GetPublicAccessBlockCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "GetPublicAccessBlock", {})
     .n("S3Client", "GetPublicAccessBlockCommand")
@@ -11902,7 +9775,10 @@ class HeadBucketCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "HeadBucket", {})
     .n("S3Client", "HeadBucketCommand")
@@ -11939,7 +9815,10 @@ class ListBucketAnalyticsConfigurationsCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "ListBucketAnalyticsConfigurations", {})
     .n("S3Client", "ListBucketAnalyticsConfigurationsCommand")
@@ -11955,7 +9834,10 @@ class ListBucketIntelligentTieringConfigurationsCommand extends smithyClient.Com
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "ListBucketIntelligentTieringConfigurations", {})
     .n("S3Client", "ListBucketIntelligentTieringConfigurationsCommand")
@@ -11971,7 +9853,10 @@ class ListBucketInventoryConfigurationsCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "ListBucketInventoryConfigurations", {})
     .n("S3Client", "ListBucketInventoryConfigurationsCommand")
@@ -11986,7 +9871,10 @@ class ListBucketMetricsConfigurationsCommand extends smithyClient.Command
     Bucket: { type: "contextParams", name: "Bucket" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "ListBucketMetricsConfigurations", {})
     .n("S3Client", "ListBucketMetricsConfigurationsCommand")
@@ -11998,7 +9886,10 @@ class ListBucketsCommand extends smithyClient.Command
     .classBuilder()
     .ep(commonParams)
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "ListBuckets", {})
     .n("S3Client", "ListBucketsCommand")
@@ -12013,7 +9904,10 @@ class ListDirectoryBucketsCommand extends smithyClient.Command
     UseS3ExpressControlEndpoint: { type: "staticContextParams", value: true },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "ListDirectoryBuckets", {})
     .n("S3Client", "ListDirectoryBucketsCommand")
@@ -12029,7 +9923,10 @@ class ListMultipartUploadsCommand extends smithyClient.Command
     Prefix: { type: "contextParams", name: "Prefix" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "ListMultipartUploads", {})
     .n("S3Client", "ListMultipartUploadsCommand")
@@ -12045,7 +9942,10 @@ class ListObjectsCommand extends smithyClient.Command
     Prefix: { type: "contextParams", name: "Prefix" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "ListObjects", {})
     .n("S3Client", "ListObjectsCommand")
@@ -12061,7 +9961,10 @@ class ListObjectsV2Command extends smithyClient.Command
     Prefix: { type: "contextParams", name: "Prefix" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "ListObjectsV2", {})
     .n("S3Client", "ListObjectsV2Command")
@@ -12077,7 +9980,10 @@ class ListObjectVersionsCommand extends smithyClient.Command
     Prefix: { type: "contextParams", name: "Prefix" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "ListObjectVersions", {})
     .n("S3Client", "ListObjectVersionsCommand")
@@ -12115,7 +10021,7 @@ class PutBucketAbacCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: false,
         }),
     ];
@@ -12137,7 +10043,7 @@ class PutBucketAccelerateConfigurationCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: false,
         }),
     ];
@@ -12159,7 +10065,7 @@ class PutBucketAclCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -12197,7 +10103,7 @@ class PutBucketCorsCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -12219,7 +10125,7 @@ class PutBucketEncryptionCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -12273,7 +10179,7 @@ class PutBucketLifecycleConfigurationCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -12296,7 +10202,7 @@ class PutBucketLoggingCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -12350,7 +10256,7 @@ class PutBucketOwnershipControlsCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -12372,7 +10278,7 @@ class PutBucketPolicyCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -12394,7 +10300,7 @@ class PutBucketReplicationCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -12416,7 +10322,7 @@ class PutBucketRequestPaymentCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -12438,7 +10344,7 @@ class PutBucketTaggingCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -12460,7 +10366,7 @@ class PutBucketVersioningCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -12482,7 +10388,7 @@ class PutBucketWebsiteCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -12504,7 +10410,7 @@ class PutObjectAclCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -12527,7 +10433,7 @@ class PutObjectCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: false,
         }),
         middlewareSdkS3.getCheckContentLengthHeaderPlugin(config),
@@ -12551,7 +10457,7 @@ class PutObjectLegalHoldCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -12573,7 +10479,7 @@ class PutObjectLockConfigurationCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -12595,7 +10501,7 @@ class PutObjectRetentionCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -12617,7 +10523,7 @@ class PutObjectTaggingCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -12640,7 +10546,7 @@ class PutPublicAccessBlockCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -12659,7 +10565,10 @@ class RenameObjectCommand extends smithyClient.Command
     Key: { type: "contextParams", name: "Key" },
 })
     .m(function (Command, cs, config, o) {
-    return [middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()), middlewareSdkS3.getThrow200ExceptionsPlugin(config)];
+    return [
+        middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
+        middlewareSdkS3.getThrow200ExceptionsPlugin(config),
+    ];
 })
     .s("AmazonS3", "RenameObject", {})
     .n("S3Client", "RenameObjectCommand")
@@ -12677,7 +10586,7 @@ class RestoreObjectCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: false,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -12723,7 +10632,7 @@ class UpdateBucketMetadataInventoryTableConfigurationCommand extends smithyClien
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -12745,7 +10654,7 @@ class UpdateBucketMetadataJournalTableConfigurationCommand extends smithyClient.
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: true,
         }),
     ];
@@ -12767,7 +10676,7 @@ class UploadPartCommand extends smithyClient.Command
     return [
         middlewareEndpoint.getEndpointPlugin(config, Command.getEndpointParameterInstructions()),
         middlewareFlexibleChecksums.getFlexibleChecksumsPlugin(config, {
-            requestAlgorithmMember: { httpHeader: "x-amz-sdk-checksum-algorithm", name: "ChecksumAlgorithm" },
+            requestAlgorithmMember: { 'httpHeader': 'x-amz-sdk-checksum-algorithm', 'name': 'ChecksumAlgorithm' },
             requestChecksumRequired: false,
         }),
         middlewareSdkS3.getThrow200ExceptionsPlugin(config),
@@ -14147,19 +12056,15 @@ const getRuntimeConfig = (config) => {
         authSchemePreference: config?.authSchemePreference ?? (0, node_config_provider_1.loadConfig)(core_1.NODE_AUTH_SCHEME_PREFERENCE_OPTIONS, loaderConfig),
         bodyLengthChecker: config?.bodyLengthChecker ?? util_body_length_node_1.calculateBodyLength,
         credentialDefaultProvider: config?.credentialDefaultProvider ?? credential_provider_node_1.defaultProvider,
-        defaultUserAgentProvider: config?.defaultUserAgentProvider ??
-            (0, util_user_agent_node_1.createDefaultUserAgentProvider)({ serviceId: clientSharedValues.serviceId, clientVersion: package_json_1.default.version }),
+        defaultUserAgentProvider: config?.defaultUserAgentProvider ?? (0, util_user_agent_node_1.createDefaultUserAgentProvider)({ serviceId: clientSharedValues.serviceId, clientVersion: package_json_1.default.version }),
         disableS3ExpressSessionAuth: config?.disableS3ExpressSessionAuth ?? (0, node_config_provider_1.loadConfig)(middleware_sdk_s3_1.NODE_DISABLE_S3_EXPRESS_SESSION_AUTH_OPTIONS, loaderConfig),
         eventStreamSerdeProvider: config?.eventStreamSerdeProvider ?? eventstream_serde_node_1.eventStreamSerdeProvider,
         maxAttempts: config?.maxAttempts ?? (0, node_config_provider_1.loadConfig)(middleware_retry_1.NODE_MAX_ATTEMPT_CONFIG_OPTIONS, config),
         md5: config?.md5 ?? hash_node_1.Hash.bind(null, "md5"),
-        region: config?.region ??
-            (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_REGION_CONFIG_OPTIONS, { ...config_resolver_1.NODE_REGION_CONFIG_FILE_OPTIONS, ...loaderConfig }),
-        requestChecksumCalculation: config?.requestChecksumCalculation ??
-            (0, node_config_provider_1.loadConfig)(middleware_flexible_checksums_1.NODE_REQUEST_CHECKSUM_CALCULATION_CONFIG_OPTIONS, loaderConfig),
+        region: config?.region ?? (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_REGION_CONFIG_OPTIONS, { ...config_resolver_1.NODE_REGION_CONFIG_FILE_OPTIONS, ...loaderConfig }),
+        requestChecksumCalculation: config?.requestChecksumCalculation ?? (0, node_config_provider_1.loadConfig)(middleware_flexible_checksums_1.NODE_REQUEST_CHECKSUM_CALCULATION_CONFIG_OPTIONS, loaderConfig),
         requestHandler: node_http_handler_1.NodeHttpHandler.create(config?.requestHandler ?? defaultConfigProvider),
-        responseChecksumValidation: config?.responseChecksumValidation ??
-            (0, node_config_provider_1.loadConfig)(middleware_flexible_checksums_1.NODE_RESPONSE_CHECKSUM_VALIDATION_CONFIG_OPTIONS, loaderConfig),
+        responseChecksumValidation: config?.responseChecksumValidation ?? (0, node_config_provider_1.loadConfig)(middleware_flexible_checksums_1.NODE_RESPONSE_CHECKSUM_VALIDATION_CONFIG_OPTIONS, loaderConfig),
         retryMode: config?.retryMode ??
             (0, node_config_provider_1.loadConfig)({
                 ...middleware_retry_1.NODE_RETRY_MODE_CONFIG_OPTIONS,
@@ -18359,6 +16264,115 @@ exports.parseXmlErrorBody = parseXmlErrorBody;
 
 /***/ }),
 
+/***/ 7122:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+const generateCRC64NVMETable = () => {
+    const sliceLength = 8;
+    const tables = new Array(sliceLength);
+    for (let slice = 0; slice < sliceLength; slice++) {
+        const table = new Array(512);
+        for (let i = 0; i < 256; i++) {
+            let crc = BigInt(i);
+            for (let j = 0; j < 8 * (slice + 1); j++) {
+                if (crc & 1n) {
+                    crc = (crc >> 1n) ^ 0x9a6c9329ac4bc9b5n;
+                }
+                else {
+                    crc = crc >> 1n;
+                }
+            }
+            table[i * 2] = Number((crc >> 32n) & 0xffffffffn);
+            table[i * 2 + 1] = Number(crc & 0xffffffffn);
+        }
+        tables[slice] = new Uint32Array(table);
+    }
+    return tables;
+};
+let CRC64_NVME_REVERSED_TABLE;
+let t0, t1, t2, t3;
+let t4, t5, t6, t7;
+const ensureTablesInitialized = () => {
+    if (!CRC64_NVME_REVERSED_TABLE) {
+        CRC64_NVME_REVERSED_TABLE = generateCRC64NVMETable();
+        [t0, t1, t2, t3, t4, t5, t6, t7] = CRC64_NVME_REVERSED_TABLE;
+    }
+};
+class Crc64Nvme {
+    c1 = 0;
+    c2 = 0;
+    constructor() {
+        ensureTablesInitialized();
+        this.reset();
+    }
+    update(data) {
+        const len = data.length;
+        let i = 0;
+        let crc1 = this.c1;
+        let crc2 = this.c2;
+        while (i + 8 <= len) {
+            const idx0 = ((crc2 ^ data[i++]) & 255) << 1;
+            const idx1 = (((crc2 >>> 8) ^ data[i++]) & 255) << 1;
+            const idx2 = (((crc2 >>> 16) ^ data[i++]) & 255) << 1;
+            const idx3 = (((crc2 >>> 24) ^ data[i++]) & 255) << 1;
+            const idx4 = ((crc1 ^ data[i++]) & 255) << 1;
+            const idx5 = (((crc1 >>> 8) ^ data[i++]) & 255) << 1;
+            const idx6 = (((crc1 >>> 16) ^ data[i++]) & 255) << 1;
+            const idx7 = (((crc1 >>> 24) ^ data[i++]) & 255) << 1;
+            crc1 = t7[idx0] ^ t6[idx1] ^ t5[idx2] ^ t4[idx3] ^ t3[idx4] ^ t2[idx5] ^ t1[idx6] ^ t0[idx7];
+            crc2 =
+                t7[idx0 + 1] ^
+                    t6[idx1 + 1] ^
+                    t5[idx2 + 1] ^
+                    t4[idx3 + 1] ^
+                    t3[idx4 + 1] ^
+                    t2[idx5 + 1] ^
+                    t1[idx6 + 1] ^
+                    t0[idx7 + 1];
+        }
+        while (i < len) {
+            const idx = ((crc2 ^ data[i]) & 255) << 1;
+            crc2 = ((crc2 >>> 8) | ((crc1 & 255) << 24)) >>> 0;
+            crc1 = (crc1 >>> 8) ^ t0[idx];
+            crc2 ^= t0[idx + 1];
+            i++;
+        }
+        this.c1 = crc1;
+        this.c2 = crc2;
+    }
+    async digest() {
+        const c1 = this.c1 ^ 4294967295;
+        const c2 = this.c2 ^ 4294967295;
+        return new Uint8Array([
+            c1 >>> 24,
+            (c1 >>> 16) & 255,
+            (c1 >>> 8) & 255,
+            c1 & 255,
+            c2 >>> 24,
+            (c2 >>> 16) & 255,
+            (c2 >>> 8) & 255,
+            c2 & 255,
+        ]);
+    }
+    reset() {
+        this.c1 = 4294967295;
+        this.c2 = 4294967295;
+    }
+}
+
+const crc64NvmeCrtContainer = {
+    CrtCrc64Nvme: null,
+};
+
+exports.Crc64Nvme = Crc64Nvme;
+exports.crc64NvmeCrtContainer = crc64NvmeCrtContainer;
+
+
+/***/ }),
+
 /***/ 5606:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -19585,6 +17599,7 @@ var protocolHttp = __nccwpck_require__(2356);
 var utilStream = __nccwpck_require__(4252);
 var isArrayBuffer = __nccwpck_require__(6130);
 var crc32c = __nccwpck_require__(1491);
+var crc64Nvme = __nccwpck_require__(7122);
 var getCrc32ChecksumAlgorithmFunction = __nccwpck_require__(3321);
 var utilUtf8 = __nccwpck_require__(1577);
 var utilMiddleware = __nccwpck_require__(6324);
@@ -19644,10 +17659,6 @@ const NODE_RESPONSE_CHECKSUM_VALIDATION_CONFIG_OPTIONS = {
     environmentVariableSelector: (env) => stringUnionSelector(env, ENV_RESPONSE_CHECKSUM_VALIDATION, ResponseChecksumValidation, SelectorType.ENV),
     configFileSelector: (profile) => stringUnionSelector(profile, CONFIG_RESPONSE_CHECKSUM_VALIDATION, ResponseChecksumValidation, SelectorType.CONFIG),
     default: DEFAULT_RESPONSE_CHECKSUM_VALIDATION,
-};
-
-const crc64NvmeCrtContainer = {
-    CrtCrc64Nvme: null,
 };
 
 const CLIENT_SUPPORTED_ALGORITHMS = [
@@ -19715,14 +17726,10 @@ const selectChecksumAlgorithmFunction = (checksumAlgorithm, config) => {
         case exports.ChecksumAlgorithm.CRC32C:
             return crc32c.AwsCrc32c;
         case exports.ChecksumAlgorithm.CRC64NVME:
-            if (typeof crc64NvmeCrtContainer.CrtCrc64Nvme !== "function") {
-                throw new Error(`Please check whether you have installed the "@aws-sdk/crc64-nvme-crt" package explicitly. \n` +
-                    `You must also register the package by calling [require("@aws-sdk/crc64-nvme-crt");] ` +
-                    `or an ESM equivalent such as [import "@aws-sdk/crc64-nvme-crt";]. \n` +
-                    "For more information please go to " +
-                    "https://github.com/aws/aws-sdk-js-v3#functionality-requiring-aws-common-runtime-crt");
+            if (typeof crc64Nvme.crc64NvmeCrtContainer.CrtCrc64Nvme !== "function") {
+                return crc64Nvme.Crc64Nvme;
             }
-            return crc64NvmeCrtContainer.CrtCrc64Nvme;
+            return crc64Nvme.crc64NvmeCrtContainer.CrtCrc64Nvme;
         case exports.ChecksumAlgorithm.SHA1:
             return config.sha1;
         case exports.ChecksumAlgorithm.SHA256:
@@ -19824,15 +17831,31 @@ const flexibleChecksumsMiddleware = (config, middlewareConfig) => (next, context
             };
         }
     }
-    const result = await next({
-        ...args,
-        request: {
-            ...request,
-            headers: updatedHeaders,
-            body: updatedBody,
-        },
-    });
-    return result;
+    try {
+        const result = await next({
+            ...args,
+            request: {
+                ...request,
+                headers: updatedHeaders,
+                body: updatedBody,
+            },
+        });
+        return result;
+    }
+    catch (e) {
+        if (e instanceof Error && e.name === "InvalidChunkSizeError") {
+            try {
+                if (!e.message.endsWith(".")) {
+                    e.message += ".";
+                }
+                e.message +=
+                    " Set [requestStreamBufferSize=number e.g. 65_536] in client constructor to instruct AWS SDK to buffer your input stream.";
+            }
+            catch (ignored) {
+            }
+        }
+        throw e;
+    }
 };
 
 const flexibleChecksumsInputMiddlewareOptions = {
@@ -20001,7 +18024,6 @@ exports.NODE_REQUEST_CHECKSUM_CALCULATION_CONFIG_OPTIONS = NODE_REQUEST_CHECKSUM
 exports.NODE_RESPONSE_CHECKSUM_VALIDATION_CONFIG_OPTIONS = NODE_RESPONSE_CHECKSUM_VALIDATION_CONFIG_OPTIONS;
 exports.RequestChecksumCalculation = RequestChecksumCalculation;
 exports.ResponseChecksumValidation = ResponseChecksumValidation;
-exports.crc64NvmeCrtContainer = crc64NvmeCrtContainer;
 exports.flexibleChecksumsMiddleware = flexibleChecksumsMiddleware;
 exports.flexibleChecksumsMiddlewareOptions = flexibleChecksumsMiddlewareOptions;
 exports.getFlexibleChecksumsPlugin = getFlexibleChecksumsPlugin;
@@ -22281,8 +20303,12 @@ class ArtifactDownloader {
             core.debug(`Downloading: ${relativePath}`);
             // Download the file
             const { body, metadata } = await this.s3.downloadFile(file.key);
+            core.debug(`File metadata for ${relativePath}: ${JSON.stringify(metadata)}`);
             // Check if file is compressed
-            const isCompressed = metadata?.['compressed'] === 'true';
+            // Note: S3 metadata keys are case-insensitive and may be returned in different cases
+            // by different S3-compatible implementations
+            const isCompressed = this.getMetadataValue(metadata, 'compressed') === 'true';
+            core.debug(`isCompressed: ${isCompressed}`);
             if (isCompressed) {
                 // Decompress and write
                 const gunzip = zlib.createGunzip();
@@ -22307,6 +20333,27 @@ class ArtifactDownloader {
             chunks.push(Buffer.from(chunk));
         }
         return Buffer.concat(chunks).toString('utf-8');
+    }
+    /**
+     * Get a metadata value case-insensitively
+     * S3-compatible stores may return metadata keys in different cases
+     */
+    getMetadataValue(metadata, key) {
+        if (!metadata)
+            return undefined;
+        // Try exact match first
+        if (metadata[key] !== undefined)
+            return metadata[key];
+        // Try lowercase
+        const lowerKey = key.toLowerCase();
+        if (metadata[lowerKey] !== undefined)
+            return metadata[lowerKey];
+        // Try case-insensitive search
+        for (const [k, v] of Object.entries(metadata)) {
+            if (k.toLowerCase() === lowerKey)
+                return v;
+        }
+        return undefined;
     }
 }
 exports.ArtifactDownloader = ArtifactDownloader;
@@ -65746,7 +63793,7 @@ exports.unescape = unescape;
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"name":"@aws-sdk/client-s3","description":"AWS SDK for JavaScript S3 Client for Node.js, Browser and React Native","version":"3.956.0","scripts":{"build":"concurrently \'yarn:build:types\' \'yarn:build:es\' && yarn build:cjs","build:cjs":"node ../../scripts/compilation/inline client-s3","build:es":"tsc -p tsconfig.es.json","build:include:deps":"lerna run --scope $npm_package_name --include-dependencies build","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo s3","test":"yarn g:vitest run","test:browser":"node ./test/browser-build/esbuild && yarn g:vitest run -c vitest.config.browser.mts","test:browser:watch":"node ./test/browser-build/esbuild && yarn g:vitest watch -c vitest.config.browser.mts","test:e2e":"yarn g:vitest run -c vitest.config.e2e.mts && yarn test:browser","test:e2e:watch":"yarn g:vitest watch -c vitest.config.e2e.mts","test:index":"tsc --noEmit ./test/index-types.ts && node ./test/index-objects.spec.mjs","test:integration":"yarn g:vitest run -c vitest.config.integ.mts","test:integration:watch":"yarn g:vitest watch -c vitest.config.integ.mts","test:watch":"yarn g:vitest watch"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha1-browser":"5.2.0","@aws-crypto/sha256-browser":"5.2.0","@aws-crypto/sha256-js":"5.2.0","@aws-sdk/core":"3.956.0","@aws-sdk/credential-provider-node":"3.956.0","@aws-sdk/middleware-bucket-endpoint":"3.956.0","@aws-sdk/middleware-expect-continue":"3.956.0","@aws-sdk/middleware-flexible-checksums":"3.956.0","@aws-sdk/middleware-host-header":"3.956.0","@aws-sdk/middleware-location-constraint":"3.956.0","@aws-sdk/middleware-logger":"3.956.0","@aws-sdk/middleware-recursion-detection":"3.956.0","@aws-sdk/middleware-sdk-s3":"3.956.0","@aws-sdk/middleware-ssec":"3.956.0","@aws-sdk/middleware-user-agent":"3.956.0","@aws-sdk/region-config-resolver":"3.956.0","@aws-sdk/signature-v4-multi-region":"3.956.0","@aws-sdk/types":"3.956.0","@aws-sdk/util-endpoints":"3.956.0","@aws-sdk/util-user-agent-browser":"3.956.0","@aws-sdk/util-user-agent-node":"3.956.0","@smithy/config-resolver":"^4.4.5","@smithy/core":"^3.20.0","@smithy/eventstream-serde-browser":"^4.2.7","@smithy/eventstream-serde-config-resolver":"^4.3.7","@smithy/eventstream-serde-node":"^4.2.7","@smithy/fetch-http-handler":"^5.3.8","@smithy/hash-blob-browser":"^4.2.8","@smithy/hash-node":"^4.2.7","@smithy/hash-stream-node":"^4.2.7","@smithy/invalid-dependency":"^4.2.7","@smithy/md5-js":"^4.2.7","@smithy/middleware-content-length":"^4.2.7","@smithy/middleware-endpoint":"^4.4.1","@smithy/middleware-retry":"^4.4.17","@smithy/middleware-serde":"^4.2.8","@smithy/middleware-stack":"^4.2.7","@smithy/node-config-provider":"^4.3.7","@smithy/node-http-handler":"^4.4.7","@smithy/protocol-http":"^5.3.7","@smithy/smithy-client":"^4.10.2","@smithy/types":"^4.11.0","@smithy/url-parser":"^4.2.7","@smithy/util-base64":"^4.3.0","@smithy/util-body-length-browser":"^4.2.0","@smithy/util-body-length-node":"^4.2.1","@smithy/util-defaults-mode-browser":"^4.3.16","@smithy/util-defaults-mode-node":"^4.2.19","@smithy/util-endpoints":"^3.2.7","@smithy/util-middleware":"^4.2.7","@smithy/util-retry":"^4.2.7","@smithy/util-stream":"^4.5.8","@smithy/util-utf8":"^4.2.0","@smithy/util-waiter":"^4.2.7","tslib":"^2.6.2"},"devDependencies":{"@aws-sdk/signature-v4-crt":"3.956.0","@tsconfig/node18":"18.2.4","@types/node":"^18.19.69","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typescript":"~5.8.3"},"engines":{"node":">=18.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-s3","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-s3"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"@aws-sdk/client-s3","description":"AWS SDK for JavaScript S3 Client for Node.js, Browser and React Native","version":"3.958.0","scripts":{"build":"concurrently \'yarn:build:types\' \'yarn:build:es\' && yarn build:cjs","build:cjs":"node ../../scripts/compilation/inline client-s3","build:es":"tsc -p tsconfig.es.json","build:include:deps":"yarn g:turbo run build -F=\\"$npm_package_name\\"","build:types":"tsc -p tsconfig.types.json","build:types:downlevel":"downlevel-dts dist-types dist-types/ts3.4","clean":"rimraf ./dist-* && rimraf *.tsbuildinfo","extract:docs":"api-extractor run --local","generate:client":"node ../../scripts/generate-clients/single-service --solo s3","test":"yarn g:vitest run","test:browser":"node ./test/browser-build/esbuild && yarn g:vitest run -c vitest.config.browser.mts","test:browser:watch":"node ./test/browser-build/esbuild && yarn g:vitest watch -c vitest.config.browser.mts","test:e2e":"yarn g:vitest run -c vitest.config.e2e.mts && yarn test:browser","test:e2e:watch":"yarn g:vitest watch -c vitest.config.e2e.mts","test:index":"tsc --noEmit ./test/index-types.ts && node ./test/index-objects.spec.mjs","test:integration":"yarn g:vitest run -c vitest.config.integ.mts","test:integration:watch":"yarn g:vitest watch -c vitest.config.integ.mts","test:watch":"yarn g:vitest watch"},"main":"./dist-cjs/index.js","types":"./dist-types/index.d.ts","module":"./dist-es/index.js","sideEffects":false,"dependencies":{"@aws-crypto/sha1-browser":"5.2.0","@aws-crypto/sha256-browser":"5.2.0","@aws-crypto/sha256-js":"5.2.0","@aws-sdk/core":"3.957.0","@aws-sdk/credential-provider-node":"3.958.0","@aws-sdk/middleware-bucket-endpoint":"3.957.0","@aws-sdk/middleware-expect-continue":"3.957.0","@aws-sdk/middleware-flexible-checksums":"3.957.0","@aws-sdk/middleware-host-header":"3.957.0","@aws-sdk/middleware-location-constraint":"3.957.0","@aws-sdk/middleware-logger":"3.957.0","@aws-sdk/middleware-recursion-detection":"3.957.0","@aws-sdk/middleware-sdk-s3":"3.957.0","@aws-sdk/middleware-ssec":"3.957.0","@aws-sdk/middleware-user-agent":"3.957.0","@aws-sdk/region-config-resolver":"3.957.0","@aws-sdk/signature-v4-multi-region":"3.957.0","@aws-sdk/types":"3.957.0","@aws-sdk/util-endpoints":"3.957.0","@aws-sdk/util-user-agent-browser":"3.957.0","@aws-sdk/util-user-agent-node":"3.957.0","@smithy/config-resolver":"^4.4.5","@smithy/core":"^3.20.0","@smithy/eventstream-serde-browser":"^4.2.7","@smithy/eventstream-serde-config-resolver":"^4.3.7","@smithy/eventstream-serde-node":"^4.2.7","@smithy/fetch-http-handler":"^5.3.8","@smithy/hash-blob-browser":"^4.2.8","@smithy/hash-node":"^4.2.7","@smithy/hash-stream-node":"^4.2.7","@smithy/invalid-dependency":"^4.2.7","@smithy/md5-js":"^4.2.7","@smithy/middleware-content-length":"^4.2.7","@smithy/middleware-endpoint":"^4.4.1","@smithy/middleware-retry":"^4.4.17","@smithy/middleware-serde":"^4.2.8","@smithy/middleware-stack":"^4.2.7","@smithy/node-config-provider":"^4.3.7","@smithy/node-http-handler":"^4.4.7","@smithy/protocol-http":"^5.3.7","@smithy/smithy-client":"^4.10.2","@smithy/types":"^4.11.0","@smithy/url-parser":"^4.2.7","@smithy/util-base64":"^4.3.0","@smithy/util-body-length-browser":"^4.2.0","@smithy/util-body-length-node":"^4.2.1","@smithy/util-defaults-mode-browser":"^4.3.16","@smithy/util-defaults-mode-node":"^4.2.19","@smithy/util-endpoints":"^3.2.7","@smithy/util-middleware":"^4.2.7","@smithy/util-retry":"^4.2.7","@smithy/util-stream":"^4.5.8","@smithy/util-utf8":"^4.2.0","@smithy/util-waiter":"^4.2.7","tslib":"^2.6.2"},"devDependencies":{"@aws-sdk/signature-v4-crt":"3.957.0","@tsconfig/node18":"18.2.4","@types/node":"^18.19.69","concurrently":"7.0.0","downlevel-dts":"0.10.1","rimraf":"3.0.2","typescript":"~5.8.3"},"engines":{"node":">=18.0.0"},"typesVersions":{"<4.0":{"dist-types/*":["dist-types/ts3.4/*"]}},"files":["dist-*/**"],"author":{"name":"AWS SDK for JavaScript Team","url":"https://aws.amazon.com/javascript/"},"license":"Apache-2.0","browser":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.browser"},"react-native":{"./dist-es/runtimeConfig":"./dist-es/runtimeConfig.native"},"homepage":"https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-s3","repository":{"type":"git","url":"https://github.com/aws/aws-sdk-js-v3.git","directory":"clients/client-s3"}}');
 
 /***/ })
 
