@@ -24,9 +24,9 @@
     "@kusold/artifact-s3": "github:kusold/artifact-s3#e5885184399d71982212aeddf874d224fd185ac4"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
+    "@types/node": "^25.0.3",
     "@vercel/ncc": "^0.38.3",
     "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
+    "vitest": "^4.0.16"
   }
 }
