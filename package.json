@@ -19,7 +19,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.11.1",
+    "@actions/core": "^2.0.2",
     "@actions/glob": "^0.5.0",
     "@kusold/artifact-s3": "github:kusold/artifact-s3#e5885184399d71982212aeddf874d224fd185ac4"
   },
