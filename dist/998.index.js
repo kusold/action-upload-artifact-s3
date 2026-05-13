@@ -141,7 +141,7 @@ var middlewareEndpoint = __webpack_require__(99);
 var middlewareRetry = __webpack_require__(9618);
 var smithyClient = __webpack_require__(1411);
 var httpAuthSchemeProvider = __webpack_require__(2041);
-var runtimeConfig = __webpack_require__(2696);
+var runtimeConfig = __webpack_require__(315);
 var regionConfigResolver = __webpack_require__(6463);
 var protocolHttp = __webpack_require__(2356);
 
@@ -551,7 +551,7 @@ exports.paginateListAccounts = paginateListAccounts;
 
 /***/ }),
 
-/***/ 2696:
+/***/ 315:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
