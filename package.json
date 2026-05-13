@@ -20,7 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.11.1",
-    "@actions/glob": "^0.5.0",
+    "@actions/glob": "^0.6.1",
     "@kusold/artifact-s3": "github:kusold/artifact-s3#e5885184399d71982212aeddf874d224fd185ac4"
   },
   "devDependencies": {
