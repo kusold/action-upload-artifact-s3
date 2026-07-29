@@ -15,7 +15,7 @@ var credentialProviderLogin = __webpack_require__(4072);
 const resolveCredentialSource = (credentialSource, profileName, logger) => {
     const sourceProvidersMap = {
         EcsContainer: async (options) => {
-            const { fromHttp } = await __webpack_require__.e(/* import() */ 605).then(__webpack_require__.t.bind(__webpack_require__, 8605, 19));
+            const { fromHttp } = await __webpack_require__.e(/* import() */ 605).then(__webpack_require__.t.bind(__webpack_require__, 986, 19));
             const { fromContainerMetadata } = await __webpack_require__.e(/* import() */ 566).then(__webpack_require__.t.bind(__webpack_require__, 566, 19));
             logger?.debug("@aws-sdk/credential-provider-ini - credential_source is EcsContainer");
             return async () => config.chain(fromHttp(options ?? {}), fromContainerMetadata(options))().then(setNamedProvider);
