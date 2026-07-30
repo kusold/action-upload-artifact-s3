@@ -4,7 +4,7 @@
   "description": "GitHub Action to upload artifacts to S3",
   "main": "dist/index.js",
   "scripts": {
-    "build": "ncc build src/index.ts -o dist --source-map --license licenses.txt",
+    "build": "esbuild src/index.ts --bundle --platform=node --format=cjs --target=node20 --outfile=dist/index.js",
     "clean": "rm -rf dist",
     "lint": "eslint src/**/*.ts",
     "test": "vitest"
@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@types/node": "^25.0.3",
-    "@vercel/ncc": "^0.38.3",
+    "esbuild": "^0.25.0",
     "typescript": "^5.7.2",
     "vitest": "^4.1.9"
   }
